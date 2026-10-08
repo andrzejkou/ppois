@@ -47,6 +47,7 @@ public:
   Set();
   ~Set();
   Set &operator+=(Set set2);
-  Set &operator-=(Set set2);
+  Set &operator-=(const Set &set2);
+  bool operator[](const Element &elSearch) const;
   bool operator==(const Set &secSet) const;
 };

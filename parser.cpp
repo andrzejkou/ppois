@@ -5,6 +5,7 @@
 #include <string>
 
 namespace {
+
 void skipSpaces(const std::string &input, size_t &position) {
   while (position < input.size() &&
          std::isspace(static_cast<unsigned char>(input[position]))) {

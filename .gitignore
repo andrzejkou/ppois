@@ -1,0 +1,12 @@
+# Build outputs
+main
+*.o
+
+# Unit-test executable
+/tests/test_set
+
+# Coverage outputs
+/build/coverage/
+*.gcda
+*.gcno
+*.gcov

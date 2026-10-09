@@ -10,6 +10,24 @@ Element::Element(const Element &other)
   if (!isSingle)
     setEx = new Set(*other.setEx);
 }
+Set Set::operator+(const Set &other) const {
+  Set result(*this);
+  result += other;
+  return result;
+}
+
+Set Set::operator-(const Set &other) const {
+  Set result(*this);
+  result -= other;
+  return result;
+}
+
+Set Set::operator*(const Set &other) const {
+  Set result(*this);
+  result *= other;
+  return result;
+}
+bool Set::isEmpty() const { return setEx.empty(); }
 Element::~Element() { delete setEx; }
 
 void Set::add(const Element &elEx) {
@@ -34,6 +52,17 @@ Element &Element::operator=(const Element &other) {
   return *this;
 }
 
+bool Set::remove(const Element &element) {
+  for (auto curr = setEx.begin(); curr != setEx.end(); ++curr) {
+    if (*curr == element) {
+      setEx.erase(curr);
+      return true;
+    }
+  }
+
+  return false;
+}
+std::size_t Set::cardinality() const { return setEx.size(); }
 bool Set::operator[](const Element &element) const {
   for (const Element &currentElement : setEx) {
     if (currentElement == element)
@@ -100,6 +129,27 @@ void Set::print() const {
   }
 
   cout << "}";
+}
+Set Set::powerSet() const {
+  Set result;
+
+  result.add(Element(new Set()));
+
+  for (const Element &element : setEx) {
+    Set expanded;
+
+    for (const Element &subsetElement : result.setEx) {
+      Set subset(*subsetElement.setEx);
+      subset.add(element);
+
+      Element newSubset(new Set(subset));
+      expanded.add(newSubset);
+    }
+
+    result += expanded;
+  }
+
+  return result;
 }
 
 Set::Set() {}

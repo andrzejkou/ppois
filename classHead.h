@@ -1,5 +1,8 @@
+#pragma once
+#include <cstddef>
 #include <string>
 #include <vector>
+
 using namespace std;
 struct Tree {
   string eng;
@@ -22,6 +25,8 @@ public:
 };
 class Set;
 class Element {
+  friend class Set;
+
 private:
   char el;
   Set *setEx;
@@ -42,6 +47,13 @@ private:
   vector<Element> setEx;
 
 public:
+  bool isEmpty() const;
+  bool remove(const Element &element);
+  std::size_t cardinality() const;
+  Set operator+(const Set &other) const;
+  Set operator-(const Set &other) const;
+  Set operator*(const Set &other) const;
+  Set powerSet() const;
   void print() const;
   void add(const Element &elEx);
   Set();

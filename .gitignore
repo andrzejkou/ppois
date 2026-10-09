@@ -3,10 +3,11 @@ main
 *.o
 
 # Unit-test executable
-/tests/test_set
+test_set
 
-# Coverage outputs
-/build/coverage/
+# Build directories and coverage reports
+**/build/coverage/
 *.gcda
 *.gcno
 *.gcov
+*.info

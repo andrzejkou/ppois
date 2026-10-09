@@ -71,6 +71,22 @@ Set &Set::operator-=(const Set &secSet) {
 
   return *this;
 }
+Set &Set::operator+=(const Set &secSet) {
+  for (auto curr = secSet.setEx.begin(); curr != secSet.setEx.end(); curr++) {
+    if (!(*this)[*curr])
+      add(*curr);
+  }
+  return *this;
+}
+Set &Set::operator*=(const Set &secSet) {
+  for (auto curr = setEx.begin(); curr != setEx.end();) {
+    if (!secSet[*curr])
+      curr = setEx.erase(curr);
+    else
+      curr++;
+  }
+  return *this;
+}
 void Element::print() {
   if (isSingle)
     cout << el;

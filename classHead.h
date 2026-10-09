@@ -30,7 +30,9 @@ private:
 public:
   Element(char value);
   Element(Set *set);
-  void print();
+  Element &operator=(const Element &other);
+
+  void print() const;
   Element(const Element &other);
   ~Element();
   bool operator==(const Element &secEl) const;
@@ -40,12 +42,11 @@ private:
   vector<Element> setEx;
 
 public:
-  void print();
-  bool isContain(Element elEx) const;
-  void add(Element elEx);
-  Set initInSet(string &strEx, int &pos);
+  void print() const;
+  void add(const Element &elEx);
   Set();
   ~Set();
+
   Set &operator+=(const Set &set2);
   Set &operator-=(const Set &set2);
   Set &operator*=(const Set &set2);

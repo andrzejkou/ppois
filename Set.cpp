@@ -1,43 +1,39 @@
 #include "classHead.h"
 #include <iostream>
 using namespace std;
-Element::Element(char value) {
-  el = value;
-  setEx = nullptr;
-  isSingle = true;
-}
-Element::Element(Set *set) {
-  setEx = set;
-  el = '\0';
-  isSingle = false;
-}
-Element::Element(const Element &other) {
-  el = other.el;
-  isSingle = other.isSingle;
+Element::Element(char value) : el(value), setEx(nullptr), isSingle(true) {}
 
-  if (other.isSingle) {
-    setEx = nullptr;
-  } else {
+Element::Element(Set *set) : el('\0'), setEx(set), isSingle(false) {}
+
+Element::Element(const Element &other)
+    : el(other.el), setEx(nullptr), isSingle(other.isSingle) {
+  if (!isSingle)
     setEx = new Set(*other.setEx);
-  }
 }
 Element::~Element() { delete setEx; }
 
-void Set::add(Element elEx) { setEx.push_back(elEx); }
-Set Set::initInSet(string &strEx, int &pos) {
-  Set result;
-  while (strEx[pos] != '}') {
-    if (strEx[pos] == '{') {
-      pos++;
-      result.add(Element(new Set(initInSet(strEx, pos))));
-    } else if (strEx[pos] != ',') {
-      Element elEx(strEx[pos]);
-      result.add(elEx);
-    }
-    pos++;
-  }
-  return result;
+void Set::add(const Element &elEx) {
+  if (!(*this)[elEx])
+    setEx.push_back(elEx);
 }
+Element &Element::operator=(const Element &other) {
+  if (this == &other)
+    return *this;
+
+  Set *copiedSet = nullptr;
+
+  if (!other.isSingle)
+    copiedSet = new Set(*other.setEx);
+
+  delete setEx;
+
+  el = other.el;
+  isSingle = other.isSingle;
+  setEx = copiedSet;
+
+  return *this;
+}
+
 bool Set::operator[](const Element &element) const {
   for (const Element &currentElement : setEx) {
     if (currentElement == element)
@@ -87,13 +83,13 @@ Set &Set::operator*=(const Set &secSet) {
   }
   return *this;
 }
-void Element::print() {
+void Element::print() const {
   if (isSingle)
     cout << el;
   else
     setEx->print();
 }
-void Set::print() {
+void Set::print() const {
   cout << "{";
 
   for (int i = 0; i < setEx.size(); i++) {

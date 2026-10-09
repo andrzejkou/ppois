@@ -1,27 +1,45 @@
 #pragma once
 #include <cstddef>
 #include <string>
+#include <utility>
 #include <vector>
-
 using namespace std;
-struct Tree {
-  string eng;
-  string rus;
-  Tree *left;
-  Tree *right;
-};
+
 class Vocabulary {
 private:
+  struct Tree {
+    string eng;
+    string rus;
+    Tree *left;
+    Tree *right;
+  };
   Tree *root;
-  Tree *searchRoot(string wordEx);
-  int AddNode(string engEx, string rusEx);
+  Tree *searchRoot(const string &wordEx);
+  int AddNode(const string &eng, const string &rus);
+  static void destroyTree(Tree *node);
+  static Tree *cloneTree(const Tree *node);
+  static Tree *detachMinimum(Tree *&subtree);
+
+  static Tree *removeNode(Tree *node, const string &word, bool &removed);
+
+  static size_t countNodes(const Tree *node);
 
 public:
   Vocabulary();
+  Vocabulary(const Vocabulary &other);
+  Vocabulary &operator=(const Vocabulary &other);
   ~Vocabulary();
-  Vocabulary &operator+=(pair<string, string> words);
-  Vocabulary &operator-=(string engEx);
-  string &operator[](string &engEx);
+
+  Vocabulary &operator+=(const pair<string, string> &words);
+
+  Vocabulary &operator+=(const pair<const char *, const char *> &words);
+
+  Vocabulary &operator-=(const string &word);
+
+  string &operator[](const string &word);
+
+  size_t size() const;
+  void loadFromFile(const string &filename);
 };
 class Set;
 class Element {

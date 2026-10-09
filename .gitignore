@@ -4,10 +4,11 @@ main
 
 # Unit-test executable
 test_set
-
+test_vocabulary
 # Build directories and coverage reports
 **/build/coverage/
 *.gcda
 *.gcno
 *.gcov
 *.info
+*.tmp

@@ -1,5 +1,5 @@
 #include "classHead.h"
-#include <iostream>
+
 using namespace std;
 Element::Element(char value) : el(value), setEx(nullptr), isSingle(true) {}
 
@@ -112,23 +112,24 @@ Set &Set::operator*=(const Set &secSet) {
   }
   return *this;
 }
-void Element::print() const {
+std::string Element::toString() const {
   if (isSingle)
-    cout << el;
-  else
-    setEx->print();
+    return std::string(1, el);
+
+  return setEx->toString();
 }
-void Set::print() const {
-  cout << "{";
+std::string Set::toString() const {
+  std::string result = "{";
 
-  for (int i = 0; i < setEx.size(); i++) {
-    setEx[i].print();
+  for (std::size_t index = 0; index < setEx.size(); ++index) {
+    if (index > 0)
+      result += ",";
 
-    if (i < setEx.size() - 1)
-      cout << ",";
+    result += setEx[index].toString();
   }
 
-  cout << "}";
+  result += "}";
+  return result;
 }
 Set Set::powerSet() const {
   Set result;

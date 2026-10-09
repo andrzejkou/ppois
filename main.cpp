@@ -15,14 +15,10 @@ void showSets(const SetStorage &sets) {
     cout << "Множества ещё не созданы.\n";
     return;
   }
-
-  for (const auto &entry : sets) {
-    cout << entry.first << " = ";
-    entry.second.print();
-    cout << '\n';
-  }
+    for (const auto& entry : sets)
+        cout << entry.first << " = " << entry.second.toString() << '\n';
 }
-void showCardinality(const SetStorage &sets) {
+  void showCardinality(const SetStorage &sets) {
   string name;
 
   cout << "Имя множества: ";
@@ -73,11 +69,10 @@ void createSet(SetStorage &sets) {
 
   try {
     Set newSet = set_parser::parse(expression);
-    sets.emplace(name, newSet);
+    const auto inserted = sets.emplace(name, newSet);
 
-    cout << name << " = ";
-    sets.find(name)->second.print();
-    cout << '\n';
+    cout << inserted.first->first << " = "
+             << inserted.first->second.toString() << '\n';
   } catch (const exception &error) {
     cout << "Ошибка: " << error.what() << '\n';
   }
@@ -89,16 +84,14 @@ void showOneSet(const SetStorage &sets) {
   cout << "Имя множества: ";
   getline(cin >> ws, name);
 
-  auto found = sets.find(name);
+  const auto found = sets.find(name);
 
   if (found == sets.end()) {
     cout << "Множество не найдено.\n";
     return;
   }
+    cout << name << " = " << found->second.toString() << '\n';
 
-  cout << name << " = ";
-  found->second.print();
-  cout << '\n';
 }
 
 void checkMembership(const SetStorage &sets) {
@@ -108,7 +101,7 @@ void checkMembership(const SetStorage &sets) {
   cout << "Имя множества: ";
   getline(cin >> ws, name);
 
-  auto found = sets.find(name);
+  const auto found = sets.find(name);
 
   if (found == sets.end()) {
     cout << "Множество не найдено.\n";
@@ -136,8 +129,8 @@ void compareSets(const SetStorage &sets) {
   cout << "Второе множество: ";
   getline(cin >> ws, secondName);
 
-  auto first = sets.find(firstName);
-  auto second = sets.find(secondName);
+  const auto first = sets.find(firstName);
+  const auto second = sets.find(secondName);
 
   if (first == sets.end() || second == sets.end()) {
     cout << "Одно из множеств не найдено.\n";
@@ -145,6 +138,46 @@ void compareSets(const SetStorage &sets) {
   }
 
   cout << boolalpha << (first->second == second->second) << '\n';
+}
+
+void addElement(SetStorage& sets)
+{
+    string name;
+    string expression;
+
+    cout << "Имя множества: ";
+    getline(cin >> ws, name);
+
+    auto found = sets.find(name);
+
+    if (found == sets.end())
+    {
+        cout << "Множество не найдено.\n";
+        return;
+    }
+
+    cout << "Элемент для добавления: ";
+    getline(cin >> ws, expression);
+
+    try
+    {
+        Element element = set_parser::parseElement(expression);
+
+        if (found->second[element])
+        {
+            cout << "Такой элемент уже есть в множестве.\n";
+            return;
+        }
+
+        found->second.add(element);
+
+        cout << "Элемент добавлен. Результат: "
+             << found->second.toString() << '\n';
+    }
+    catch (const exception& error)
+    {
+        cout << "Ошибка: " << error.what() << '\n';
+    }
 }
 void removeElement(SetStorage &sets) {
   string name;
@@ -164,15 +197,13 @@ void removeElement(SetStorage &sets) {
   getline(cin >> ws, expression);
 
   try {
-    Element element = set_parser::parseElement(expression);
+        const Element element = set_parser::parseElement(expression);
 
-    if (found->second.remove(element)) {
-      cout << "Элемент удалён. Результат: ";
-      found->second.print();
-      cout << '\n';
-    } else {
-      cout << "Такого элемента нет в множестве.\n";
-    }
+        if (found->second.remove(element))
+            cout << "Элемент удалён. Результат: "
+                 << found->second.toString() << '\n';
+        else
+            cout << "Такого элемента нет в множестве.\n";
   } catch (const exception &error) {
     cout << "Ошибка: " << error.what() << '\n';
   }
@@ -214,11 +245,9 @@ void performOperation(SetStorage &sets, char operation) {
     result = first->second * second->second;
   else
     return;
-  sets.emplace(resultName, result);
-
-  cout << resultName << " = ";
-  sets.find(resultName)->second.print();
-  cout << '\n';
+    const auto inserted = sets.emplace(resultName, result);
+    cout << inserted.first->first << " = "
+         << inserted.first->second.toString() << '\n';
 }
 void showPowerSet(SetStorage &sets) {
   string name;
@@ -232,12 +261,8 @@ void showPowerSet(SetStorage &sets) {
     cout << "Множество не найдено.\n";
     return;
   }
-
-  Set result = found->second.powerSet();
-
-  cout << "P(" << name << ") = ";
-  result.print();
-  cout << '\n';
+    const Set result = found->second.powerSet();
+    cout << "P(" << name << ") = " << result.toString() << '\n';
 }
 
 int main() {
@@ -257,6 +282,9 @@ int main() {
          << "9. Проверить пустоту множества\n"
          << "10. Построить булеан\n"
          << "11. Удалить элемент\n"
+         << "12. Определить кардинальность множества\n"
+      << "13. Добавить элемент\n"
+<< "0. Выход\n"
          << "Выбор: ";
 
     if (!(cin >> choice)) {
@@ -306,6 +334,9 @@ int main() {
     case 12:
       showCardinality(sets);
       break;
+    case 13:
+    addElement(sets);
+    break;
     case 0:
       return 0;
     default:

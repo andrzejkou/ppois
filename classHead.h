@@ -36,8 +36,8 @@ public:
   Element(char value);
   Element(Set *set);
   Element &operator=(const Element &other);
+  string toString() const;
 
-  void print() const;
   Element(const Element &other);
   ~Element();
   bool operator==(const Element &secEl) const;
@@ -47,6 +47,7 @@ private:
   vector<Element> setEx;
 
 public:
+  string toString() const;
   bool isEmpty() const;
   bool remove(const Element &element);
   std::size_t cardinality() const;
@@ -54,7 +55,7 @@ public:
   Set operator-(const Set &other) const;
   Set operator*(const Set &other) const;
   Set powerSet() const;
-  void print() const;
+
   void add(const Element &elEx);
   Set();
   ~Set();

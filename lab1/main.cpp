@@ -1,5 +1,6 @@
-#include "classHead.h"
-#include "parser.h"
+#include "set/Set.h"
+#include "vocabulary/Vocabulary.h"
+#include "set/parser.h"
 #include <exception>
 #include <iostream>
 #include <limits>

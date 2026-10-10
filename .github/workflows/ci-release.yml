@@ -41,9 +41,9 @@ jobs:
             --suppress=missingIncludeSystem \
             -I lab1 \
             lab1/main.cpp \
-            lab1/Set.cpp \
-            lab1/Vocabulary.cpp \
-            lab1/parser.cpp
+            lab1/set/Set.cpp \
+            lab1/vocabulary/Vocabulary.cpp \
+            lab1/set/parser.cpp
 
       - name: Build application
         run: make -C lab1 clean main

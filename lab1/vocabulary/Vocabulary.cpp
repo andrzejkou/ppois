@@ -1,4 +1,4 @@
-#include "classHead.h"
+#include "Vocabulary.h"
 #include <fstream>
 #include <stdexcept>
 #include <stdio.h>

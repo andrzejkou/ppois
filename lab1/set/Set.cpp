@@ -1,4 +1,4 @@
-#include "classHead.h"
+#include "Set.h"
 
 using namespace std;
 Element::Element(char value) : el(value), setEx(nullptr), isSingle(true) {}

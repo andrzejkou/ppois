@@ -1,5 +1,5 @@
 
-#include "../classHead.h"
+#include "../vocabulary/Vocabulary.h"
 
 #include <cstdio>
 #include <fstream>

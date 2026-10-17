@@ -1,0 +1,51 @@
+
+# Project information
+PROJECT_NAME           = "PPOIS"
+PROJECT_BRIEF          = "Лабораторные работы по ООП"
+OUTPUT_DIRECTORY       = docs
+
+# Input files
+INPUT                  = .
+FILE_PATTERNS          = *.h *.hpp *.c *.cpp *.cc *.md
+RECURSIVE              = YES
+EXCLUDE                = .git build docs
+EXCLUDE_PATTERNS       = */.git/* */build/* */docs/*
+
+# Source code extraction
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_LOCAL_METHODS  = YES
+HIDE_UNDOC_MEMBERS     = NO
+
+# Warnings
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+WARN_AS_ERROR          = NO
+QUIET                  = NO
+
+# HTML documentation
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+GENERATE_TREEVIEW      = YES
+DISABLE_INDEX          = NO
+
+# Disable unnecessary formats
+GENERATE_LATEX         = NO
+GENERATE_XML           = NO
+GENERATE_MAN           = NO
+GENERATE_RTF           = NO
+
+# Source code browser
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+REFERENCES_RELATION    = YES
+REFERENCED_BY_RELATION = YES
+
+# Markdown
+MARKDOWN_SUPPORT       = YES
+
+# Class diagrams
+HAVE_DOT               = YES

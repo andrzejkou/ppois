@@ -12,3 +12,5 @@ test_vocabulary
 *.gcov
 *.info
 *.tmp
+# Generated Doxygen documentation
+/docs/

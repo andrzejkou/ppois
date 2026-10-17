@@ -56,13 +56,14 @@ int Tree::AddNode(const string &eng, const string &rus) {
   }
 }
 // добавление нового слова
-Vocabulary &Vocabulary::operator+=(const pair<string, string> &words) {
+Vocabulary &
+Vocabulary::operator+=(const std::pair<std::string, std::string> &words) {
   tree.AddNode(words.first, words.second);
   return *this;
 }
 
 Vocabulary &
-Vocabulary::operator+=(const pair<const char *, const char *> &words) {
+Vocabulary::operator+=(const std::pair<const char *, const char *> &words) {
   if (words.first == nullptr || words.second == nullptr)
     throw invalid_argument("Null C-string");
 

@@ -34,9 +34,6 @@ jobs:
           sudo apt-get install -y doxygen graphviz
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
-          token: ${{ secrets.PAGES_TOKEN }}
 
       - name: Generate documentation
         run: doxygen Doxyfile

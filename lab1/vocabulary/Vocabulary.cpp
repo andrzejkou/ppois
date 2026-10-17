@@ -1,13 +1,15 @@
 #include "Vocabulary.h"
+#include "Node.h"
 #include <fstream>
 #include <stdexcept>
 #include <stdio.h>
 #include <string>
 #include <utility>
 using namespace std;
-Vocabulary::Vocabulary() { root = NULL; }
-Vocabulary::Tree *Vocabulary::searchRoot(const string &word) {
-  Tree *current = root;
+Vocabulary::Vocabulary() = default;
+Tree::Tree() : root(nullptr) {}
+Node *Tree::searchRoot(const string &word) {
+  Node *current = root;
 
   while (current != nullptr) {
     if (word == current->eng)
@@ -21,16 +23,16 @@ Vocabulary::Tree *Vocabulary::searchRoot(const string &word) {
 
   return nullptr;
 }
-int Vocabulary::AddNode(const string &eng, const string &rus) {
+int Tree::AddNode(const string &eng, const string &rus) {
   if (eng.empty())
     return -1;
 
   if (root == nullptr) {
-    root = new Tree{eng, rus, nullptr, nullptr};
+    root = new Node{eng, rus};
     return 0;
   }
 
-  Tree *current = root;
+  Node *current = root;
 
   while (true) {
     if (eng == current->eng)
@@ -38,14 +40,14 @@ int Vocabulary::AddNode(const string &eng, const string &rus) {
 
     if (eng < current->eng) {
       if (current->left == nullptr) {
-        current->left = new Tree{eng, rus, nullptr, nullptr};
+        current->left = new Node{eng, rus};
         return 0;
       }
 
       current = current->left;
     } else {
       if (current->right == nullptr) {
-        current->right = new Tree{eng, rus, nullptr, nullptr};
+        current->right = new Node{eng, rus};
         return 0;
       }
 
@@ -55,7 +57,7 @@ int Vocabulary::AddNode(const string &eng, const string &rus) {
 }
 // добавление нового слова
 Vocabulary &Vocabulary::operator+=(const pair<string, string> &words) {
-  AddNode(words.first, words.second);
+  tree.AddNode(words.first, words.second);
   return *this;
 }
 
@@ -67,48 +69,47 @@ Vocabulary::operator+=(const pair<const char *, const char *> &words) {
   return *this += pair<string, string>{words.first, words.second};
 }
 string &Vocabulary::operator[](const string &engEx) {
-  Tree *searchNode = searchRoot(engEx);
+  Node *searchNode = tree.searchRoot(engEx);
   if (searchNode == nullptr)
     throw out_of_range("Word not found: " + engEx);
   return searchNode->rus;
 }
-Vocabulary::Tree *Vocabulary::detachMinimum(Tree *&subtree) {
+Node *Tree::detachMinimum(Node *&subtree) {
   if (subtree->left == nullptr) {
-    Tree *minimum = subtree;
+    Node *minimum = subtree;
     subtree = subtree->right;
     minimum->right = nullptr;
     return minimum;
   }
 
-  return detachMinimum(subtree->left);
+  return Tree::detachMinimum(subtree->left);
 }
-Vocabulary::Tree *Vocabulary::removeNode(Tree *node, const string &word,
-                                         bool &removed) {
+Node *Tree::removeNode(Node *node, const string &word, bool &removed) {
   if (node == nullptr)
     return nullptr;
 
   if (word < node->eng) {
-    node->left = removeNode(node->left, word, removed);
+    node->left = Tree::removeNode(node->left, word, removed);
   } else if (word > node->eng) {
-    node->right = removeNode(node->right, word, removed);
+    node->right = Tree::removeNode(node->right, word, removed);
   } else {
     removed = true;
 
     if (node->left == nullptr) {
-      Tree *right = node->right;
+      Node *right = node->right;
       delete node;
       return right;
     }
 
     if (node->right == nullptr) {
-      Tree *left = node->left;
+      Node *left = node->left;
       delete node;
       return left;
     }
 
-    Tree *left = node->left;
-    Tree *right = node->right;
-    Tree *successor = detachMinimum(right);
+    Node *left = node->left;
+    Node *right = node->right;
+    Node *successor = Tree::detachMinimum(right);
 
     successor->left = left;
     successor->right = right;
@@ -122,19 +123,19 @@ Vocabulary::Tree *Vocabulary::removeNode(Tree *node, const string &word,
 
 Vocabulary &Vocabulary::operator-=(const string &word) {
   bool removed = false;
-  root = removeNode(root, word, removed);
+  tree.root = tree.removeNode(tree.root, word, removed);
   return *this;
 }
 
-size_t Vocabulary::countNodes(const Tree *node) {
+size_t Tree::countNodes(const Node *node) {
   if (node == nullptr)
     return 0;
 
   return 1 + countNodes(node->left) + countNodes(node->right);
 }
-size_t Vocabulary::size() const { return countNodes(root); }
+size_t Vocabulary::size() const { return Tree::countNodes(tree.root); }
 
-void Vocabulary::destroyTree(Tree *node) {
+void Tree::destroyTree(Node *node) {
   if (node == nullptr)
     return;
 
@@ -142,38 +143,46 @@ void Vocabulary::destroyTree(Tree *node) {
   destroyTree(node->right);
   delete node;
 }
-
-Vocabulary::Tree *Vocabulary::cloneTree(const Tree *node) {
+Tree::~Tree() { destroyTree(root); }
+Node *Tree::cloneTree(const Node *node) {
   if (node == nullptr)
     return nullptr;
 
-  Tree *copy = new Tree{node->eng, node->rus, nullptr, nullptr};
+  Node *copy = new Node{node->eng, node->rus};
 
   try {
     copy->left = cloneTree(node->left);
     copy->right = cloneTree(node->right);
   } catch (...) {
-    destroyTree(copy);
+    Tree::destroyTree(copy);
     throw;
   }
 
   return copy;
 }
 
-Vocabulary::Vocabulary(const Vocabulary &other) : root(cloneTree(other.root)) {}
-
-Vocabulary &Vocabulary::operator=(const Vocabulary &other) {
+Vocabulary::Vocabulary(const Vocabulary &other) : tree(other.tree) {}
+Tree::Tree(const Tree &other) : root(cloneTree(other.root)) {}
+Tree &Tree::operator=(const Tree &other) {
   if (this == &other)
     return *this;
 
-  Tree *copiedRoot = cloneTree(other.root);
+  Node *copiedRoot = cloneTree(other.root);
+
   destroyTree(root);
   root = copiedRoot;
 
   return *this;
 }
+Vocabulary &Vocabulary::operator=(const Vocabulary &other) {
+  if (this == &other)
+    return *this;
 
-Vocabulary::~Vocabulary() { destroyTree(root); }
+  tree = other.tree;
+
+  return *this;
+}
+Vocabulary::~Vocabulary() = default;
 
 void Vocabulary::loadFromFile(const string &filename) {
   ifstream file(filename);
@@ -204,7 +213,7 @@ void Vocabulary::loadFromFile(const string &filename) {
     string english = line.substr(0, separator);
     string russian = line.substr(separator + 1);
 
-    if (loaded.AddNode(english, russian) != 0) {
+    if (loaded.tree.AddNode(english, russian) != 0) {
       throw runtime_error("Duplicate word at line: " + to_string(lineNumber));
     }
   }
@@ -212,5 +221,5 @@ void Vocabulary::loadFromFile(const string &filename) {
   if (file.bad())
     throw runtime_error("Error while reading: " + filename);
 
-  swap(root, loaded.root);
+  swap(tree.root, loaded.tree.root);
 }

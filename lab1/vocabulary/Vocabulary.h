@@ -1,29 +1,13 @@
 
 #pragma once
 
+#include "Tree.h"
 #include <cstddef>
 #include <string>
 #include <utility>
-
 class Vocabulary {
 private:
-  struct Tree {
-    std::string eng;
-    std::string rus;
-    Tree *left;
-    Tree *right;
-  };
-
-  Tree *root;
-
-  Tree *searchRoot(const std::string &wordEx);
-  int AddNode(const std::string &eng, const std::string &rus);
-
-  static void destroyTree(Tree *node);
-  static Tree *cloneTree(const Tree *node);
-  static Tree *detachMinimum(Tree *&subtree);
-  static Tree *removeNode(Tree *node, const std::string &word, bool &removed);
-  static std::size_t countNodes(const Tree *node);
+  Tree tree;
 
 public:
   Vocabulary();

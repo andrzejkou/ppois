@@ -62,7 +62,7 @@ class DeanOffice {
 public:
   explicit DeanOffice(std::string name);
   void addGroup(const Group &group);
-  bool enrollStudent(const Student &student);
+  bool enrollStudent(const std::string &groupCode, const Student &student);
   bool expelStudent(const std::string &studentId);
   bool removeFromGroup(const std::string &groupCode,
                        const std::string &studentId);

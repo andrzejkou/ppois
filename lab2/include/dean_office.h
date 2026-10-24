@@ -76,3 +76,11 @@ private:
   std::unordered_map<std::string, Student> students_;
   std::vector<Group> groups_;
 };
+
+class Contract {
+public:
+  void makeContract();
+
+private:
+  std::vector<Company> company;
+};

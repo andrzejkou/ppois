@@ -1,6 +1,6 @@
 #pragma once
 
-#include "people.h"
+class Student;
 #include <string>
 #include <utility>
 #include <vector>

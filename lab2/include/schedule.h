@@ -105,7 +105,7 @@ private:
 class Schedule {
 public:
   explicit Schedule(std::string groupCode);
-  void addLesson(const Lesson &lesson);
+  void addLesson(std::unique_ptr<Lesson> lessons);
   std::size_t lessonCount() const;
   const std::string &groupCode() const;
 

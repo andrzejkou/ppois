@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Box.h"
 #include "people.h"
 #include "specialties.h"
 #include <string>
@@ -61,6 +62,8 @@ private:
 class DeanOffice {
 public:
   explicit DeanOffice(std::string name);
+  void giveScholarship(std::string studentId);
+  void manipulateScholarship();
   void addGroup(const Group &group);
   bool enrollStudent(const std::string &groupCode, const Student &student);
   bool expelStudent(const std::string &studentId);

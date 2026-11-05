@@ -64,7 +64,7 @@ private:
   std::string workTitle_;
   int score_{-1};
 };
-class ScientificWork() {};
+class ScientificWork : public AcademicWork {};
 class Evaluation {
 public:
   Evaluation(std::string evaluatorId, std::string comment);

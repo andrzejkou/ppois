@@ -10,6 +10,8 @@ Student::Student(Student &&other) noexcept
   other.academicDebtCount_ = 0;
 }
 
+double Student::averageMarkCheck() { return averageMark; }
+
 const std::string &Student::studentId() const { return studentId_; }
 
 int Student::year() const { return year_; }

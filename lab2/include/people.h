@@ -1,8 +1,11 @@
 #pragma once
+#include "accounting_types.h"
 #include "specialties.h"
-
+#include <memory>
+#include <optional>
 #include <string>
 #include <vector>
+
 class People {
 public:
   People(std::string fullName, int age);
@@ -13,7 +16,7 @@ public:
   int age() const;
 
   virtual std::string role() const;
-  void changeName(const std::string &newName);
+  void changeName(std::string newName);
 
 protected:
   std::string fullName_;
@@ -26,16 +29,25 @@ public:
   Student(Student &&other) noexcept;
   const std::string &studentId() const;
   int year() const;
+  double averageMarkCheck();
+  void awardScholarship();
+  void removeScholarship();
   void printInfo() const override;
   void promoteToNextYear();
   void setAcademicDebtCount(int count);
   int academicDebtCount() const;
   bool isEligibleForScholarship() const;
   std::string role() const override;
+  int subGroupNum() const;
+  void setSubGroup(int subGroupNumEx);
 
 private:
   std::string studentId_;
+  int subGroupNum_;
   int year_;
+  double averageMark;
+  std::optional<Scholarship> scholarship_;
+  std::optional<Benefit> benefit_;
   int academicDebtCount_{0};
 };
 
@@ -93,6 +105,7 @@ public:
           std::string groupCode);
   const Group &groupCur() const;
   void assignGroup(Group groupToCur);
+  bool transferToSubGroup(const std::string &studentId, int subGroupNumEx);
 
 private:
   Group groupCur_;
@@ -104,5 +117,5 @@ public:
 private:
   std::string typeOfContract;
   std::string name_;
-  std::vector<Company> integrCompanies;
+  std::vector<std::shared_ptr<Company>> integrCompanies;
 };

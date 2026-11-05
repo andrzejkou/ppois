@@ -35,7 +35,7 @@ public:
   Lesson(Subject subject, std::string teacherId, std::string day, int startHour,
          int durationHours, Classroom getClass());
   virtual ~Lesson() = default;
-  virtual std::string format() const;
+  virtual std::string format() const = 0;
   const Subject &subject() const;
   const std::string &teacherId() const;
   const std::string &day() const;
@@ -66,6 +66,7 @@ public:
   Exam(Subject subject, std::string teacherId, std::string day, int startHour,
        int durationHours, std::string examType);
   const std::string &examType() const;
+  std::string format() const override;
 
 private:
   std::string examType_;
@@ -73,21 +74,25 @@ private:
 
 class CourseProjCheck : public Lesson {
 public:
-  CourseProjCheck();
+  using Lesson::Lesson;
+  std::string format() const override;
 };
 
 class Consultation : public Lesson {
 public:
-  Consultation(Exam consExam);
+  using Lesson::Lesson;
+  Consultation(Subject subject, std::string teacherId, std::string day,
+               int startHour, int durationHours, Exam consExam);
+  std::string format() const override;
+  const Exam consExam();
 
 private:
-  std::string teacherId_;
-  std::string day_;
-  int startHour_;
-  int durationHours_;
-  const Exam consExam;
+  const Exam consExam_;
 };
 
+class Perezdacha : public Lesson {
+private:
+};
 class Semester {
 public:
   Semester(int number, int year);

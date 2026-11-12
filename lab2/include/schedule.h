@@ -23,7 +23,6 @@ public:
   const std::string &roomNumber() const;
   int capacity() const;
   bool canFit(int peopleCount) const;
-  const Classroom &getClass();
 
 private:
   std::string roomNumber_;
@@ -33,9 +32,9 @@ private:
 class Lesson {
 public:
   Lesson(Subject subject, std::string teacherId, std::string day, int startHour,
-         int durationHours, Classroom getClass());
+         int durationHours, Classroom classroom);
   virtual ~Lesson() = default;
-  virtual std::string format() const = 0;
+  virtual void info() const = 0;
   const Subject &subject() const;
   const std::string &teacherId() const;
   const std::string &day() const;
@@ -48,25 +47,29 @@ private:
   std::string day_;
   int startHour_;
   int durationHours_;
-  int grade;
+  Classroom classroom_;
+
+protected:
+  void baseInfo() const;
 };
 
 class Lecture : public Lesson {
 public:
   using Lesson::Lesson;
-  std::string format() const override;
+  void info() const override;
 };
 class Seminar : public Lesson {
 public:
   using Lesson::Lesson;
-  std::string format() const override;
+  void info() const override;
 };
 class Exam : public Lesson {
 public:
   Exam(Subject subject, std::string teacherId, std::string day, int startHour,
-       int durationHours, std::string examType);
+       int durationHours, Classroom classroom, std::string examType);
   const std::string &examType() const;
-  std::string format() const override;
+  void info() const override;
+  void examTypeSet(std::string &examTypeEx);
 
 private:
   std::string examType_;
@@ -75,23 +78,32 @@ private:
 class CourseProjCheck : public Lesson {
 public:
   using Lesson::Lesson;
-  std::string format() const override;
+  void info() const override;
 };
 
 class Consultation : public Lesson {
 public:
-  using Lesson::Lesson;
   Consultation(Subject subject, std::string teacherId, std::string day,
-               int startHour, int durationHours, Exam consExam);
-  std::string format() const override;
-  const Exam consExam();
+               int startHour, int durationHours, Classroom classroom,
+               Exam consExam);
+  void info() const override;
+
+  const Exam consExam() const;
 
 private:
-  const Exam consExam_;
+  Exam consExam_;
 };
 
-class Perezdacha : public Lesson {
+class Perezdacha : public Exam {
+public:
+  Perezdacha(Subject subject, std::string teacherId, std::string day,
+             int startHour, int durationHours, Classroom classroom,
+             std::string examType, int number);
+  void info() const override;
+  int number();
+
 private:
+  int number_;
 };
 class Semester {
 public:
@@ -107,14 +119,36 @@ private:
   std::vector<Subject> subjects_;
 };
 
+class Day {
+public:
+  const std::string &name() const;
+
+private:
+  std::string name_;
+  std::string date;
+  std::vector<std::unique_ptr<Lesson>> lessons_;
+};
+
+class Week {
+public:
+  Week(int number);
+  void addDay(const Day &day);
+  int number() const;
+
+private:
+  int number_;
+  std::vector<Day> days_;
+};
+
 class Schedule {
 public:
   explicit Schedule(std::string groupCode);
-  void addLesson(std::unique_ptr<Lesson> lessons);
+  void addWeek(const Week &weekEx);
+  void changeSchedule();
   std::size_t lessonCount() const;
   const std::string &groupCode() const;
 
 private:
   std::string groupCode_;
-  std::vector<std::unique_ptr<Lesson>> lessons_;
+  std::vector<Week> weeks_;
 };

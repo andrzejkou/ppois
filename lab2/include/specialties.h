@@ -4,7 +4,7 @@ class Student;
 #include <string>
 #include <utility>
 #include <vector>
-
+#include <memory>
 class Curriculum {
 public:
   Curriculum(std::string code, int totalHours);
@@ -58,6 +58,7 @@ public:
   bool operator-=(const std::string &studentId);
   bool operator[](const std::string &studentId) const;
   void operator+=(Student &&student);
+  void operator+=(const std::shared_ptr<Student> &student);
   std::size_t size() const;
   bool changeStudentSubGroup(
     const std::string& studentId,
@@ -65,11 +66,11 @@ public:
   std::size_t availableSeats() const;
   const std::string &code() const;
   const std::string &specialtyCode() const;
-  const std::vector<Student> &students() const;
+  const std::vector<std::shared_ptr<Student>> &students() const;
 
 private:
   std::string code_;
   std::string specialtyCode_;
   std::size_t capacity_;
-  std::vector<Student> students_;
+  std::vector<std::shared_ptr <Student>> students_;
 };

@@ -20,15 +20,44 @@ void Group::operator+=(const Student &student) {
     throw GroupCapacityException("Group has no free seats");
   }
 
-  students_.push_back(student);
+  students_.push_back(std::make_shared<Student>(student));
 }
+
+void Group::operator+=(
+    const std::shared_ptr<Student>& student) {
+
+    if (!student) {
+        throw std::invalid_argument("Student pointer is null");
+    }
+
+    if ((*this)[student->studentId()]) {
+        throw DuplicateStudentException(
+            "Student already belongs to this group");
+    }
+
+    if (students_.size() >= capacity_) {
+        throw GroupCapacityException("Group has no free seats");
+    }
+
+    students_.push_back(student);
+}
+
 void Group::operator+=(Student &&student) {
-  students_.push_back(std::move(student));
+    if ((*this)[student.studentId()]) {
+        throw DuplicateStudentException(
+            "Student already belongs to this group");
+    }
+
+    if (students_.size() >= capacity_) {
+        throw GroupCapacityException("Group has no free seats");
+    }
+
+    students_.push_back(std::make_shared<Student>(std::move(student)));
 }
 bool Group::operator-=(const std::string &studentId) {
   auto curr = std::find_if(
       students_.begin(), students_.end(),
-      [&](const Student &student) { return student.studentId() == studentId; });
+      [&](const std::shared_ptr<Student> &student) { return student->studentId() == studentId; });
 
   if (curr == students_.end()) {
     return false;
@@ -42,7 +71,7 @@ bool Group::operator[](const std::string &studentId) const {
 
   for (const auto &student : students_) {
 
-    if (student.studentId() == studentId) {
+    if (student->studentId() == studentId) {
       return true;
     }
   }
@@ -57,14 +86,14 @@ bool Group::changeStudentSubGroup(
     auto it = std::find_if(
         students_.begin(),
         students_.end(),
-        [&](const Student& student) {
-            return student.studentId() == studentId;
+        [&](const std::shared_ptr<Student>& student) {
+            return student->studentId() == studentId;
         });
 
     if (it == students_.end())
         return false;
 
-    it->setSubGroup(subGroupNum);
+    (*it)->setSubGroup(subGroupNum);
     return true;
 }
 
@@ -78,4 +107,4 @@ const std::string &Group::code() const { return code_; }
 
 const std::string &Group::specialtyCode() const { return specialtyCode_; }
 
-const std::vector<Student> &Group::students() const { return students_; }
+const std::vector<std::shared_ptr<Student>> &Group::students() const { return students_; }

@@ -1,6 +1,9 @@
 #include "people.h"
 #include <iostream>
 #include <string>
+Student::Student(std::string fullName, int age, std::string studentId, int year)
+    : People(std::move(fullName), age), studentId_(std::move(studentId)),
+      year_(year), subGroupNum_(0), averageMark(0.0), academicDebtCount_(0) {}
 
 Student::Student(Student &&other) noexcept
     : People(std::move(other)), studentId_(std::move(other.studentId_)),
@@ -25,6 +28,25 @@ void Student::printInfo() const {
             << "Academic debts: " << academicDebtCount_ << '\n'
             << "Eligible for scholarship: "
             << (isEligibleForScholarship() ? "Yes" : "No") << '\n';
+}
+void Student::removeScholarship() { scholarship_.reset(); }
+void Student::awardScholarship() {
+  int amount = 0;
+  double average = averageMarkCheck();
+  if (average >= 9) {
+    amount = 2000;
+  } else if (average >= 8) {
+    amount = 1500;
+  } else if (average >= 6) {
+    amount = 1200;
+  } else {
+    amount = 1000;
+  }
+  if (scholarship_) {
+
+    scholarship_->changeAmount(amount);
+  } else
+    scholarship_.emplace("Академическая", amount);
 }
 
 std::string Student::role() const { return "student"; }

@@ -2,6 +2,18 @@
 
 #include <string>
 #include <vector>
+#include "schedule.h"
+class Mark{
+public:
+  Mark(int value, Subject subject, Day day);
+  const Day &day()const ;
+  const Subject &subject() const;
+   int value() const;
+private:
+  int value_;
+  Subject subject_;
+  Day day_;
+};
 
 class AcademicWork {
 public:

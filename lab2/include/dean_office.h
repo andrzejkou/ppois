@@ -76,7 +76,7 @@ public:
   const std::string &name() const;
 
 private:
-  std::unordered_map<std::string, Student> students_;
+  std::unordered_map<std::string, std::shared_ptr<Student>> students_;
   std::vector<Group> groups_;
 };
 

@@ -9,45 +9,20 @@ void DeanOffice::addGroup(const Group &group) {
     groups_.push_back(group);
   }
 }
-void Student::removeScholarship() { scholarship_.reset(); }
-void Student::awardScholarship() {
-  int amount = 0;
-  double average = averageMarkCheck();
-  if (average >= 9) {
-    amount = 2000;
-  } else if (average >= 8) {
-    amount = 1500;
-  } else if (average >= 6) {
-    amount = 1200;
-  } else {
-    amount = 1000;
-  }
-  if (scholarship_) {
-
-    scholarship_->changeAmount(amount);
-  } else
-    scholarship_.emplace("Академическая", amount);
-}
 
 void DeanOffice::manipulateScholarship() {
   actionForMatches(
       students_,
-      [](std::pair<std::string, Student> &student) {
-        return student.second.isEligibleForScholarship();
-      },
-      [](std::pair<std::string, Student> &student) {
-        return student.second.awardScholarship();
-      },
-      [](std::pair<std::string, Student> &student) {
-        return student.second.removeScholarship();
-      });
+      [](auto &student) { return student.second.isEligibleForScholarship(); },
+      [](auto &student) { return student.second.awardScholarship(); },
+      [](auto &student) { return student.second.removeScholarship(); });
 }
 
 bool DeanOffice::expelStudent(const std::string &studentId) {
   bool removed = false;
   for (auto &group : groups_) {
-    if (group[studentId]) {
-      removed = group -= studentId;
+    if (group -= studentId) {
+      removed = true;
     }
   }
 
@@ -94,15 +69,16 @@ bool DeanOffice::transferStudent(const std::string &fromGroup,
     return false;
   }
 
-  auto it = std::find_if(
-      source->students().begin(), source->students().end(),
-      [&](const Student &student) { return student.studentId() == studentId; });
+  auto it =
+      findIn(source->students(), [&](const std::shared_ptr<Student> &student) {
+        return student->studentId() == studentId;
+      });
 
-  if (it == source->students().end()) {
+  if (it == nullptr) {
     return false;
   }
 
-  (*target) += (std::move(*it));
+  (*target) += (*it);
   (*source) -= studentId;
 
   return true;

@@ -1,4 +1,4 @@
-#include "people.h"
+#include "People.h"
 #include <iostream>
 #include <stdexcept>
 #include <utility>

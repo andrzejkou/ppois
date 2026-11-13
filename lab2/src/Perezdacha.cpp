@@ -1,4 +1,4 @@
-#include "schedule.h"
+#include "Perezdacha.h"
 #include <iostream>
 
 Perezdacha::Perezdacha(Subject subject, std::string teacherId, std::string day,

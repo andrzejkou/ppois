@@ -1,5 +1,5 @@
 
-#include "people.h"
+#include "Secretary.h"
 
 #include <iostream>
 #include <stdexcept>

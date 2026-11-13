@@ -1,7 +1,8 @@
-#include "schedule.h"
+#include "CourseProjCheck.h"
+
 #include <iostream>
 
 void CourseProjCheck::info() const {
-  std::cout << "[ЗАЩИТА КУРСОВОГО ПРОЕКТА]\n";
+  std::cout << "=== Проверка курсового проекта ===\n";
   baseInfo();
 }

@@ -1,7 +1,8 @@
-#include "schedule.h"
+#include "Lecture.h"
+
 #include <iostream>
 
 void Lecture::info() const {
-  std::cout << "[ЛЕКЦИЯ]\n";
+  std::cout << "=== Лекция ===\n";
   baseInfo();
 }

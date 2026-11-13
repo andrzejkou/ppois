@@ -1,6 +1,6 @@
 
-#include "dean_office.h"
-#include "people.h"
+#include "Dean.h"
+#include "AcademicOrder.h"
 
 #include <iostream>
 #include <utility>

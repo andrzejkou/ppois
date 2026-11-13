@@ -1,21 +1,41 @@
+#include "DeanOffice.h"
 #include "Box.h"
-#include "accounting_types.h"
-#include "dean_office.h"
-#include "people.h"
-#include "specialties.h"
+
+#include "Group.h"
+#include "Student.h"
 #include <algorithm>
+#include <stdexcept>
+#include <utility>
+DeanOffice::DeanOffice(std::string name) : name_(std::move(name)) {
+  if (name_.empty()) {
+    throw std::invalid_argument("Dean office name cannot be empty");
+  }
+}
+void DeanOffice::giveScholarship(std::string studentId) {
+  auto it = students_.find(studentId);
+
+  if (it == students_.end()) {
+    throw std::invalid_argument("Student not found");
+  }
+
+  if (!it->second->isEligibleForScholarship()) {
+    throw std::invalid_argument("Student is not eligible for scholarship");
+  }
+
+  it->second->awardScholarship();
+}
+
 void DeanOffice::addGroup(const Group &group) {
   if (!findGroup(group.code())) {
     groups_.push_back(group);
   }
 }
-
 void DeanOffice::manipulateScholarship() {
   actionForMatches(
       students_,
-      [](auto &student) { return student.second.isEligibleForScholarship(); },
-      [](auto &student) { return student.second.awardScholarship(); },
-      [](auto &student) { return student.second.removeScholarship(); });
+      [](auto &student) { return student.second->isEligibleForScholarship(); },
+      [](auto &student) { return student.second->awardScholarship(); },
+      [](auto &student) { return student.second->removeScholarship(); });
 }
 
 bool DeanOffice::expelStudent(const std::string &studentId) {
@@ -26,11 +46,18 @@ bool DeanOffice::expelStudent(const std::string &studentId) {
     }
   }
 
+  if (removed) {
+    students_.erase(studentId);
+  }
+
   return removed;
 }
 
 bool DeanOffice::enrollStudent(const std::string &groupCode,
                                const Student &student) {
+  if (students_.find(student.studentId()) != students_.end()) {
+    return false;
+  }
 
   for (auto &group : groups_) {
     if (group.code() == groupCode) {
@@ -38,13 +65,32 @@ bool DeanOffice::enrollStudent(const std::string &groupCode,
         return false;
       }
 
-      group += student;
+      auto studentPtr = std::make_shared<Student>(student);
+
+      group += studentPtr;
+      students_.emplace(student.studentId(), studentPtr);
+
       return true;
     }
   }
+
   return false;
 }
+bool DeanOffice::removeFromGroup(const std::string &groupCode,
+                                 const std::string &studentId) {
+  for (auto &group : groups_) {
+    if (group.code() == groupCode) {
+      if (!(group -= studentId)) {
+        return false;
+      }
 
+      return true;
+    }
+  }
+
+  return false;
+}
+const std::string &DeanOffice::name() const { return name_; }
 bool DeanOffice::transferStudent(const std::string &fromGroup,
                                  const std::string &toGroup,
                                  const std::string &studentId) {

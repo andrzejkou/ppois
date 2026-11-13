@@ -1,7 +1,8 @@
-#include "schedule.h"
+#include "Seminar.h"
+
 #include <iostream>
 
 void Seminar::info() const {
-  std::cout << "[СЕМИНАР]\n";
+  std::cout << "=== Семинар ===\n";
   baseInfo();
 }

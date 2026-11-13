@@ -1,15 +1,24 @@
-#include "people.h"
+#include "Student.h"
 #include <iostream>
+#include <stdexcept>
 #include <string>
+#include <utility>
 Student::Student(std::string fullName, int age, std::string studentId, int year)
     : People(std::move(fullName), age), studentId_(std::move(studentId)),
-      year_(year), subGroupNum_(0), averageMark(0.0), academicDebtCount_(0) {}
+      subGroupNum_(0), year_(year), averageMark(0.0), academicDebtCount_(0) {}
 
 Student::Student(Student &&other) noexcept
     : People(std::move(other)), studentId_(std::move(other.studentId_)),
-      year_(other.year_), academicDebtCount_(other.academicDebtCount_) {
-  other.year_ = 0;
+      subGroupNum_(other.subGroupNum_), year_(other.year_),
+      averageMark(other.averageMark),
+      scholarship_(std::move(other.scholarship_)),
+      benefit_(std::move(other.benefit_)), marks_(std::move(other.marks_)),
+      academicDebtCount_(other.academicDebtCount_) {
+
   other.studentId_.clear();
+  other.subGroupNum_ = 0;
+  other.year_ = 0;
+  other.averageMark = 0.0;
   other.academicDebtCount_ = 0;
 }
 
@@ -66,3 +75,30 @@ bool Student::isEligibleForScholarship() const {
     return false;
   return true;
 }
+void Student::averageMarkMake() {
+  if (marks_.empty()) {
+    averageMark = 0.0;
+    return;
+  }
+
+  int total = 0;
+
+  for (const Mark &mark : marks_) {
+    total += mark.value();
+  }
+
+  averageMark = static_cast<double>(total) / marks_.size();
+}
+
+void Student::addMark(const Mark &mark) {
+  marks_.push_back(mark);
+  averageMarkMake();
+}
+void Student::setSubGroup(int subGroupNumEx) {
+  if (subGroupNumEx < 0) {
+    throw std::invalid_argument("Subgroup number cannot be negative");
+  }
+
+  subGroupNum_ = subGroupNumEx;
+}
+int Student::subGroupNum() const { return subGroupNum_; }

@@ -1,7 +1,7 @@
-
+#include "Group.h"
+#include "Student.h"
 #include "exceptions.h"
-#include "people.h"
-#include "specialties.h"
+
 #include <string>
 
 #include <algorithm>
@@ -23,41 +23,39 @@ void Group::operator+=(const Student &student) {
   students_.push_back(std::make_shared<Student>(student));
 }
 
-void Group::operator+=(
-    const std::shared_ptr<Student>& student) {
+void Group::operator+=(const std::shared_ptr<Student> &student) {
 
-    if (!student) {
-        throw std::invalid_argument("Student pointer is null");
-    }
+  if (!student) {
+    throw std::invalid_argument("Student pointer is null");
+  }
 
-    if ((*this)[student->studentId()]) {
-        throw DuplicateStudentException(
-            "Student already belongs to this group");
-    }
+  if ((*this)[student->studentId()]) {
+    throw DuplicateStudentException("Student already belongs to this group");
+  }
 
-    if (students_.size() >= capacity_) {
-        throw GroupCapacityException("Group has no free seats");
-    }
+  if (students_.size() >= capacity_) {
+    throw GroupCapacityException("Group has no free seats");
+  }
 
-    students_.push_back(student);
+  students_.push_back(student);
 }
 
 void Group::operator+=(Student &&student) {
-    if ((*this)[student.studentId()]) {
-        throw DuplicateStudentException(
-            "Student already belongs to this group");
-    }
+  if ((*this)[student.studentId()]) {
+    throw DuplicateStudentException("Student already belongs to this group");
+  }
 
-    if (students_.size() >= capacity_) {
-        throw GroupCapacityException("Group has no free seats");
-    }
+  if (students_.size() >= capacity_) {
+    throw GroupCapacityException("Group has no free seats");
+  }
 
-    students_.push_back(std::make_shared<Student>(std::move(student)));
+  students_.push_back(std::make_shared<Student>(std::move(student)));
 }
 bool Group::operator-=(const std::string &studentId) {
-  auto curr = std::find_if(
-      students_.begin(), students_.end(),
-      [&](const std::shared_ptr<Student> &student) { return student->studentId() == studentId; });
+  auto curr = std::find_if(students_.begin(), students_.end(),
+                           [&](const std::shared_ptr<Student> &student) {
+                             return student->studentId() == studentId;
+                           });
 
   if (curr == students_.end()) {
     return false;
@@ -79,22 +77,19 @@ bool Group::operator[](const std::string &studentId) const {
   return false;
 }
 
-bool Group::changeStudentSubGroup(
-    const std::string& studentId,
-    int subGroupNum) {
+bool Group::changeStudentSubGroup(const std::string &studentId,
+                                  int subGroupNum) {
 
-    auto it = std::find_if(
-        students_.begin(),
-        students_.end(),
-        [&](const std::shared_ptr<Student>& student) {
-            return student->studentId() == studentId;
-        });
+  auto it = std::find_if(students_.begin(), students_.end(),
+                         [&](const std::shared_ptr<Student> &student) {
+                           return student->studentId() == studentId;
+                         });
 
-    if (it == students_.end())
-        return false;
+  if (it == students_.end())
+    return false;
 
-    (*it)->setSubGroup(subGroupNum);
-    return true;
+  (*it)->setSubGroup(subGroupNum);
+  return true;
 }
 
 std::size_t Group::size() const { return students_.size(); }
@@ -107,4 +102,6 @@ const std::string &Group::code() const { return code_; }
 
 const std::string &Group::specialtyCode() const { return specialtyCode_; }
 
-const std::vector<std::shared_ptr<Student>> &Group::students() const { return students_; }
+const std::vector<std::shared_ptr<Student>> &Group::students() const {
+  return students_;
+}

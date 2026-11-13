@@ -1,4 +1,5 @@
-#include "schedule.h"
+#include "Consultation.h"
+
 #include <iostream>
 #include <utility>
 
@@ -9,10 +10,10 @@ Consultation::Consultation(Subject subject, std::string teacherId,
              startHour, durationHours, std::move(classroom)),
       consExam_(std::move(consExam)) {}
 
-const Exam Consultation::consExam() const { return consExam_; }
+const Exam &Consultation::consExam() const { return consExam_; }
 
 void Consultation::info() const {
-  std::cout << "[КОНСУЛЬТАЦИЯ]\n";
+  std::cout << "=== Консультация ===\n";
   baseInfo();
   std::cout << "Экзамен: " << consExam_.examType() << '\n';
 }

@@ -1,5 +1,5 @@
 
-#include "people.h"
+#include "Worker.h"
 
 #include <iostream>
 #include <stdexcept>

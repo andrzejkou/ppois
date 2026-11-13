@@ -1,4 +1,4 @@
-#include "people.h"
+#include "Curator.h"
 
 #include <iostream>
 #include <stdexcept>

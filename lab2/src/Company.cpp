@@ -1,4 +1,4 @@
-#include "people.h"
+#include "Company.h"
 
 #include <algorithm>
 #include <iostream>

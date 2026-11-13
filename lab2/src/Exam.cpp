@@ -1,18 +1,33 @@
-#include "Box.h"
-#include "schedule.h"
+#include "Exam.h"
+
 #include <iostream>
+#include <stdexcept>
+#include <utility>
+
 Exam::Exam(Subject subject, std::string teacherId, std::string day,
            int startHour, int durationHours, Classroom classroom,
            std::string examType)
-    : Lesson(subject, teacherId, day, startHour, durationHours, classroom),
-      examType_(examType) {}
+    : Lesson(std::move(subject), std::move(teacherId), std::move(day),
+             startHour, durationHours, std::move(classroom)),
+      examType_(std::move(examType)) {
+
+  if (examType_.empty()) {
+    throw std::invalid_argument("Exam type cannot be empty");
+  }
+}
+
+const std::string &Exam::examType() const { return examType_; }
 
 void Exam::info() const {
-  std::cout << "[ЭКЗАМЕН]\n";
+  std::cout << "=== Экзамен ===\n";
   baseInfo();
   std::cout << "Тип экзамена: " << examType_ << '\n';
 }
+
 void Exam::examTypeSet(std::string &examTypeEx) {
-  updateField(examType_, examTypeEx);
+  if (examTypeEx.empty()) {
+    throw std::invalid_argument("Exam type cannot be empty");
+  }
+
+  examType_ = std::move(examTypeEx);
 }
-const std::string &Exam::examType() const { return examType_; }

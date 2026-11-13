@@ -1,4 +1,4 @@
-#include "people.h"
+#include "Teacher.h"
 
 #include <algorithm>
 #include <iostream>

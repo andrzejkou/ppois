@@ -24,7 +24,11 @@ public:
   const std::string &studentId() const;
   int year() const;
   void averageMarkMake();
-  double averageMarkCheck();
+  double averageMarkCheck() const;
+  bool hasMarkForSubject(const std::string &subjectCode) const;
+  double averageForSubject(const std::string &subjectCode) const;
+  std::size_t removeMarksForSubject(const std::string &subjectCode);
+  std::size_t countMarksBelow(int threshold) const;
   void awardScholarship();
   void addMark(const Mark &mark);
   void addSubmission(const Submission &submission);

@@ -42,3 +42,51 @@ std::size_t Schedule::lessonCount() const {
 }
 
 const std::string &Schedule::groupCode() const { return groupCode_; }
+
+bool Schedule::removeWeek(int weekNumber) {
+  const auto it = std::find_if(
+      weeks_.begin(), weeks_.end(), [weekNumber](const Week &week) {
+        return week.number() == weekNumber;
+      });
+  if (it == weeks_.end()) {
+    return false;
+  }
+  weeks_.erase(it);
+  return true;
+}
+
+bool Schedule::hasWeek(int weekNumber) const {
+  return std::any_of(weeks_.begin(), weeks_.end(),
+                     [weekNumber](const Week &week) {
+                       return week.number() == weekNumber;
+                     });
+}
+
+std::size_t Schedule::weekCount() const { return weeks_.size(); }
+
+std::vector<int> Schedule::weekNumbers() const {
+  std::vector<int> result;
+  result.reserve(weeks_.size());
+  for (const Week &week : weeks_) {
+    result.push_back(week.number());
+  }
+  std::sort(result.begin(), result.end());
+  return result;
+}
+
+bool Schedule::hasTeacher(const std::string &teacherId) const {
+  return std::any_of(weeks_.begin(), weeks_.end(),
+                     [&teacherId](const Week &week) {
+                       return week.hasTeacher(teacherId);
+                     });
+}
+
+bool Schedule::hasTimeConflict(int weekNumber, const std::string &dayName,
+                               int startHour, int durationHours) const {
+  const auto it = std::find_if(
+      weeks_.begin(), weeks_.end(), [weekNumber](const Week &week) {
+        return week.number() == weekNumber;
+      });
+  return it != weeks_.end() &&
+         it->hasTimeConflict(dayName, startHour, durationHours);
+}

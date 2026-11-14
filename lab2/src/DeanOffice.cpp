@@ -188,6 +188,50 @@ const Group *DeanOffice::findGroup(const std::string &groupName) const {
   });
 }
 
+Student *DeanOffice::findStudent(const std::string &studentId) {
+  const auto it = students_.find(studentId);
+  return it == students_.end() ? nullptr : it->second.get();
+}
+
+const Student *DeanOffice::findStudent(const std::string &studentId) const {
+  const auto it = students_.find(studentId);
+  return it == students_.end() ? nullptr : it->second.get();
+}
+
+bool DeanOffice::hasStudent(const std::string &studentId) const {
+  return students_.find(studentId) != students_.end();
+}
+
+std::size_t DeanOffice::groupCount() const { return groups_.size(); }
+
+bool DeanOffice::groupHasCapacity(const std::string &groupCode) const {
+  const Group *group = findGroup(groupCode);
+  return group != nullptr && group->availableSeats() > 0;
+}
+
+bool DeanOffice::removeEmptyGroup(const std::string &groupCode) {
+  const auto it = std::find_if(groups_.begin(), groups_.end(),
+      [&groupCode](const Group &group) { return group.code() == groupCode; });
+  if (it == groups_.end() || it->size() != 0) return false;
+  groups_.erase(it);
+  return true;
+}
+
+std::string DeanOffice::groupOfStudent(const std::string &studentId) const {
+  for (const auto &group : groups_)
+    if (group[studentId]) return group.code();
+  return {};
+}
+
+std::size_t DeanOffice::studentsWithAcademicDebts(const std::string &groupCode) const {
+  const Group *group = findGroup(groupCode);
+  if (!group) return 0;
+  std::size_t count = 0;
+  for (const auto &student : group->students())
+    if (student->academicDebtCount() > 0) ++count;
+  return count;
+}
+
 std::size_t DeanOffice::totalStudents() const {
   std::size_t total = 0;
   for (const auto &group : groups_) {

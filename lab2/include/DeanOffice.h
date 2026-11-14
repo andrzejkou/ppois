@@ -42,6 +42,14 @@ public:
                        const std::string &studentId);
   const Group *findGroup(const std::string &groupCode) const;
   std::size_t totalStudents() const;
+  Student *findStudent(const std::string &studentId);
+  const Student *findStudent(const std::string &studentId) const;
+  bool hasStudent(const std::string &studentId) const;
+  std::size_t groupCount() const;
+  bool groupHasCapacity(const std::string &groupCode) const;
+  bool removeEmptyGroup(const std::string &groupCode);
+  std::string groupOfStudent(const std::string &studentId) const;
+  std::size_t studentsWithAcademicDebts(const std::string &groupCode) const;
   const std::string &name() const;
 
 private:

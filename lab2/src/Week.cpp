@@ -36,3 +36,41 @@ std::size_t Week::lessonCount() const {
   return count;
 }
 int Week::number() const { return number_; }
+
+bool Week::removeDay(const std::string &date) {
+  const auto it = std::find_if(
+      days_.begin(), days_.end(), [&date](const Day &day) {
+        return day.getDate() == date;
+      });
+  if (it == days_.end()) {
+    return false;
+  }
+  days_.erase(it);
+  return true;
+}
+
+bool Week::hasDay(const std::string &date) const {
+  return std::any_of(days_.begin(), days_.end(),
+                     [&date](const Day &day) {
+                       return day.getDate() == date;
+                     });
+}
+
+std::size_t Week::dayCount() const { return days_.size(); }
+
+bool Week::hasTeacher(const std::string &teacherId) const {
+  return std::any_of(days_.begin(), days_.end(),
+                     [&teacherId](const Day &day) {
+                       return day.hasTeacher(teacherId);
+                     });
+}
+
+bool Week::hasTimeConflict(const std::string &dayName, int startHour,
+                           int durationHours) const {
+  const auto it = std::find_if(
+      days_.begin(), days_.end(), [&dayName](const Day &day) {
+        return day.name() == dayName;
+      });
+  return it != days_.end() &&
+         it->hasTimeConflict(startHour, durationHours);
+}

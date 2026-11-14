@@ -20,6 +20,14 @@ public:
     const std::string& studentId,
     int subGroupNum);
   std::size_t availableSeats() const;
+  bool hasCapacity() const;
+  bool containsStudent(const std::string &studentId) const;
+  std::shared_ptr<Student> findStudent(const std::string &studentId) const;
+  std::vector<std::shared_ptr<Student>> studentsInSubGroup(int subGroupNum) const;
+  std::size_t unassignedStudentCount() const;
+  std::size_t assignSubGroup(int subGroupNum);
+  void sortByName();
+  void sortByAverageMark();
   const std::string &code() const;
   const std::string &specialtyCode() const;
   const std::vector<std::shared_ptr<Student>> &students() const;

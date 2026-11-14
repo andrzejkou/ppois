@@ -25,7 +25,47 @@ Student::Student(Student &&other) noexcept
   other.academicDebtCount_ = 0;
 }
 
-double Student::averageMarkCheck() { return averageMark; }
+double Student::averageMarkCheck() const { return averageMark; }
+
+bool Student::hasMarkForSubject(const std::string &subjectCode) const {
+  return std::any_of(marks_.begin(), marks_.end(),
+                     [&subjectCode](const Mark &mark) {
+                       return mark.subject().code() == subjectCode;
+                     });
+}
+
+double Student::averageForSubject(const std::string &subjectCode) const {
+  int total = 0;
+  std::size_t count = 0;
+  for (const Mark &mark : marks_) {
+    if (mark.subject().code() == subjectCode) {
+      total += mark.value();
+      ++count;
+    }
+  }
+  return count == 0 ? 0.0 : static_cast<double>(total) / count;
+}
+
+std::size_t Student::removeMarksForSubject(const std::string &subjectCode) {
+  const auto oldSize = marks_.size();
+  marks_.erase(std::remove_if(marks_.begin(), marks_.end(),
+                              [&subjectCode](const Mark &mark) {
+                                return mark.subject().code() == subjectCode;
+                              }),
+                marks_.end());
+  averageMarkMake();
+  return oldSize - marks_.size();
+}
+
+std::size_t Student::countMarksBelow(int threshold) const {
+  if (threshold < 0 || threshold > 10) {
+    throw std::invalid_argument("Grade threshold must be between 0 and 10");
+  }
+  return static_cast<std::size_t>(std::count_if(
+      marks_.begin(), marks_.end(), [threshold](const Mark &mark) {
+        return mark.value() < threshold;
+      }));
+}
 
 const std::string &Student::studentId() const { return studentId_; }
 

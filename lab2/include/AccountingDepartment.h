@@ -22,6 +22,12 @@ public:
   std::size_t paymentCountForStudent(const Student &student) const;
   std::size_t paymentCount() const;
   double totalPaid() const;
+  double totalPaidForStudent(const std::string &studentId) const;
+  double totalUnpaid() const;
+  std::size_t markStudentPaymentsPaid(const std::string &studentId);
+  std::size_t removeUnpaidPayments(const std::string &studentId);
+  bool hasPayment(const std::string &studentId, const std::string &purpose) const;
+  std::vector<PaymentRecord> paymentsForStudent(const std::string &studentId) const;
   const std::string &name() const;
 
 private:

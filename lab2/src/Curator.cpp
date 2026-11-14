@@ -1,6 +1,7 @@
 #include "Curator.h"
 
 #include <iostream>
+#include "Student.h"
 #include <stdexcept>
 #include <utility>
 Curator::Curator(std::string fullName, int age, std::string employeeId,
@@ -20,6 +21,37 @@ void Curator::printInfo() const {
 const Group &Curator::groupCur() const { return groupCur_; }
 void Curator::assignGroup(Group groupToCur) {
   groupCur_ = std::move(groupToCur);
+}
+
+bool Curator::supervises(const std::string &studentId) const {
+  return groupCur_[studentId];
+}
+
+std::size_t Curator::studentCount() const { return groupCur_.size(); }
+
+std::size_t Curator::studentsWithDebts() const {
+  std::size_t count = 0;
+  for (const auto &student : groupCur_.students())
+    if (student->academicDebtCount() > 0) ++count;
+  return count;
+}
+
+double Curator::groupAverageMark() const {
+  if (groupCur_.students().empty()) return 0.0;
+  double total = 0.0;
+  for (const auto &student : groupCur_.students()) total += student->averageMarkCheck();
+  return total / static_cast<double>(groupCur_.size());
+}
+
+std::size_t Curator::countSubGroup(int subGroupNumber) const {
+  std::size_t count = 0;
+  for (const auto &student : groupCur_.students())
+    if (student->subGroupNum() == subGroupNumber) ++count;
+  return count;
+}
+
+bool Curator::removeStudent(const std::string &studentId) {
+  return groupCur_ -= studentId;
 }
 
 bool Curator::transferToSubGroup(const std::string &studentId,

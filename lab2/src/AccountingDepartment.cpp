@@ -1,4 +1,6 @@
 #include "AccountingDepartment.h"
+#include "Student.h"
+#include <algorithm>
 #include <stdexcept>
 #include <utility>
 
@@ -45,3 +47,28 @@ double AccountingDepartment::totalPaid() const {
 }
 
 const std::string &AccountingDepartment::name() const { return name_; }
+
+void AccountingDepartment::recordStudentPayment(
+    const Student &student, double amount, const std::string &purpose,
+    const std::string &date) {
+  recordPayment(PaymentRecord(student.studentId(), amount, purpose, date));
+}
+
+double AccountingDepartment::totalPaidByStudent(const Student &student) const {
+  double total = 0.0;
+  for (const auto &payment : payments_) {
+    if (payment.studentId() == student.studentId() && payment.isPaid()) {
+      total += payment.amount();
+    }
+  }
+  return total;
+}
+
+std::size_t AccountingDepartment::paymentCountForStudent(
+    const Student &student) const {
+  return static_cast<std::size_t>(std::count_if(
+      payments_.begin(), payments_.end(),
+      [&student](const PaymentRecord &payment) {
+        return payment.studentId() == student.studentId();
+      }));
+}

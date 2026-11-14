@@ -1,5 +1,6 @@
 #include "DeanOffice.h"
 #include "Box.h"
+#include "Worker.h"
 
 #include "Group.h"
 #include "Student.h"
@@ -11,6 +12,57 @@ DeanOffice::DeanOffice(std::string name) : name_(std::move(name)) {
     throw std::invalid_argument("Dean office name cannot be empty");
   }
 }
+
+void DeanOffice::addWorker(const std::shared_ptr<Worker> &worker) {
+  if (!worker) {
+    throw std::invalid_argument("Worker cannot be null");
+  }
+
+  if (findWorker(worker->employeeId())) {
+    throw std::invalid_argument("Worker already exists");
+  }
+
+  workers_.push_back(worker);
+}
+
+bool DeanOffice::removeWorker(const std::string &employeeId) {
+  auto it = std::find_if(workers_.begin(), workers_.end(),
+                         [&employeeId](const auto &worker) {
+                           return worker->employeeId() == employeeId;
+                         });
+
+  if (it == workers_.end()) {
+    return false;
+  }
+
+  workers_.erase(it);
+  return true;
+}
+
+Worker *DeanOffice::findWorker(const std::string &employeeId) {
+  auto it = std::find_if(workers_.begin(), workers_.end(),
+                         [&employeeId](const auto &worker) {
+                           return worker->employeeId() == employeeId;
+                         });
+
+  return it == workers_.end() ? nullptr : it->get();
+}
+
+const Worker *DeanOffice::findWorker(const std::string &employeeId) const {
+  auto it = std::find_if(workers_.begin(), workers_.end(),
+                         [&employeeId](const auto &worker) {
+                           return worker->employeeId() == employeeId;
+                         });
+
+  return it == workers_.end() ? nullptr : it->get();
+}
+
+std::size_t DeanOffice::totalWorkers() const { return workers_.size(); }
+
+const std::vector<std::shared_ptr<Worker>> &DeanOffice::workers() const {
+  return workers_;
+}
+
 void DeanOffice::giveScholarship(std::string studentId) {
   auto it = students_.find(studentId);
 
@@ -142,4 +194,38 @@ std::size_t DeanOffice::totalStudents() const {
     total += group.size();
   }
   return total;
+}
+
+void DeanOffice::registerSpecialty(const Specialty &specialty) {
+  if (findSpecialty(specialty.code())) {
+    throw std::invalid_argument("Specialty already registered");
+  }
+  specialties_.push_back(specialty);
+}
+
+bool DeanOffice::removeSpecialty(const std::string &specialtyCode) {
+  auto it = std::find_if(specialties_.begin(), specialties_.end(),
+                         [&specialtyCode](const Specialty &specialty) {
+                           return specialty.code() == specialtyCode;
+                         });
+  if (it == specialties_.end()) {
+    return false;
+  }
+  specialties_.erase(it);
+  return true;
+}
+
+const Specialty *DeanOffice::findSpecialty(
+    const std::string &specialtyCode) const {
+  auto it = std::find_if(specialties_.begin(), specialties_.end(),
+                         [&specialtyCode](const Specialty &specialty) {
+                           return specialty.code() == specialtyCode;
+                         });
+  return it == specialties_.end() ? nullptr : &(*it);
+}
+
+std::size_t DeanOffice::specialtyCount() const { return specialties_.size(); }
+
+const std::vector<Specialty> &DeanOffice::specialties() const {
+  return specialties_;
 }

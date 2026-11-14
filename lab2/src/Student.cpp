@@ -13,6 +13,9 @@ Student::Student(Student &&other) noexcept
       averageMark(other.averageMark),
       scholarship_(std::move(other.scholarship_)),
       benefit_(std::move(other.benefit_)), marks_(std::move(other.marks_)),
+      submissions_(std::move(other.submissions_)),
+      applications_(std::move(other.applications_)),
+      scholarshipApplications_(std::move(other.scholarshipApplications_)),
       academicDebtCount_(other.academicDebtCount_) {
 
   other.studentId_.clear();
@@ -102,3 +105,89 @@ void Student::setSubGroup(int subGroupNumEx) {
   subGroupNum_ = subGroupNumEx;
 }
 int Student::subGroupNum() const { return subGroupNum_; }
+
+void Student::addSubmission(const Submission &submission) {
+  if (submission.graded()) {
+    throw std::invalid_argument("A graded submission cannot be added as new");
+  }
+  for (const auto &existing : submissions_) {
+    if (existing.workTitle() == submission.workTitle()) {
+      throw std::invalid_argument("Submission for this work already exists");
+    }
+  }
+  submissions_.push_back(submission);
+}
+
+bool Student::recordSubmissionScore(const std::string &workTitle, int score,
+                                    int maxScore) {
+  for (auto &submission : submissions_) {
+    if (submission.workTitle() == workTitle) {
+      submission.recordScore(score, maxScore);
+      return true;
+    }
+  }
+  return false;
+}
+
+std::size_t Student::submissionCount() const { return submissions_.size(); }
+
+const std::vector<Submission> &Student::submissions() const {
+  return submissions_;
+}
+
+void Student::submitApplication(const StudentApplication &application) {
+  if (application.studentId() != studentId_) {
+    throw std::invalid_argument("Application belongs to another student");
+  }
+  for (const auto &existing : applications_) {
+    if (existing.topic() == application.topic()) {
+      throw std::invalid_argument("Application with this topic already exists");
+    }
+  }
+  applications_.push_back(application);
+}
+
+bool Student::reviewApplication(const std::string &topic) {
+  for (auto &application : applications_) {
+    if (application.topic() == topic && !application.reviewed()) {
+      application.markReviewed();
+      return true;
+    }
+  }
+  return false;
+}
+
+std::size_t Student::applicationCount() const { return applications_.size(); }
+
+void Student::requestScholarship(const ScholarshipApplication &application) {
+  if (application.studentId() != studentId_) {
+    throw std::invalid_argument("Scholarship application belongs to another student");
+  }
+  for (const auto &existing : scholarshipApplications_) {
+    if (existing.scholarshipName() == application.scholarshipName() &&
+        !existing.isResolved()) {
+      throw std::invalid_argument("An unresolved application already exists");
+    }
+  }
+  scholarshipApplications_.push_back(application);
+}
+
+bool Student::resolveScholarshipApplication(
+    const std::string &scholarshipName, bool approved, const std::string &reason) {
+  for (auto &application : scholarshipApplications_) {
+    if (application.scholarshipName() == scholarshipName &&
+        !application.isResolved()) {
+      if (approved) {
+        application.approve();
+      } else {
+        application.reject(reason);
+      }
+      return true;
+    }
+  }
+  return false;
+}
+
+std::size_t Student::scholarshipApplicationCount() const {
+  return scholarshipApplications_.size();
+}

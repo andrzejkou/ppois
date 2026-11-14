@@ -1,0 +1,4 @@
+/home/andrey/projects/PPOIS/lab2/build/CMakeFiles/dekanat.dir
+/home/andrey/projects/PPOIS/lab2/build/CMakeFiles/dekanat_app.dir
+/home/andrey/projects/PPOIS/lab2/build/CMakeFiles/edit_cache.dir
+/home/andrey/projects/PPOIS/lab2/build/CMakeFiles/rebuild_cache.dir

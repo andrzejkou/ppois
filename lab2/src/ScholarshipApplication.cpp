@@ -48,3 +48,11 @@ bool ScholarshipApplication::isApproved() const { return approved_; }
 const std::string &ScholarshipApplication::decisionReason() const {
   return decisionReason_;
 }
+
+const std::string &ScholarshipApplication::studentId() const {
+  return studentId_;
+}
+
+const std::string &ScholarshipApplication::scholarshipName() const {
+  return scholarshipName_;
+}

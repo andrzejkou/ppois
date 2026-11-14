@@ -8,6 +8,8 @@ public:
   void recordScore(int score, int maxScore);
   bool graded() const;
   int score() const;
+  const std::string &workTitle() const;
+  const std::string &studentId() const;
 
 private:
   std::string studentId_;

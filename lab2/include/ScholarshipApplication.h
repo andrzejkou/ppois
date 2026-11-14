@@ -11,6 +11,8 @@ public:
   bool isResolved() const;
   bool isApproved() const;
   const std::string &decisionReason() const;
+  const std::string &studentId() const;
+  const std::string &scholarshipName() const;
 
 private:
   std::string studentId_;

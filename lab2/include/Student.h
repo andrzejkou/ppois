@@ -4,8 +4,12 @@
 #include "Mark.h"
 #include "People.h"
 #include "Scholarship.h"
+#include "Submission.h"
+#include "StudentApplication.h"
+#include "ScholarshipApplication.h"
 
 #include <algorithm>
+#include <cstddef>
 #include <optional>
 #include <string>
 #include <vector>
@@ -23,6 +27,18 @@ public:
   double averageMarkCheck();
   void awardScholarship();
   void addMark(const Mark &mark);
+  void addSubmission(const Submission &submission);
+  bool recordSubmissionScore(const std::string &workTitle, int score, int maxScore);
+  std::size_t submissionCount() const;
+  const std::vector<Submission> &submissions() const;
+  void submitApplication(const StudentApplication &application);
+  bool reviewApplication(const std::string &topic);
+  std::size_t applicationCount() const;
+  void requestScholarship(const ScholarshipApplication &application);
+  bool resolveScholarshipApplication(const std::string &scholarshipName,
+                                     bool approved,
+                                     const std::string &reason = {});
+  std::size_t scholarshipApplicationCount() const;
   void removeScholarship();
   void printInfo() const override;
   void promoteToNextYear();
@@ -41,5 +57,8 @@ private:
   std::optional<Scholarship> scholarship_;
   std::optional<Benefit> benefit_;
   std::vector<Mark> marks_;
+  std::vector<Submission> submissions_;
+  std::vector<StudentApplication> applications_;
+  std::vector<ScholarshipApplication> scholarshipApplications_;
   int academicDebtCount_{0};
 };

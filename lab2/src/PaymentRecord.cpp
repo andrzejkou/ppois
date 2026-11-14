@@ -34,3 +34,5 @@ double PaymentRecord::amount() const { return amount_; }
 const std::string &PaymentRecord::purpose() const { return purpose_; }
 
 const std::string &PaymentRecord::date() const { return date_; }
+
+const std::string &PaymentRecord::studentId() const { return studentId_; }

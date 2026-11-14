@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Group.h"
+#include "Specialty.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -8,15 +9,31 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-
+class Worker;
 class Student;
 
 class DeanOffice {
 public:
   explicit DeanOffice(std::string name);
+  void addWorker(const std::shared_ptr<Worker> &worker);
+
+  bool removeWorker(const std::string &employeeId);
+
+  Worker *findWorker(const std::string &employeeId);
+
+  const Worker *findWorker(const std::string &employeeId) const;
+
+  std::size_t totalWorkers() const;
+
+  const std::vector<std::shared_ptr<Worker>> &workers() const;
   void giveScholarship(std::string studentId);
   void manipulateScholarship();
   void addGroup(const Group &group);
+  void registerSpecialty(const Specialty &specialty);
+  bool removeSpecialty(const std::string &specialtyCode);
+  const Specialty *findSpecialty(const std::string &specialtyCode) const;
+  std::size_t specialtyCount() const;
+  const std::vector<Specialty> &specialties() const;
   bool enrollStudent(const std::string &groupCode, const Student &student);
   bool expelStudent(const std::string &studentId);
   bool removeFromGroup(const std::string &groupCode,
@@ -31,4 +48,6 @@ private:
   std::string name_;
   std::unordered_map<std::string, std::shared_ptr<Student>> students_;
   std::vector<Group> groups_;
+  std::vector<Specialty> specialties_;
+  std::vector<std::shared_ptr<Worker>> workers_;
 };

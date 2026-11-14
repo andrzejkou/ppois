@@ -3,6 +3,8 @@
 #include "FinancialReport.h"
 #include "PaymentRecord.h"
 
+class Student;
+
 #include <string>
 #include <vector>
 #include <cstddef>
@@ -13,6 +15,11 @@ public:
 
   FinancialReport makeReport(const std::string &period) const;
   void recordPayment(const PaymentRecord &record);
+  void recordStudentPayment(const Student &student, double amount,
+                            const std::string &purpose,
+                            const std::string &date);
+  double totalPaidByStudent(const Student &student) const;
+  std::size_t paymentCountForStudent(const Student &student) const;
   std::size_t paymentCount() const;
   double totalPaid() const;
   const std::string &name() const;

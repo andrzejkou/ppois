@@ -12,6 +12,7 @@ public:
   double amount() const;
   const std::string &purpose() const;
   const std::string &date() const;
+  const std::string &studentId() const;
 
 private:
   std::string studentId_;

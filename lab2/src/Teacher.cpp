@@ -46,3 +46,33 @@ void Teacher::assignCourse(const std::string &courseName) {
 const std::vector<std::string> &Teacher::courses() const { return courses_; }
 
 std::string Teacher::role() const { return "Преподаватель"; }
+
+void Teacher::assignSubject(const Subject &subject) {
+  if (teachesSubject(subject.code())) {
+    throw std::invalid_argument("Subject is already assigned");
+  }
+  subjects_.push_back(subject);
+}
+
+bool Teacher::removeSubject(const std::string &subjectCode) {
+  auto it = std::find_if(subjects_.begin(), subjects_.end(),
+                         [&subjectCode](const Subject &subject) {
+                           return subject.code() == subjectCode;
+                         });
+  if (it == subjects_.end()) {
+    return false;
+  }
+  subjects_.erase(it);
+  return true;
+}
+
+bool Teacher::teachesSubject(const std::string &subjectCode) const {
+  return std::any_of(subjects_.begin(), subjects_.end(),
+                     [&subjectCode](const Subject &subject) {
+                       return subject.code() == subjectCode;
+                     });
+}
+
+std::size_t Teacher::subjectCount() const { return subjects_.size(); }
+
+const std::vector<Subject> &Teacher::subjects() const { return subjects_; }

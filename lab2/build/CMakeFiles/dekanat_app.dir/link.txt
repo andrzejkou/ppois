@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/dekanat_app.dir/link.d CMakeFiles/dekanat_app.dir/main.cpp.o -o dekanat_app  libdekanat.a

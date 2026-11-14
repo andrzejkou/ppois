@@ -19,6 +19,8 @@ public:
   double groupAverageMark() const;
   std::size_t countSubGroup(int subGroupNumber) const;
   bool removeStudent(const std::string &studentId);
+  std::size_t assignUnassignedStudentsToSubGroup(int subGroupNumber);
+  std::size_t reassignStudentsWithDebts(int targetSubGroup);
 
 private:
   Group groupCur_;

@@ -14,6 +14,10 @@ public:
           std::string department);
   const std::string &department() const;
   void assignCourse(const std::string &courseName);
+  bool removeCourse(const std::string &courseName);
+  bool replaceCourse(const std::string &oldName,
+                     const std::string &newName);
+  void clearTeachingAssignments();
   const std::vector<std::string> &courses() const;
   void assignSubject(const Subject &subject);
   bool removeSubject(const std::string &subjectCode);

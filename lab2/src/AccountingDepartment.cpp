@@ -80,6 +80,41 @@ std::size_t AccountingDepartment::removeUnpaidPayments(const std::string &studen
   return oldSize - payments_.size();
 }
 
+std::size_t AccountingDepartment::cancelUnpaidPaymentsForPurpose(
+    const std::string &studentId, const std::string &purpose) {
+  const auto oldSize = payments_.size();
+  payments_.erase(std::remove_if(payments_.begin(), payments_.end(),
+      [&studentId, &purpose](const PaymentRecord &payment) {
+        return payment.studentId() == studentId &&
+               payment.purpose() == purpose && !payment.isPaid();
+      }), payments_.end());
+  return oldSize - payments_.size();
+}
+
+std::size_t AccountingDepartment::settleUnpaidPaymentsForPurpose(
+    const std::string &studentId, const std::string &purpose) {
+  std::size_t settled = 0;
+  for (auto &payment : payments_) {
+    if (payment.studentId() == studentId && payment.purpose() == purpose &&
+        !payment.isPaid()) {
+      payment.markPaid();
+      ++settled;
+    }
+  }
+  return settled;
+}
+
+double AccountingDepartment::totalForPurpose(const std::string &purpose,
+                                             bool paidOnly) const {
+  double total = 0.0;
+  for (const auto &payment : payments_) {
+    if (payment.purpose() == purpose && (!paidOnly || payment.isPaid())) {
+      total += payment.amount();
+    }
+  }
+  return total;
+}
+
 bool AccountingDepartment::hasPayment(const std::string &studentId,
                                       const std::string &purpose) const {
   return std::any_of(payments_.begin(), payments_.end(),

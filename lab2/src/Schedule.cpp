@@ -55,6 +55,13 @@ bool Schedule::removeWeek(int weekNumber) {
   return true;
 }
 
+std::size_t Schedule::removeWeeksWithoutLessons() {
+  const auto oldSize = weeks_.size();
+  weeks_.erase(std::remove_if(weeks_.begin(), weeks_.end(),
+      [](const Week &week) { return week.lessonCount() == 0; }), weeks_.end());
+  return oldSize - weeks_.size();
+}
+
 bool Schedule::hasWeek(int weekNumber) const {
   return std::any_of(weeks_.begin(), weeks_.end(),
                      [weekNumber](const Week &week) {

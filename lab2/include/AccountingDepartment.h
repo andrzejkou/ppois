@@ -26,6 +26,11 @@ public:
   double totalUnpaid() const;
   std::size_t markStudentPaymentsPaid(const std::string &studentId);
   std::size_t removeUnpaidPayments(const std::string &studentId);
+  std::size_t cancelUnpaidPaymentsForPurpose(const std::string &studentId,
+                                             const std::string &purpose);
+  std::size_t settleUnpaidPaymentsForPurpose(const std::string &studentId,
+                                            const std::string &purpose);
+  double totalForPurpose(const std::string &purpose, bool paidOnly) const;
   bool hasPayment(const std::string &studentId, const std::string &purpose) const;
   std::vector<PaymentRecord> paymentsForStudent(const std::string &studentId) const;
   const std::string &name() const;

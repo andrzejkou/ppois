@@ -82,6 +82,42 @@ void Student::printInfo() const {
             << (isEligibleForScholarship() ? "Yes" : "No") << '\n';
 }
 void Student::removeScholarship() { scholarship_.reset(); }
+
+void Student::assignBenefit(const Benefit &benefit) {
+  if (benefit_) {
+    throw std::invalid_argument("Student already has an assigned benefit");
+  }
+  Benefit assigned = benefit;
+  assigned.assignTo(studentId_);
+  benefit_ = std::move(assigned);
+}
+
+void Student::removeBenefit() {
+  if (!benefit_) {
+    throw std::invalid_argument("Student has no assigned benefit");
+  }
+  benefit_.reset();
+}
+
+std::size_t Student::recalculateAcademicDebtCount(int passingGrade) {
+  if (passingGrade < 0 || passingGrade > 10) {
+    throw std::invalid_argument("Passing grade must be between 0 and 10");
+  }
+
+  std::vector<std::string> failedSubjects;
+  for (const auto &mark : marks_) {
+    const auto &code = mark.subject().code();
+    if (mark.value() < passingGrade &&
+        std::find(failedSubjects.begin(), failedSubjects.end(), code) ==
+            failedSubjects.end()) {
+      failedSubjects.push_back(code);
+    }
+  }
+
+  academicDebtCount_ = static_cast<int>(failedSubjects.size());
+  return failedSubjects.size();
+}
+
 void Student::awardScholarship() {
   int amount = 0;
   double average = averageMarkCheck();

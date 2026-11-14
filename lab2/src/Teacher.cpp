@@ -43,6 +43,34 @@ void Teacher::assignCourse(const std::string &courseName) {
   courses_.push_back(courseName);
 }
 
+bool Teacher::removeCourse(const std::string &courseName) {
+  const auto it = std::find(courses_.begin(), courses_.end(), courseName);
+  if (it == courses_.end()) {
+    return false;
+  }
+  courses_.erase(it);
+  return true;
+}
+
+bool Teacher::replaceCourse(const std::string &oldName,
+                            const std::string &newName) {
+  if (newName.empty() || oldName == newName ||
+      std::find(courses_.begin(), courses_.end(), newName) != courses_.end()) {
+    return false;
+  }
+  const auto it = std::find(courses_.begin(), courses_.end(), oldName);
+  if (it == courses_.end()) {
+    return false;
+  }
+  *it = newName;
+  return true;
+}
+
+void Teacher::clearTeachingAssignments() {
+  courses_.clear();
+  subjects_.clear();
+}
+
 const std::vector<std::string> &Teacher::courses() const { return courses_; }
 
 std::string Teacher::role() const { return "Преподаватель"; }

@@ -56,6 +56,34 @@ bool Curator::removeStudent(const std::string &studentId) {
 
 bool Curator::transferToSubGroup(const std::string &studentId,
                                  int subGroupNumEx) {
-
   return groupCur_.changeStudentSubGroup(studentId, subGroupNumEx);
+}
+
+std::size_t Curator::assignUnassignedStudentsToSubGroup(int subGroupNumber) {
+  if (subGroupNumber <= 0) {
+    throw std::invalid_argument("Subgroup number must be positive");
+  }
+  std::size_t assigned = 0;
+  for (const auto &student : groupCur_.students()) {
+    if (student->subGroupNum() == 0) {
+      student->setSubGroup(subGroupNumber);
+      ++assigned;
+    }
+  }
+  return assigned;
+}
+
+std::size_t Curator::reassignStudentsWithDebts(int targetSubGroup) {
+  if (targetSubGroup <= 0) {
+    throw std::invalid_argument("Target subgroup number must be positive");
+  }
+  std::size_t reassigned = 0;
+  for (const auto &student : groupCur_.students()) {
+    if (student->academicDebtCount() > 0 &&
+        student->subGroupNum() != targetSubGroup) {
+      student->setSubGroup(targetSubGroup);
+      ++reassigned;
+    }
+  }
+  return reassigned;
 }

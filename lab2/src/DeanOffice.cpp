@@ -1,6 +1,7 @@
 #include "DeanOffice.h"
 #include "Box.h"
 #include "Worker.h"
+#include "Curator.h"
 
 #include "Group.h"
 #include "Student.h"
@@ -207,6 +208,73 @@ std::size_t DeanOffice::groupCount() const { return groups_.size(); }
 bool DeanOffice::groupHasCapacity(const std::string &groupCode) const {
   const Group *group = findGroup(groupCode);
   return group != nullptr && group->availableSeats() > 0;
+}
+
+bool DeanOffice::assignCuratorToGroup(const std::string &employeeId,
+                                      const std::string &groupCode) {
+  Worker *worker = findWorker(employeeId);
+  const Group *group = findGroup(groupCode);
+  auto *curator = dynamic_cast<Curator *>(worker);
+  if (!curator || !group) {
+    return false;
+  }
+  curator->assignGroup(*group);
+  return true;
+}
+
+bool DeanOffice::mergeGroups(const std::string &sourceCode,
+                             const std::string &targetCode) {
+  if (sourceCode == targetCode) {
+    return false;
+  }
+
+  auto source = std::find_if(groups_.begin(), groups_.end(),
+      [&sourceCode](const Group &group) { return group.code() == sourceCode; });
+  auto target = std::find_if(groups_.begin(), groups_.end(),
+      [&targetCode](const Group &group) { return group.code() == targetCode; });
+
+  if (source == groups_.end() || target == groups_.end() ||
+      source->specialtyCode() != target->specialtyCode() ||
+      target->availableSeats() < source->size()) {
+    return false;
+  }
+
+  const auto studentsToMove = source->students();
+  for (const auto &student : studentsToMove) {
+    if ((*target)[student->studentId()]) {
+      return false;
+    }
+  }
+
+  for (const auto &student : studentsToMove) {
+    *target += student;
+  }
+  for (const auto &student : studentsToMove) {
+    *source -= student->studentId();
+  }
+  return true;
+}
+
+std::size_t DeanOffice::promoteEligibleStudents(
+    const std::string &groupCode, double minimumAverage) {
+  if (minimumAverage < 0.0 || minimumAverage > 10.0) {
+    throw std::invalid_argument("Minimum average must be between 0 and 10");
+  }
+  auto group = std::find_if(groups_.begin(), groups_.end(),
+      [&groupCode](const Group &item) { return item.code() == groupCode; });
+  if (group == groups_.end()) {
+    return 0;
+  }
+
+  std::size_t promoted = 0;
+  for (const auto &student : group->students()) {
+    if (student->academicDebtCount() == 0 &&
+        student->averageMarkCheck() >= minimumAverage) {
+      student->promoteToNextYear();
+      ++promoted;
+    }
+  }
+  return promoted;
 }
 
 bool DeanOffice::removeEmptyGroup(const std::string &groupCode) {

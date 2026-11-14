@@ -30,6 +30,9 @@ public:
   std::size_t removeMarksForSubject(const std::string &subjectCode);
   std::size_t countMarksBelow(int threshold) const;
   void awardScholarship();
+  void assignBenefit(const Benefit &benefit);
+  void removeBenefit();
+  std::size_t recalculateAcademicDebtCount(int passingGrade);
   void addMark(const Mark &mark);
   void addSubmission(const Submission &submission);
   bool recordSubmissionScore(const std::string &workTitle, int score, int maxScore);

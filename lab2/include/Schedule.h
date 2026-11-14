@@ -13,6 +13,7 @@ public:
   void changeSchedule();
   std::size_t lessonCount() const;
   bool removeWeek(int weekNumber);
+  std::size_t removeWeeksWithoutLessons();
   bool hasWeek(int weekNumber) const;
   std::size_t weekCount() const;
   std::vector<int> weekNumbers() const;

@@ -48,6 +48,12 @@ public:
   std::size_t groupCount() const;
   bool groupHasCapacity(const std::string &groupCode) const;
   bool removeEmptyGroup(const std::string &groupCode);
+  bool assignCuratorToGroup(const std::string &employeeId,
+                            const std::string &groupCode);
+  bool mergeGroups(const std::string &sourceCode,
+                   const std::string &targetCode);
+  std::size_t promoteEligibleStudents(const std::string &groupCode,
+                                      double minimumAverage);
   std::string groupOfStudent(const std::string &studentId) const;
   std::size_t studentsWithAcademicDebts(const std::string &groupCode) const;
   const std::string &name() const;

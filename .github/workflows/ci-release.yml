@@ -8,6 +8,7 @@ on:
   push:
     tags:
       - "lab1-v*"
+      - "lab2-v*"
 
 permissions:
   contents: read
@@ -152,4 +153,70 @@ jobs:
           name: "Лабораторная 1 — ${{ github.ref_name }}"
           generate_release_notes: true
           files: dist/PPOIS-lab1-linux-x86_64.tar.gz
+
+
+    release-lab2:
+    name: Release Lab2
+    if: startsWith(github.ref, 'refs/tags/lab2-v')
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            libgtest-dev
+
+      - name: Configure CMake
+        run: |
+          cmake -S lab2 -B lab2/build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_TESTING=ON
+
+      - name: Build application and tests
+        run: cmake --build lab2/build --parallel 2
+
+      - name: Run tests
+        run: ctest --test-dir lab2/build --output-on-failure
+
+      - name: Prepare release package
+        run: |
+          mkdir -p dist/package
+
+          cp lab2/build/dekanat_app dist/package/ppoiss-lab2
+          chmod +x dist/package/ppoiss-lab2
+
+          cat > dist/package/README.txt << 'EOF'
+          PPOIS Laboratory 2 — Dekanat
+          Target platform: Linux x86_64
+
+          Run:
+            ./ppoiss-lab2
+          EOF
+
+          tar -czf "dist/PPOIS-lab2-${GITHUB_REF_NAME}-linux-x86_64.tar.gz" \
+            -C dist/package .
+
+      - name: Prepare source archive
+        run: |
+          tar \
+            --exclude='lab2/build' \
+            --exclude='lab2/coverage*' \
+            -czf "dist/PPOIS-lab2-${GITHUB_REF_NAME}-source.tar.gz" \
+            lab2 README.md
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          name: "Лабораторная 2 — ${{ github.ref_name }}"
+          generate_release_notes: true
+          files: dist/*.tar.gz
 

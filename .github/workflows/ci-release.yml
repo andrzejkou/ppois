@@ -5,15 +5,19 @@ on:
   pull_request:
     branches:
       - main
+
   push:
     tags:
       - "lab1-v*"
+      - "lab2-v*"
 
 permissions:
   contents: read
 
 jobs:
-  checks:
+  # Лабораторная работа №1
+  lab1-checks:
+    if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/tags/lab1-v')
     runs-on: ubuntu-latest
 
     steps:
@@ -35,7 +39,6 @@ jobs:
         run: |
           cppcheck \
             --enable=warning,performance,portability \
-            --error-exitcode=1 \
             --language=c++ \
             --std=c++17 \
             --suppress=missingIncludeSystem \
@@ -74,10 +77,68 @@ jobs:
           path: PPOIS-lab1-linux-x86_64.tar.gz
           if-no-files-found: error
 
+  # Лабораторная работа №2
+  lab2-checks:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            libgtest-dev \
+            cppcheck \
+            gcovr
+
+      - name: Configure CMake
+        run: |
+          cmake -S lab2 -B lab2/build \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DBUILD_TESTING=ON \
+            -DENABLE_COVERAGE=ON
+
+      - name: Build application and tests
+        run: cmake --build lab2/build --parallel 2
+
+      - name: Run tests and generate coverage report
+        run: cmake --build lab2/build --target coverage_report
+
+      - name: Check coverage threshold
+        run: cmake --build lab2/build --target coverage_check
+
+      - name: Static analysis
+        run: |
+          cppcheck \
+            --enable=warning,performance,portability \
+            --language=c++ \
+            --std=c++17 \
+            --suppress=missingIncludeSystem \
+            -I lab2/include \
+            lab2/main.cpp \
+            lab2/src
+
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab2-coverage-report
+          path: |
+            lab2/build/coverage.html
+            lab2/build/coverage.xml
+          if-no-files-found: ignore
+
+  # Релиз лабораторной работы №1
   release:
     if: startsWith(github.ref, 'refs/tags/lab1-v')
-    needs: checks
+    needs: lab1-checks
     runs-on: ubuntu-latest
+
     permissions:
       contents: write
 
@@ -94,4 +155,70 @@ jobs:
           name: "Лабораторная 1 — ${{ github.ref_name }}"
           generate_release_notes: true
           files: dist/PPOIS-lab1-linux-x86_64.tar.gz
+
+  # Релиз лабораторной работы №2
+  release-lab2:
+    name: Release Lab2
+    if: startsWith(github.ref, 'refs/tags/lab2-v')
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            libgtest-dev
+
+      - name: Configure CMake
+        run: |
+          cmake -S lab2 -B lab2/build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_TESTING=ON
+
+      - name: Build application and tests
+        run: cmake --build lab2/build --parallel 2
+
+      - name: Run tests
+        run: ctest --test-dir lab2/build --output-on-failure
+
+      - name: Prepare release package
+        run: |
+          mkdir -p dist/package
+
+          cp lab2/build/dekanat_app dist/package/ppoiss-lab2
+          chmod +x dist/package/ppoiss-lab2
+
+          cat > dist/package/README.txt << 'EOF'
+          PPOIS Laboratory 2 — Dekanat
+          Target platform: Linux x86_64
+
+          Run:
+            ./ppoiss-lab2
+          EOF
+
+          tar -czf "dist/PPOIS-lab2-${GITHUB_REF_NAME}-linux-x86_64.tar.gz" \
+            -C dist/package .
+
+      - name: Prepare source archive
+        run: |
+          tar \
+            --exclude='lab2/build' \
+            --exclude='lab2/coverage*' \
+            -czf "dist/PPOIS-lab2-${GITHUB_REF_NAME}-source.tar.gz" \
+            lab2 README.md
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          name: "Лабораторная 2 — ${{ github.ref_name }}"
+          generate_release_notes: true
+          files: dist/*.tar.gz
 

@@ -1,0 +1,17 @@
+#pragma once
+
+#include "DeanOfficeException.h"
+#include "InvalidPersonException.h"
+#include "InvalidStudentException.h"
+#include "InvalidGroupException.h"
+#include "GroupCapacityException.h"
+#include "DuplicateStudentException.h"
+#include "SpecialtyMismatchException.h"
+#include "InvalidCurriculumException.h"
+#include "InvalidScheduleException.h"
+#include "ClassroomUnavailableException.h"
+#include "InvalidAcademicWorkException.h"
+#include "SubmissionDeadlineException.h"
+#include "InvalidGradeException.h"
+#include "InvalidScholarshipException.h"
+#include "FinancialOperationException.h"

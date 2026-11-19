@@ -1,0 +1,4 @@
+CompileFlags:
+  Add:
+    - -std=c++17   
+    - -I/home/andrey/projects/PPOIS/lab2/include

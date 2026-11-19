@@ -1,0 +1,15 @@
+#pragma once
+
+#include "Subject.h"
+#include "Classroom.h"
+#include "Lesson.h"
+#include "Lecture.h"
+#include "Seminar.h"
+#include "Exam.h"
+#include "CourseProjCheck.h"
+#include "Consultation.h"
+#include "Perezdacha.h"
+#include "Semester.h"
+#include "Day.h"
+#include "Week.h"
+#include "Schedule.h"

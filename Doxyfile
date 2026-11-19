@@ -5,7 +5,7 @@ PROJECT_BRIEF          = "Лабораторные работы по ООП"
 OUTPUT_DIRECTORY       = docs
 
 # Input files
-INPUT                  = .
+INPUT                  = lab1 lab2 README.md
 FILE_PATTERNS          = *.h *.hpp *.c *.cpp *.cc *.md
 RECURSIVE              = YES
 EXCLUDE                = .git build docs

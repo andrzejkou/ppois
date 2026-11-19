@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include <string>
 #include <vector>
 #include <memory>
@@ -31,10 +33,19 @@ public:
   const std::string &code() const;
   const std::string &specialtyCode() const;
   const std::vector<std::shared_ptr<Student>> &students() const;
+  int admissionYear() const { return admissionYear_; }
+  void setAdmissionYear(int value) { admissionYear_ = value; }
+  const std::string &educationForm() const { return educationForm_; }
+  void setEducationForm(std::string value) { educationForm_ = std::move(value); }
+  const std::string &curatorEmployeeId() const { return curatorEmployeeId_; }
+  void setCuratorEmployeeId(std::string value) { curatorEmployeeId_ = std::move(value); }
 
 private:
   std::string code_;
   std::string specialtyCode_;
   std::size_t capacity_;
   std::vector<std::shared_ptr <Student>> students_;
+  int admissionYear_{0};
+  std::string educationForm_;
+  std::string curatorEmployeeId_;
 };

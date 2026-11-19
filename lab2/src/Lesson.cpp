@@ -22,7 +22,7 @@ Lesson::Lesson(Subject subject, std::string teacherId, std::string day,
     throw std::invalid_argument("Invalid lesson start hour");
   }
 
-  if (durationHours_ <= 0 || startHour_ + durationHours_ > 24) {
+  if (durationHours_ <= 0 || durationHours_ > 24 - startHour_) {
     throw std::invalid_argument("Invalid lesson duration");
   }
 }

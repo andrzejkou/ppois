@@ -1,5 +1,6 @@
 #include "PaymentRecord.h"
 
+#include <cmath>
 #include <stdexcept>
 #include <utility>
 
@@ -12,8 +13,8 @@ PaymentRecord::PaymentRecord(std::string studentId, double amount,
     throw std::invalid_argument("Student ID cannot be empty");
   }
 
-  if (amount_ <= 0) {
-    throw std::invalid_argument("Payment amount must be positive");
+  if (!std::isfinite(amount_) || amount_ <= 0) {
+    throw std::invalid_argument("Payment amount must be positive and finite");
   }
 
   if (purpose_.empty()) {
@@ -23,6 +24,20 @@ PaymentRecord::PaymentRecord(std::string studentId, double amount,
   if (date_.empty()) {
     throw std::invalid_argument("Payment date cannot be empty");
   }
+}
+
+void PaymentRecord::changeAmount(double amount) {
+  if (!std::isfinite(amount) || amount <= 0) {
+    throw std::invalid_argument("Payment amount must be positive and finite");
+  }
+  amount_ = amount;
+}
+
+void PaymentRecord::changePurpose(const std::string &purpose) {
+  if (purpose.empty()) {
+    throw std::invalid_argument("Payment purpose cannot be empty");
+  }
+  purpose_ = purpose;
 }
 
 void PaymentRecord::markPaid() { paid_ = true; }

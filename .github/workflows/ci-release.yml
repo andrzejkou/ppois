@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  checks:
+  lab1-checks:
     runs-on: ubuntu-latest
 
     steps:
@@ -74,6 +74,66 @@ jobs:
           path: PPOIS-lab1-linux-x86_64.tar.gz
           if-no-files-found: error
 
+
+
+  # 2 лаба
+  lab2-checks:
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            libgtest-dev \
+            cppcheck \
+            gcovr
+
+      - name: Configure CMake
+        run: |
+          cmake -S lab2 -B lab2/build \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DBUILD_TESTING=ON \
+            -DENABLE_COVERAGE=ON
+
+      - name: Build application and tests
+        run: cmake --build lab2/build --parallel 2
+
+      - name: Run tests and generate coverage report
+        run: cmake --build lab2/build --target coverage_report
+
+      - name: Check coverage threshold
+        run: cmake --build lab2/build --target coverage_check
+
+      - name: Static analysis
+        run: |
+          cppcheck \
+            --enable=warning,performance,portability \
+            --error-exitcode=1 \
+            --language=c++ \
+            --std=c++17 \
+            --suppress=missingIncludeSystem \
+            -I lab2/include \
+            lab2/main.cpp \
+            lab2/src
+
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab2-coverage-report
+          path: |
+            lab2/build/coverage.html
+            lab2/build/coverage.xml
+          if-no-files-found: ignore
+
+  #релизы
   release:
     if: startsWith(github.ref, 'refs/tags/lab1-v')
     needs: checks

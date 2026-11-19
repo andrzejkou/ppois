@@ -118,6 +118,7 @@ if(ENABLE_COVERAGE)
             --root "${CMAKE_SOURCE_DIR}"
             --filter "${CMAKE_SOURCE_DIR}/src/"
             --fail-under-line 90
+            --fail-under-function 90
             --print-summary
             "${CMAKE_BINARY_DIR}"
 

@@ -1,5 +1,6 @@
 #include "FinancialReport.h"
 
+#include <cmath>
 #include <stdexcept>
 #include <utility>
 
@@ -12,16 +13,16 @@ FinancialReport::FinancialReport(std::string period)
 }
 
 void FinancialReport::addIncome(double amount) {
-  if (amount <= 0) {
-    throw std::invalid_argument("Income amount must be positive");
+  if (!std::isfinite(amount) || amount <= 0) {
+    throw std::invalid_argument("Income amount must be positive and finite");
   }
 
   income_ += amount;
 }
 
 void FinancialReport::addExpense(double amount) {
-  if (amount <= 0) {
-    throw std::invalid_argument("Expense amount must be positive");
+  if (!std::isfinite(amount) || amount <= 0) {
+    throw std::invalid_argument("Expense amount must be positive and finite");
   }
 
   expenses_ += amount;

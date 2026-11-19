@@ -18,6 +18,7 @@
 #include "Teacher.h"
 #include "Week.h"
 #include "Worker.h"
+#include "exceptions.h"
 
 #include <initializer_list>
 #include <iostream>
@@ -142,11 +143,15 @@ void enrollStudent(DeanOffice &office) {
 
   Student student(fullName, age, studentId, year);
 
-  if (office.enrollStudent(groupCode, student)) {
-    std::cout << "Студент зачислен.\n";
-  } else {
-    std::cout << "Не удалось зачислить студента. "
-                 "Проверьте его ID и места в группе.\n";
+  try {
+    if (office.enrollStudent(groupCode, student)) {
+      std::cout << "Студент зачислен.\n";
+    } else {
+      std::cout << "Не удалось зачислить студента. "
+                   "Проверьте его ID и наличие мест в группе.\n";
+    }
+  } catch (const GroupCapacityException &e) {
+    std::cout << "Ошибка зачисления: " << e.what() << '\n';
   }
 }
 

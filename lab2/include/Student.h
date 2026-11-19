@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "Benefit.h"
 #include "Mark.h"
 #include "People.h"
@@ -55,6 +57,16 @@ public:
   std::string role() const override;
   int subGroupNum() const;
   void setSubGroup(int subGroupNumEx);
+  const std::string &enrollmentDate() const { return enrollmentDate_; }
+  void setEnrollmentDate(std::string value) { enrollmentDate_ = std::move(value); }
+  const std::string &educationForm() const { return educationForm_; }
+  void setEducationForm(std::string value) { educationForm_ = std::move(value); }
+  const std::string &fundingType() const { return fundingType_; }
+  void setFundingType(std::string value) { fundingType_ = std::move(value); }
+  const std::string &status() const { return status_; }
+  void setStatus(std::string value) { status_ = std::move(value); }
+  const std::string &expulsionDate() const { return expulsionDate_; }
+  void setExpulsionDate(std::string value) { expulsionDate_ = std::move(value); }
 
 private:
   std::string studentId_;
@@ -68,4 +80,9 @@ private:
   std::vector<StudentApplication> applications_;
   std::vector<ScholarshipApplication> scholarshipApplications_;
   int academicDebtCount_{0};
+  std::string enrollmentDate_;
+  std::string educationForm_;
+  std::string fundingType_;
+  std::string status_{"обучается"};
+  std::string expulsionDate_;
 };

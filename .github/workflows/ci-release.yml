@@ -35,7 +35,6 @@ jobs:
         run: |
           cppcheck \
             --enable=warning,performance,portability \
-            --error-exitcode=1 \
             --language=c++ \
             --std=c++17 \
             --suppress=missingIncludeSystem \

@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - main
+
   push:
     tags:
       - "lab1-v*"
@@ -14,7 +15,9 @@ permissions:
   contents: read
 
 jobs:
+  # Лабораторная работа №1
   lab1-checks:
+    if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/tags/lab1-v')
     runs-on: ubuntu-latest
 
     steps:
@@ -74,11 +77,9 @@ jobs:
           path: PPOIS-lab1-linux-x86_64.tar.gz
           if-no-files-found: error
 
-
-
-  # 2 лаба
+  # Лабораторная работа №2
   lab2-checks:
-    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
 
     steps:
@@ -132,11 +133,12 @@ jobs:
             lab2/build/coverage.xml
           if-no-files-found: ignore
 
-  #релизы
+  # Релиз лабораторной работы №1
   release:
     if: startsWith(github.ref, 'refs/tags/lab1-v')
     needs: lab1-checks
     runs-on: ubuntu-latest
+
     permissions:
       contents: write
 
@@ -154,8 +156,8 @@ jobs:
           generate_release_notes: true
           files: dist/PPOIS-lab1-linux-x86_64.tar.gz
 
-
-    release-lab2:
+  # Релиз лабораторной работы №2
+  release-lab2:
     name: Release Lab2
     if: startsWith(github.ref, 'refs/tags/lab2-v')
     runs-on: ubuntu-latest

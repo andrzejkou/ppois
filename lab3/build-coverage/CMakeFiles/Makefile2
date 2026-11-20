@@ -69,6 +69,7 @@ all: CMakeFiles/warehouse_tests.dir/all
 all: CMakeFiles/warehouse_generated_tests.dir/all
 all: CMakeFiles/warehouse_edge_tests.dir/all
 all: CMakeFiles/warehouse_per_file_tests.dir/all
+all: CMakeFiles/warehouse_domain_demo_tests.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
@@ -78,6 +79,7 @@ codegen: CMakeFiles/warehouse_tests.dir/codegen
 codegen: CMakeFiles/warehouse_generated_tests.dir/codegen
 codegen: CMakeFiles/warehouse_edge_tests.dir/codegen
 codegen: CMakeFiles/warehouse_per_file_tests.dir/codegen
+codegen: CMakeFiles/warehouse_domain_demo_tests.dir/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -119,6 +121,7 @@ clean: CMakeFiles/warehouse_tests.dir/clean
 clean: CMakeFiles/warehouse_generated_tests.dir/clean
 clean: CMakeFiles/warehouse_edge_tests.dir/clean
 clean: CMakeFiles/warehouse_per_file_tests.dir/clean
+clean: CMakeFiles/warehouse_domain_demo_tests.dir/clean
 clean: CMakeFiles/coverage.dir/clean
 .PHONY : clean
 
@@ -161,12 +164,12 @@ CMakeFiles/warehouse.dir/clean:
 CMakeFiles/warehouse_app.dir/all: CMakeFiles/warehouse.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_app.dir/build.make CMakeFiles/warehouse_app.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_app.dir/build.make CMakeFiles/warehouse_app.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=80,81 "Built target warehouse_app"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=80,81,82,83,84 "Built target warehouse_app"
 .PHONY : CMakeFiles/warehouse_app.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/warehouse_app.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles 80
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles 83
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/warehouse_app.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles 0
 .PHONY : CMakeFiles/warehouse_app.dir/rule
@@ -178,7 +181,7 @@ warehouse_app: CMakeFiles/warehouse_app.dir/rule
 # codegen rule for target.
 CMakeFiles/warehouse_app.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_app.dir/build.make CMakeFiles/warehouse_app.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=80,81 "Finished codegen for target warehouse_app"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=80,81,82,83,84 "Finished codegen for target warehouse_app"
 .PHONY : CMakeFiles/warehouse_app.dir/codegen
 
 # clean rule for target.
@@ -1089,7 +1092,7 @@ CMakeFiles/ContinuousSubmit.dir/clean:
 CMakeFiles/warehouse_tests.dir/all: CMakeFiles/warehouse.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_tests.dir/build.make CMakeFiles/warehouse_tests.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_tests.dir/build.make CMakeFiles/warehouse_tests.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=88,89 "Built target warehouse_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=94,95 "Built target warehouse_tests"
 .PHONY : CMakeFiles/warehouse_tests.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1106,7 +1109,7 @@ warehouse_tests: CMakeFiles/warehouse_tests.dir/rule
 # codegen rule for target.
 CMakeFiles/warehouse_tests.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_tests.dir/build.make CMakeFiles/warehouse_tests.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=88,89 "Finished codegen for target warehouse_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=94,95 "Finished codegen for target warehouse_tests"
 .PHONY : CMakeFiles/warehouse_tests.dir/codegen
 
 # clean rule for target.
@@ -1121,7 +1124,7 @@ CMakeFiles/warehouse_tests.dir/clean:
 CMakeFiles/warehouse_generated_tests.dir/all: CMakeFiles/warehouse.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_generated_tests.dir/build.make CMakeFiles/warehouse_generated_tests.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_generated_tests.dir/build.make CMakeFiles/warehouse_generated_tests.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=84,85 "Built target warehouse_generated_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=90,91 "Built target warehouse_generated_tests"
 .PHONY : CMakeFiles/warehouse_generated_tests.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1138,7 +1141,7 @@ warehouse_generated_tests: CMakeFiles/warehouse_generated_tests.dir/rule
 # codegen rule for target.
 CMakeFiles/warehouse_generated_tests.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_generated_tests.dir/build.make CMakeFiles/warehouse_generated_tests.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=84,85 "Finished codegen for target warehouse_generated_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=90,91 "Finished codegen for target warehouse_generated_tests"
 .PHONY : CMakeFiles/warehouse_generated_tests.dir/codegen
 
 # clean rule for target.
@@ -1153,7 +1156,7 @@ CMakeFiles/warehouse_generated_tests.dir/clean:
 CMakeFiles/warehouse_edge_tests.dir/all: CMakeFiles/warehouse.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_edge_tests.dir/build.make CMakeFiles/warehouse_edge_tests.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_edge_tests.dir/build.make CMakeFiles/warehouse_edge_tests.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=82,83 "Built target warehouse_edge_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=88,89 "Built target warehouse_edge_tests"
 .PHONY : CMakeFiles/warehouse_edge_tests.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1170,7 +1173,7 @@ warehouse_edge_tests: CMakeFiles/warehouse_edge_tests.dir/rule
 # codegen rule for target.
 CMakeFiles/warehouse_edge_tests.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_edge_tests.dir/build.make CMakeFiles/warehouse_edge_tests.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=82,83 "Finished codegen for target warehouse_edge_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=88,89 "Finished codegen for target warehouse_edge_tests"
 .PHONY : CMakeFiles/warehouse_edge_tests.dir/codegen
 
 # clean rule for target.
@@ -1185,7 +1188,7 @@ CMakeFiles/warehouse_edge_tests.dir/clean:
 CMakeFiles/warehouse_per_file_tests.dir/all: CMakeFiles/warehouse.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_per_file_tests.dir/build.make CMakeFiles/warehouse_per_file_tests.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_per_file_tests.dir/build.make CMakeFiles/warehouse_per_file_tests.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=86,87 "Built target warehouse_per_file_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=92,93 "Built target warehouse_per_file_tests"
 .PHONY : CMakeFiles/warehouse_per_file_tests.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1202,13 +1205,45 @@ warehouse_per_file_tests: CMakeFiles/warehouse_per_file_tests.dir/rule
 # codegen rule for target.
 CMakeFiles/warehouse_per_file_tests.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_per_file_tests.dir/build.make CMakeFiles/warehouse_per_file_tests.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=86,87 "Finished codegen for target warehouse_per_file_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=92,93 "Finished codegen for target warehouse_per_file_tests"
 .PHONY : CMakeFiles/warehouse_per_file_tests.dir/codegen
 
 # clean rule for target.
 CMakeFiles/warehouse_per_file_tests.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_per_file_tests.dir/build.make CMakeFiles/warehouse_per_file_tests.dir/clean
 .PHONY : CMakeFiles/warehouse_per_file_tests.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/warehouse_domain_demo_tests.dir
+
+# All Build rule for target.
+CMakeFiles/warehouse_domain_demo_tests.dir/all: CMakeFiles/warehouse.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_domain_demo_tests.dir/build.make CMakeFiles/warehouse_domain_demo_tests.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_domain_demo_tests.dir/build.make CMakeFiles/warehouse_domain_demo_tests.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=85,86,87 "Built target warehouse_domain_demo_tests"
+.PHONY : CMakeFiles/warehouse_domain_demo_tests.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/warehouse_domain_demo_tests.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles 81
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/warehouse_domain_demo_tests.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles 0
+.PHONY : CMakeFiles/warehouse_domain_demo_tests.dir/rule
+
+# Convenience name for target.
+warehouse_domain_demo_tests: CMakeFiles/warehouse_domain_demo_tests.dir/rule
+.PHONY : warehouse_domain_demo_tests
+
+# codegen rule for target.
+CMakeFiles/warehouse_domain_demo_tests.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_domain_demo_tests.dir/build.make CMakeFiles/warehouse_domain_demo_tests.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=85,86,87 "Finished codegen for target warehouse_domain_demo_tests"
+.PHONY : CMakeFiles/warehouse_domain_demo_tests.dir/codegen
+
+# clean rule for target.
+CMakeFiles/warehouse_domain_demo_tests.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_domain_demo_tests.dir/build.make CMakeFiles/warehouse_domain_demo_tests.dir/clean
+.PHONY : CMakeFiles/warehouse_domain_demo_tests.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/coverage.dir
@@ -1218,6 +1253,7 @@ CMakeFiles/coverage.dir/all: CMakeFiles/warehouse_tests.dir/all
 CMakeFiles/coverage.dir/all: CMakeFiles/warehouse_generated_tests.dir/all
 CMakeFiles/coverage.dir/all: CMakeFiles/warehouse_edge_tests.dir/all
 CMakeFiles/coverage.dir/all: CMakeFiles/warehouse_per_file_tests.dir/all
+CMakeFiles/coverage.dir/all: CMakeFiles/warehouse_domain_demo_tests.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/coverage.dir/build.make CMakeFiles/coverage.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/coverage.dir/build.make CMakeFiles/coverage.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=1 "Built target coverage"
@@ -1225,7 +1261,7 @@ CMakeFiles/coverage.dir/all: CMakeFiles/warehouse_per_file_tests.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/coverage.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles 87
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles 90
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/coverage.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles 0
 .PHONY : CMakeFiles/coverage.dir/rule
@@ -1239,6 +1275,7 @@ CMakeFiles/coverage.dir/codegen: CMakeFiles/warehouse_tests.dir/all
 CMakeFiles/coverage.dir/codegen: CMakeFiles/warehouse_generated_tests.dir/all
 CMakeFiles/coverage.dir/codegen: CMakeFiles/warehouse_edge_tests.dir/all
 CMakeFiles/coverage.dir/codegen: CMakeFiles/warehouse_per_file_tests.dir/all
+CMakeFiles/coverage.dir/codegen: CMakeFiles/warehouse_domain_demo_tests.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/coverage.dir/build.make CMakeFiles/coverage.dir/codegen
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=1 "Finished codegen for target coverage"
 .PHONY : CMakeFiles/coverage.dir/codegen

@@ -100,14 +100,14 @@ CMakeFiles/warehouse.dir/cpp/people/Storekeeper.cpp.o: \
  /usr/include/c++/16/bits/stl_vector.h \
  /usr/include/c++/16/bits/stl_bvector.h \
  /usr/include/c++/16/bits/vector.tcc \
- /home/andrey/projects/PPOIS/lab3/h/storage/StorageZone.h \
- /home/andrey/projects/PPOIS/lab3/h/orders/PickingTask.h \
  /home/andrey/projects/PPOIS/lab3/h/exceptions/WarehouseException.h \
  /usr/include/c++/16/stdexcept /usr/include/c++/16/exception \
  /usr/include/c++/16/bits/exception_ptr.h \
  /usr/include/c++/16/bits/cxxabi_init_exception.h \
  /usr/include/c++/16/typeinfo /usr/include/c++/16/bits/nested_exception.h \
  /usr/include/c++/16/bits/stdexcept_except.h \
+ /home/andrey/projects/PPOIS/lab3/h/orders/PickingTask.h \
+ /home/andrey/projects/PPOIS/lab3/h/storage/StorageZone.h \
  /usr/include/c++/16/algorithm /usr/include/c++/16/bits/stl_algo.h \
  /usr/include/c++/16/bits/algorithmfwd.h \
  /usr/include/c++/16/bits/stl_heap.h \

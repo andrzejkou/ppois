@@ -1,0 +1,3 @@
+order_id,customer_id,status
+1,CUST-001,Shipped
+2,CUST-001,Shipped

@@ -8,6 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/andrey/projects/PPOIS/lab3/app/Application.cpp" "CMakeFiles/warehouse_app.dir/app/Application.cpp.o" "gcc" "CMakeFiles/warehouse_app.dir/app/Application.cpp.o.d"
+  "/home/andrey/projects/PPOIS/lab3/app/DomainModules.cpp" "CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.o" "gcc" "CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.o.d"
+  "/home/andrey/projects/PPOIS/lab3/app/Menu.cpp" "CMakeFiles/warehouse_app.dir/app/Menu.cpp.o" "gcc" "CMakeFiles/warehouse_app.dir/app/Menu.cpp.o.d"
   "/home/andrey/projects/PPOIS/lab3/main.cpp" "CMakeFiles/warehouse_app.dir/main.cpp.o" "gcc" "CMakeFiles/warehouse_app.dir/main.cpp.o.d"
   "" "warehouse_app" "gcc" "CMakeFiles/warehouse_app.dir/link.d"
   )

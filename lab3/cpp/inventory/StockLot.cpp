@@ -10,3 +10,6 @@ void StockLot::remove(int q){if(isExpired())throw ExpiredProductException("Canno
 void StockLot::markQuarantined()noexcept{quarantined_=true;} void StockLot::releaseFromQuarantine()noexcept{quarantined_=false;} bool StockLot::quarantined()const noexcept{return quarantined_;} int StockLot::quantity()const noexcept{return quantity_;} double StockLot::totalCost()const noexcept{return quantity_*unitCost_;} const std::string& StockLot::lotNumber()const noexcept{return lotNumber_;} const std::string& StockLot::sku()const noexcept{return sku_;}
 
 bool StockLot::matchesProduct(const Product& product) const { return product.active() && product.sku() == sku_; }
+
+std::time_t StockLot::expiryDate() const noexcept { return expiryDate_; }
+double StockLot::unitCost() const noexcept { return unitCost_; }

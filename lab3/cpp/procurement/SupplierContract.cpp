@@ -30,3 +30,7 @@ bool SupplierContract::renew(const std::string& newValidUntil) {
 const std::string& SupplierContract::contractId() const noexcept { return contractId_; }
 const std::string& SupplierContract::supplierId() const noexcept { return supplierId_; }
 double SupplierContract::minimumOrderValue() const noexcept { return minimumOrderValue_; }
+
+const std::string& SupplierContract::validFrom() const noexcept { return validFrom_; }
+const std::string& SupplierContract::validUntil() const noexcept { return validUntil_; }
+double SupplierContract::latePenaltyRate() const noexcept { return latePenaltyRate_; }

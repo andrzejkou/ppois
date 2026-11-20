@@ -569,6 +569,94 @@ warehouse_per_file_tests/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_per_file_tests.dir/build.make CMakeFiles/warehouse_per_file_tests.dir/build
 .PHONY : warehouse_per_file_tests/fast
 
+#=============================================================================
+# Target rules for targets named warehouse_domain_demo_tests
+
+# Build rule for target.
+warehouse_domain_demo_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 warehouse_domain_demo_tests
+.PHONY : warehouse_domain_demo_tests
+
+# fast build rule for target.
+warehouse_domain_demo_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_domain_demo_tests.dir/build.make CMakeFiles/warehouse_domain_demo_tests.dir/build
+.PHONY : warehouse_domain_demo_tests/fast
+
+app/Application.o: app/Application.cpp.o
+.PHONY : app/Application.o
+
+# target to build an object file
+app/Application.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_app.dir/build.make CMakeFiles/warehouse_app.dir/app/Application.cpp.o
+.PHONY : app/Application.cpp.o
+
+app/Application.i: app/Application.cpp.i
+.PHONY : app/Application.i
+
+# target to preprocess a source file
+app/Application.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_app.dir/build.make CMakeFiles/warehouse_app.dir/app/Application.cpp.i
+.PHONY : app/Application.cpp.i
+
+app/Application.s: app/Application.cpp.s
+.PHONY : app/Application.s
+
+# target to generate assembly for a file
+app/Application.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_app.dir/build.make CMakeFiles/warehouse_app.dir/app/Application.cpp.s
+.PHONY : app/Application.cpp.s
+
+app/DomainModules.o: app/DomainModules.cpp.o
+.PHONY : app/DomainModules.o
+
+# target to build an object file
+app/DomainModules.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_app.dir/build.make CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_domain_demo_tests.dir/build.make CMakeFiles/warehouse_domain_demo_tests.dir/app/DomainModules.cpp.o
+.PHONY : app/DomainModules.cpp.o
+
+app/DomainModules.i: app/DomainModules.cpp.i
+.PHONY : app/DomainModules.i
+
+# target to preprocess a source file
+app/DomainModules.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_app.dir/build.make CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_domain_demo_tests.dir/build.make CMakeFiles/warehouse_domain_demo_tests.dir/app/DomainModules.cpp.i
+.PHONY : app/DomainModules.cpp.i
+
+app/DomainModules.s: app/DomainModules.cpp.s
+.PHONY : app/DomainModules.s
+
+# target to generate assembly for a file
+app/DomainModules.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_app.dir/build.make CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_domain_demo_tests.dir/build.make CMakeFiles/warehouse_domain_demo_tests.dir/app/DomainModules.cpp.s
+.PHONY : app/DomainModules.cpp.s
+
+app/Menu.o: app/Menu.cpp.o
+.PHONY : app/Menu.o
+
+# target to build an object file
+app/Menu.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_app.dir/build.make CMakeFiles/warehouse_app.dir/app/Menu.cpp.o
+.PHONY : app/Menu.cpp.o
+
+app/Menu.i: app/Menu.cpp.i
+.PHONY : app/Menu.i
+
+# target to preprocess a source file
+app/Menu.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_app.dir/build.make CMakeFiles/warehouse_app.dir/app/Menu.cpp.i
+.PHONY : app/Menu.cpp.i
+
+app/Menu.s: app/Menu.cpp.s
+.PHONY : app/Menu.s
+
+# target to generate assembly for a file
+app/Menu.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_app.dir/build.make CMakeFiles/warehouse_app.dir/app/Menu.cpp.s
+.PHONY : app/Menu.cpp.s
+
 cpp/exceptions/AccessDeniedException.o: cpp/exceptions/AccessDeniedException.cpp.o
 .PHONY : cpp/exceptions/AccessDeniedException.o
 
@@ -2465,6 +2553,30 @@ tests/test_coverage_edges.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_edge_tests.dir/build.make CMakeFiles/warehouse_edge_tests.dir/tests/test_coverage_edges.cpp.s
 .PHONY : tests/test_coverage_edges.cpp.s
 
+tests/test_domain_demo.o: tests/test_domain_demo.cpp.o
+.PHONY : tests/test_domain_demo.o
+
+# target to build an object file
+tests/test_domain_demo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_domain_demo_tests.dir/build.make CMakeFiles/warehouse_domain_demo_tests.dir/tests/test_domain_demo.cpp.o
+.PHONY : tests/test_domain_demo.cpp.o
+
+tests/test_domain_demo.i: tests/test_domain_demo.cpp.i
+.PHONY : tests/test_domain_demo.i
+
+# target to preprocess a source file
+tests/test_domain_demo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_domain_demo_tests.dir/build.make CMakeFiles/warehouse_domain_demo_tests.dir/tests/test_domain_demo.cpp.i
+.PHONY : tests/test_domain_demo.cpp.i
+
+tests/test_domain_demo.s: tests/test_domain_demo.cpp.s
+.PHONY : tests/test_domain_demo.s
+
+# target to generate assembly for a file
+tests/test_domain_demo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/warehouse_domain_demo_tests.dir/build.make CMakeFiles/warehouse_domain_demo_tests.dir/tests/test_domain_demo.cpp.s
+.PHONY : tests/test_domain_demo.cpp.s
+
 tests/test_generated_entities.o: tests/test_generated_entities.cpp.o
 .PHONY : tests/test_generated_entities.o
 
@@ -2576,10 +2688,20 @@ help:
 	@echo "... NightlyUpdate"
 	@echo "... warehouse"
 	@echo "... warehouse_app"
+	@echo "... warehouse_domain_demo_tests"
 	@echo "... warehouse_edge_tests"
 	@echo "... warehouse_generated_tests"
 	@echo "... warehouse_per_file_tests"
 	@echo "... warehouse_tests"
+	@echo "... app/Application.o"
+	@echo "... app/Application.i"
+	@echo "... app/Application.s"
+	@echo "... app/DomainModules.o"
+	@echo "... app/DomainModules.i"
+	@echo "... app/DomainModules.s"
+	@echo "... app/Menu.o"
+	@echo "... app/Menu.i"
+	@echo "... app/Menu.s"
 	@echo "... cpp/exceptions/AccessDeniedException.o"
 	@echo "... cpp/exceptions/AccessDeniedException.i"
 	@echo "... cpp/exceptions/AccessDeniedException.s"
@@ -2817,6 +2939,9 @@ help:
 	@echo "... tests/test_coverage_edges.o"
 	@echo "... tests/test_coverage_edges.i"
 	@echo "... tests/test_coverage_edges.s"
+	@echo "... tests/test_domain_demo.o"
+	@echo "... tests/test_domain_demo.i"
+	@echo "... tests/test_domain_demo.s"
 	@echo "... tests/test_generated_entities.o"
 	@echo "... tests/test_generated_entities.i"
 	@echo "... tests/test_generated_entities.s"

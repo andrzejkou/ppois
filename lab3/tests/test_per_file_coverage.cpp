@@ -69,6 +69,7 @@ int main() {
     assert(!fresh.matchesProduct(lotProduct));
     assert(fresh.lotNumber() == "LOT-F" && fresh.sku() == "SKU-F");
     assert(fresh.quantity() == 8 && fresh.totalCost() == 20.0);
+    assert(fresh.expiryDate() == now + 4 * 86400 && fresh.unitCost() == 2.5);
     throws([&] { StockLot bad("", "SKU", 1, now + 100, 1); });
 
     // WarehouseWorker: shift gates, both task types, duplicate IDs and completion.
@@ -183,6 +184,8 @@ int main() {
     SupplierContract contract("SC-1", "SUP-COV", "2026-01-01", "2026-12-31", 10.0, 0.1);
     assert(contract.contractId() == "SC-1" && contract.supplierId() == "SUP-COV");
     assert(contract.minimumOrderValue() == 10.0 && contract.belongsTo(supplier));
+    assert(contract.validFrom() == "2026-01-01" && contract.validUntil() == "2026-12-31");
+    assert(contract.latePenaltyRate() == 0.1);
     assert(contract.isValidOn("2026-06-01") && !contract.isValidOn("bad") && !contract.isValidOn("2027-01-01"));
     assert(contract.calculatePenalty(2, 100.0) == 20.0);
     assert(contract.calculatePenalty(0, 100.0) == 0.0 && contract.calculatePenalty(2, 5.0) == 0.0);

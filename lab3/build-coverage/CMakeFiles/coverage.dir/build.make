@@ -70,6 +70,7 @@ CMakeFiles/coverage: warehouse_tests
 CMakeFiles/coverage: warehouse_generated_tests
 CMakeFiles/coverage: warehouse_edge_tests
 CMakeFiles/coverage: warehouse_per_file_tests
+CMakeFiles/coverage: warehouse_domain_demo_tests
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Running tests and calculating GCC line/branch coverage"
 	cd /home/andrey/projects/PPOIS/lab3 && /usr/bin/python3.14 /home/andrey/projects/PPOIS/lab3/tools/coverage.py --build-dir /home/andrey/projects/PPOIS/lab3/build-coverage --source-dir /home/andrey/projects/PPOIS/lab3
 

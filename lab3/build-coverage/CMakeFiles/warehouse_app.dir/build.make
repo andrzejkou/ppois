@@ -86,19 +86,67 @@ CMakeFiles/warehouse_app.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/warehouse_app.dir/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/andrey/projects/PPOIS/lab3/main.cpp -o CMakeFiles/warehouse_app.dir/main.cpp.s
 
+CMakeFiles/warehouse_app.dir/app/Application.cpp.o: CMakeFiles/warehouse_app.dir/flags.make
+CMakeFiles/warehouse_app.dir/app/Application.cpp.o: /home/andrey/projects/PPOIS/lab3/app/Application.cpp
+CMakeFiles/warehouse_app.dir/app/Application.cpp.o: CMakeFiles/warehouse_app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/warehouse_app.dir/app/Application.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/warehouse_app.dir/app/Application.cpp.o -MF CMakeFiles/warehouse_app.dir/app/Application.cpp.o.d -o CMakeFiles/warehouse_app.dir/app/Application.cpp.o -c /home/andrey/projects/PPOIS/lab3/app/Application.cpp
+
+CMakeFiles/warehouse_app.dir/app/Application.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/warehouse_app.dir/app/Application.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/andrey/projects/PPOIS/lab3/app/Application.cpp > CMakeFiles/warehouse_app.dir/app/Application.cpp.i
+
+CMakeFiles/warehouse_app.dir/app/Application.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/warehouse_app.dir/app/Application.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/andrey/projects/PPOIS/lab3/app/Application.cpp -o CMakeFiles/warehouse_app.dir/app/Application.cpp.s
+
+CMakeFiles/warehouse_app.dir/app/Menu.cpp.o: CMakeFiles/warehouse_app.dir/flags.make
+CMakeFiles/warehouse_app.dir/app/Menu.cpp.o: /home/andrey/projects/PPOIS/lab3/app/Menu.cpp
+CMakeFiles/warehouse_app.dir/app/Menu.cpp.o: CMakeFiles/warehouse_app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/warehouse_app.dir/app/Menu.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/warehouse_app.dir/app/Menu.cpp.o -MF CMakeFiles/warehouse_app.dir/app/Menu.cpp.o.d -o CMakeFiles/warehouse_app.dir/app/Menu.cpp.o -c /home/andrey/projects/PPOIS/lab3/app/Menu.cpp
+
+CMakeFiles/warehouse_app.dir/app/Menu.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/warehouse_app.dir/app/Menu.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/andrey/projects/PPOIS/lab3/app/Menu.cpp > CMakeFiles/warehouse_app.dir/app/Menu.cpp.i
+
+CMakeFiles/warehouse_app.dir/app/Menu.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/warehouse_app.dir/app/Menu.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/andrey/projects/PPOIS/lab3/app/Menu.cpp -o CMakeFiles/warehouse_app.dir/app/Menu.cpp.s
+
+CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.o: CMakeFiles/warehouse_app.dir/flags.make
+CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.o: /home/andrey/projects/PPOIS/lab3/app/DomainModules.cpp
+CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.o: CMakeFiles/warehouse_app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.o -MF CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.o.d -o CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.o -c /home/andrey/projects/PPOIS/lab3/app/DomainModules.cpp
+
+CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/andrey/projects/PPOIS/lab3/app/DomainModules.cpp > CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.i
+
+CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/andrey/projects/PPOIS/lab3/app/DomainModules.cpp -o CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.s
+
 # Object files for target warehouse_app
 warehouse_app_OBJECTS = \
-"CMakeFiles/warehouse_app.dir/main.cpp.o"
+"CMakeFiles/warehouse_app.dir/main.cpp.o" \
+"CMakeFiles/warehouse_app.dir/app/Application.cpp.o" \
+"CMakeFiles/warehouse_app.dir/app/Menu.cpp.o" \
+"CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.o"
 
 # External object files for target warehouse_app
 warehouse_app_EXTERNAL_OBJECTS =
 
 warehouse_app: CMakeFiles/warehouse_app.dir/main.cpp.o
+warehouse_app: CMakeFiles/warehouse_app.dir/app/Application.cpp.o
+warehouse_app: CMakeFiles/warehouse_app.dir/app/Menu.cpp.o
+warehouse_app: CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.o
 warehouse_app: CMakeFiles/warehouse_app.dir/build.make
 warehouse_app: CMakeFiles/warehouse_app.dir/compiler_depend.ts
 warehouse_app: libwarehouse.a
 warehouse_app: CMakeFiles/warehouse_app.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable warehouse_app"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/andrey/projects/PPOIS/lab3/build-coverage/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable warehouse_app"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/warehouse_app.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

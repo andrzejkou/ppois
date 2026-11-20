@@ -1,1 +1,1 @@
-/usr/bin/c++ -g --coverage -Wl,--dependency-file=CMakeFiles/warehouse_edge_tests.dir/link.d CMakeFiles/warehouse_edge_tests.dir/tests/test_coverage_edges.cpp.o -o warehouse_edge_tests  libwarehouse.a -lgcov
+/usr/bin/c++ --coverage -g --coverage --coverage -Wl,--dependency-file=CMakeFiles/warehouse_edge_tests.dir/link.d CMakeFiles/warehouse_edge_tests.dir/tests/test_coverage_edges.cpp.o -o warehouse_edge_tests  libwarehouse.a -lgcov

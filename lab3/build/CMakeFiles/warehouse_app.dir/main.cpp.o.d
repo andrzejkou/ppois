@@ -1,6 +1,8 @@
 CMakeFiles/warehouse_app.dir/main.cpp.o: \
  /home/andrey/projects/PPOIS/lab3/main.cpp /usr/include/stdc-predef.h \
- /home/andrey/projects/PPOIS/lab3/h/products/Product.h \
+ /home/andrey/projects/PPOIS/lab3/app/Application.h \
+ /home/andrey/projects/PPOIS/lab3/app/Menu.h \
+ /home/andrey/projects/PPOIS/lab3/h/inventory/StockItem.h \
  /usr/include/c++/16/string /usr/include/c++/16/bits/requires_hosted.h \
  /usr/include/c++/16/x86_64-pc-linux-gnu/bits/c++config.h \
  /usr/include/c++/16/x86_64-pc-linux-gnu/bits/os_defines.h \
@@ -94,21 +96,36 @@ CMakeFiles/warehouse_app.dir/main.cpp.o: \
  /usr/include/c++/16/bits/memory_resource.h /usr/include/c++/16/cstddef \
  /usr/include/c++/16/bits/uses_allocator.h \
  /usr/include/c++/16/bits/uses_allocator_args.h /usr/include/c++/16/tuple \
- /usr/include/c++/16/bits/invoke.h /usr/include/c++/16/vector \
- /usr/include/c++/16/bits/stl_uninitialized.h \
+ /usr/include/c++/16/bits/invoke.h \
+ /home/andrey/projects/PPOIS/lab3/h/inventory/StockLot.h \
+ /usr/include/c++/16/ctime /usr/include/time.h /usr/include/bits/time.h \
+ /usr/include/bits/timex.h /usr/include/bits/types/struct_tm.h \
+ /usr/include/bits/types/struct_itimerspec.h \
+ /home/andrey/projects/PPOIS/lab3/h/orders/SalesOrder.h \
+ /home/andrey/projects/PPOIS/lab3/h/orders/SalesOrderLine.h \
+ /usr/include/c++/16/vector /usr/include/c++/16/bits/stl_uninitialized.h \
  /usr/include/c++/16/bits/stl_vector.h \
  /usr/include/c++/16/bits/stl_bvector.h \
  /usr/include/c++/16/bits/vector.tcc \
- /home/andrey/projects/PPOIS/lab3/h/storage/Warehouse.h \
+ /home/andrey/projects/PPOIS/lab3/h/orders/Customer.h \
+ /home/andrey/projects/PPOIS/lab3/h/people/QualityInspector.h \
+ /home/andrey/projects/PPOIS/lab3/h/people/Employee.h \
+ /home/andrey/projects/PPOIS/lab3/h/people/WarehouseManager.h \
+ /home/andrey/projects/PPOIS/lab3/h/products/Product.h \
+ /home/andrey/projects/PPOIS/lab3/h/procurement/DeliveryNote.h \
+ /home/andrey/projects/PPOIS/lab3/h/procurement/GoodsReceipt.h \
+ /home/andrey/projects/PPOIS/lab3/h/procurement/PurchaseOrder.h \
+ /home/andrey/projects/PPOIS/lab3/h/procurement/PurchaseOrderLine.h \
+ /home/andrey/projects/PPOIS/lab3/h/procurement/PurchaseRequest.h \
+ /home/andrey/projects/PPOIS/lab3/h/procurement/Supplier.h \
+ /home/andrey/projects/PPOIS/lab3/h/procurement/SupplierContract.h \
  /home/andrey/projects/PPOIS/lab3/h/storage/StorageZone.h \
- /home/andrey/projects/PPOIS/lab3/h/inventory/StockItem.h \
- /home/andrey/projects/PPOIS/lab3/h/orders/SalesOrder.h \
- /home/andrey/projects/PPOIS/lab3/h/orders/SalesOrderLine.h \
- /usr/include/c++/16/iostream /usr/include/c++/16/ostream \
- /usr/include/c++/16/bits/ostream.h /usr/include/c++/16/ios \
+ /home/andrey/projects/PPOIS/lab3/h/storage/Warehouse.h \
  /usr/include/c++/16/exception /usr/include/c++/16/bits/exception_ptr.h \
  /usr/include/c++/16/bits/cxxabi_init_exception.h \
  /usr/include/c++/16/typeinfo /usr/include/c++/16/bits/nested_exception.h \
+ /usr/include/c++/16/iostream /usr/include/c++/16/ostream \
+ /usr/include/c++/16/bits/ostream.h /usr/include/c++/16/ios \
  /usr/include/c++/16/bits/ios_base.h /usr/include/c++/16/ext/atomicity.h \
  /usr/include/c++/16/x86_64-pc-linux-gnu/bits/gthr.h \
  /usr/include/c++/16/x86_64-pc-linux-gnu/bits/gthr-default.h \
@@ -120,9 +137,7 @@ CMakeFiles/warehouse_app.dir/main.cpp.o: \
  /usr/include/linux/stddef.h /usr/include/asm/posix_types.h \
  /usr/include/asm/posix_types_64.h /usr/include/asm-generic/posix_types.h \
  /usr/include/bits/types/struct_sched_param.h /usr/include/bits/cpu-set.h \
- /usr/include/time.h /usr/include/bits/time.h /usr/include/bits/timex.h \
- /usr/include/bits/types/struct_tm.h \
- /usr/include/bits/types/struct_itimerspec.h /usr/include/bits/setjmp.h \
+ /usr/include/bits/setjmp.h \
  /usr/include/bits/types/struct___jmp_buf_tag.h \
  /usr/include/bits/pthread_stack_min-dynamic.h \
  /usr/include/c++/16/x86_64-pc-linux-gnu/bits/atomic_word.h \

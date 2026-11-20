@@ -94,5 +94,6 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/warehouse_generated_tests.dir/DependInfo.cmake"
   "CMakeFiles/warehouse_edge_tests.dir/DependInfo.cmake"
   "CMakeFiles/warehouse_per_file_tests.dir/DependInfo.cmake"
+  "CMakeFiles/warehouse_domain_demo_tests.dir/DependInfo.cmake"
   "CMakeFiles/coverage.dir/DependInfo.cmake"
   )

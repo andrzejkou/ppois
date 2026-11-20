@@ -1,5 +1,5 @@
 Warehouse Management — GCC line coverage
-Line coverage: 1283/1286 = 99.77%
+Line coverage: 1298/1301 = 99.77%
 Required aggregate minimum: 90.00%
 Required per-file minimum: 90.00%
 Aggregate result: PASS
@@ -30,11 +30,11 @@ Per-file line coverage:
 [PASS] cpp/finance/WarehouseExpense.cpp: 26/26 (100.0%)
 [PASS] cpp/inventory/Inventory.cpp: 5/5 (100.0%)
 [PASS] cpp/inventory/InventoryLine.cpp: 3/3 (100.0%)
-[PASS] cpp/inventory/ReorderRule.cpp: 22/22 (100.0%)
+[PASS] cpp/inventory/ReorderRule.cpp: 23/23 (100.0%)
 [PASS] cpp/inventory/StockAdjustment.cpp: 21/21 (100.0%)
 [PASS] cpp/inventory/StockBalance.cpp: 23/23 (100.0%)
 [PASS] cpp/inventory/StockItem.cpp: 8/8 (100.0%)
-[PASS] cpp/inventory/StockLot.cpp: 5/5 (100.0%)
+[PASS] cpp/inventory/StockLot.cpp: 7/7 (100.0%)
 [PASS] cpp/inventory/StockMovement.cpp: 23/23 (100.0%)
 [PASS] cpp/inventory/StockReservation.cpp: 5/5 (100.0%)
 [PASS] cpp/logistics/Carrier.cpp: 24/24 (100.0%)
@@ -59,13 +59,13 @@ Per-file line coverage:
 [PASS] cpp/people/Driver.cpp: 25/25 (100.0%)
 [PASS] cpp/people/Employee.cpp: 26/26 (100.0%)
 [PASS] cpp/people/QualityInspector.cpp: 18/18 (100.0%)
-[PASS] cpp/people/Storekeeper.cpp: 21/21 (100.0%)
+[PASS] cpp/people/Storekeeper.cpp: 30/30 (100.0%)
 [PASS] cpp/people/WarehouseWorker.cpp: 26/26 (100.0%)
 [PASS] cpp/procurement/DeliveryNote.cpp: 28/28 (100.0%)
 [PASS] cpp/procurement/PurchaseOrder.cpp: 3/3 (100.0%)
 [PASS] cpp/procurement/PurchaseOrderLine.cpp: 1/1 (100.0%)
 [PASS] cpp/procurement/Supplier.cpp: 25/25 (100.0%)
-[PASS] cpp/procurement/SupplierContract.cpp: 22/22 (100.0%)
+[PASS] cpp/procurement/SupplierContract.cpp: 25/25 (100.0%)
 [PASS] cpp/products/Barcode.cpp: 23/23 (100.0%)
 [PASS] cpp/products/Brand.cpp: 24/24 (100.0%)
 [PASS] cpp/products/Product.cpp: 9/9 (100.0%)

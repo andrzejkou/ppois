@@ -13,6 +13,9 @@ public:
     const std::string& contractId() const noexcept;
     const std::string& supplierId() const noexcept;
     double minimumOrderValue() const noexcept;
+    const std::string& validFrom() const noexcept;
+    const std::string& validUntil() const noexcept;
+    double latePenaltyRate() const noexcept;
 private:
     std::string contractId_;
     std::string supplierId_;

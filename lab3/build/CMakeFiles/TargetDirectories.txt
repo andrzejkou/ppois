@@ -32,6 +32,7 @@
 /home/andrey/projects/PPOIS/lab3/build/CMakeFiles/warehouse_generated_tests.dir
 /home/andrey/projects/PPOIS/lab3/build/CMakeFiles/warehouse_edge_tests.dir
 /home/andrey/projects/PPOIS/lab3/build/CMakeFiles/warehouse_per_file_tests.dir
+/home/andrey/projects/PPOIS/lab3/build/CMakeFiles/warehouse_domain_demo_tests.dir
 /home/andrey/projects/PPOIS/lab3/build/CMakeFiles/test.dir
 /home/andrey/projects/PPOIS/lab3/build/CMakeFiles/edit_cache.dir
 /home/andrey/projects/PPOIS/lab3/build/CMakeFiles/rebuild_cache.dir

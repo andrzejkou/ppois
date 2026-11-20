@@ -3,6 +3,9 @@ warehouse_app: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/crti.o \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/crtbeginS.o \
   CMakeFiles/warehouse_app.dir/main.cpp.o \
+  CMakeFiles/warehouse_app.dir/app/Application.cpp.o \
+  CMakeFiles/warehouse_app.dir/app/Menu.cpp.o \
+  CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.o \
   libwarehouse.a \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/libstdc++.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/libm.so \
@@ -43,6 +46,12 @@ warehouse_app: \
 /usr/lib/gcc/x86_64-pc-linux-gnu/16/crtbeginS.o:
 
 CMakeFiles/warehouse_app.dir/main.cpp.o:
+
+CMakeFiles/warehouse_app.dir/app/Application.cpp.o:
+
+CMakeFiles/warehouse_app.dir/app/Menu.cpp.o:
+
+CMakeFiles/warehouse_app.dir/app/DomainModules.cpp.o:
 
 libwarehouse.a:
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "FinancialReport.h"
 #include "PaymentRecord.h"
 
@@ -34,8 +36,11 @@ public:
   bool hasPayment(const std::string &studentId, const std::string &purpose) const;
   std::vector<PaymentRecord> paymentsForStudent(const std::string &studentId) const;
   const std::string &name() const;
+  int fiscalYear() const { return fiscalYear_; }
+  void setFiscalYear(int value) { fiscalYear_ = value; }
 
 private:
   std::string name_;
   std::vector<PaymentRecord> payments_;
+  int fiscalYear_{0};
 };

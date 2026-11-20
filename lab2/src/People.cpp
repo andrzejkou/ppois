@@ -9,9 +9,12 @@ People::People(std::string fullName, int age)
   }
 }
 People::People(People &&other) noexcept
-    : fullName_(std::move(other.fullName_)), age_(other.age_) {
+    : fullName_(std::move(other.fullName_)), age_(other.age_),
+      email_(std::move(other.email_)), phone_(std::move(other.phone_)) {
   other.age_ = 0;
   other.fullName_.clear();
+  other.email_.clear();
+  other.phone_.clear();
 }
 void People::changeName(std::string newName) { fullName_ = std::move(newName); }
 int People::age() const { return age_; }

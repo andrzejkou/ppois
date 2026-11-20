@@ -2,15 +2,35 @@
 main
 *.o
 
-# Unit-test executable
+# Unit-test executables
 test_set
 test_vocabulary
-# Build directories and coverage reports
-**/build/coverage/
+
+# CMake build directories
+**/build/
+**/build-*/
+
+# CMake generated files
+**/CMakeFiles/
+**/CMakeCache.txt
+**/cmake_install.cmake
+**/compile_commands.json
+
+# GCC coverage data
 *.gcda
 *.gcno
 *.gcov
+*.gcov.json.gz
 *.info
 *.tmp
+
+# Coverage reports (lab2)
+/lab2/coverage.html
+/lab2/coverage.*.html
+/lab2/coverage.css
+/lab2/coverage.js
+/lab2/coverage.xml
+/lab2/coverage.functions.html
+
 # Generated Doxygen documentation
 /docs/

@@ -16,13 +16,23 @@ Student::Student(Student &&other) noexcept
       submissions_(std::move(other.submissions_)),
       applications_(std::move(other.applications_)),
       scholarshipApplications_(std::move(other.scholarshipApplications_)),
-      academicDebtCount_(other.academicDebtCount_) {
+      academicDebtCount_(other.academicDebtCount_),
+      enrollmentDate_(std::move(other.enrollmentDate_)),
+      educationForm_(std::move(other.educationForm_)),
+      fundingType_(std::move(other.fundingType_)),
+      status_(std::move(other.status_)),
+      expulsionDate_(std::move(other.expulsionDate_)) {
 
   other.studentId_.clear();
   other.subGroupNum_ = 0;
   other.year_ = 0;
   other.averageMark = 0.0;
   other.academicDebtCount_ = 0;
+  other.enrollmentDate_.clear();
+  other.educationForm_.clear();
+  other.fundingType_.clear();
+  other.status_ = "обучается";
+  other.expulsionDate_.clear();
 }
 
 double Student::averageMarkCheck() const { return averageMark; }
@@ -183,6 +193,9 @@ void Student::setSubGroup(int subGroupNumEx) {
 int Student::subGroupNum() const { return subGroupNum_; }
 
 void Student::addSubmission(const Submission &submission) {
+  if (submission.studentId() != studentId_) {
+    throw std::invalid_argument("Submission belongs to another student");
+  }
   if (submission.graded()) {
     throw std::invalid_argument("A graded submission cannot be added as new");
   }

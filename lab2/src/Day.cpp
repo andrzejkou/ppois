@@ -55,8 +55,8 @@ bool Day::hasSubject(const std::string &subjectCode) const {
 }
 
 bool Day::hasTimeConflict(int startHour, int durationHours) const {
-  if (startHour < 0 || durationHours <= 0 ||
-      startHour + durationHours > 24) {
+  if (startHour < 0 || startHour > 23 || durationHours <= 0 ||
+      durationHours > 24 - startHour) {
     throw std::invalid_argument("Invalid lesson time interval");
   }
   const int endHour = startHour + durationHours;

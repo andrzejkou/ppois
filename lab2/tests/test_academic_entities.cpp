@@ -4,6 +4,8 @@
 #include "ScholarshipApplication.h"
 #include "Subject.h"
 #include "Classroom.h"
+#include "Day.h"
+#include "Mark.h"
 
 #include <stdexcept>
 
@@ -33,4 +35,25 @@ TEST(BasicEntitiesTest, ValidateSubjectAndClassroom) {
     Classroom room("101", 30);
     EXPECT_TRUE(room.canFit(25));
     EXPECT_FALSE(room.canFit(31));
+}
+
+
+TEST(MarkTest, ExposesTheStoredDay) {
+    Day expectedDay("Monday", "2026-11-16");
+    Subject subject("MATH", "Mathematics", 5);
+    Mark mark(8, subject, expectedDay);
+
+    EXPECT_EQ(mark.day().name(), "Monday");
+    EXPECT_EQ(mark.day().getDate(), "2026-11-16");
+    EXPECT_EQ(mark.subject().code(), "MATH");
+    EXPECT_EQ(mark.value(), 8);
+}
+
+TEST(ClassroomTest, ExposesRoomNumberAndCapacity) {
+    Classroom room("R-204", 32);
+
+    EXPECT_EQ(room.roomNumber(), "R-204");
+    EXPECT_EQ(room.capacity(), 32);
+    EXPECT_TRUE(room.canFit(32));
+    EXPECT_FALSE(room.canFit(33));
 }

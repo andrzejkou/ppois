@@ -61,7 +61,7 @@ public:
 private:
   std::string name_;
   std::unordered_map<std::string, std::shared_ptr<Student>> students_;
-  std::vector<Group> groups_;
+  std::vector<std::shared_ptr<Group>> groups_;
   std::vector<Specialty> specialties_;
   std::vector<std::shared_ptr<Worker>> workers_;
 };

@@ -1,7 +1,7 @@
 #include "DeanOffice.h"
 #include "Box.h"
-#include "Worker.h"
 #include "Curator.h"
+#include "Worker.h"
 
 #include "Group.h"
 #include "Student.h"
@@ -80,7 +80,7 @@ void DeanOffice::giveScholarship(std::string studentId) {
 
 void DeanOffice::addGroup(const Group &group) {
   if (!findGroup(group.code())) {
-    groups_.push_back(group);
+    groups_.push_back(std::make_shared<Group>(group));
   }
 }
 void DeanOffice::manipulateScholarship() {
@@ -92,48 +92,66 @@ void DeanOffice::manipulateScholarship() {
 }
 
 bool DeanOffice::expelStudent(const std::string &studentId) {
-  bool removed = false;
+  auto studentIt = students_.find(studentId);
+
+  if (studentIt == students_.end()) {
+    return false;
+  }
+
+  // Удаляем студента из всех групп, если он там состоит.
   for (auto &group : groups_) {
-    if (group -= studentId) {
-      removed = true;
-    }
+    *group -= studentId;
   }
 
-  if (removed) {
-    students_.erase(studentId);
-  }
+  // Полностью удаляем запись из реестра.
+  students_.erase(studentIt);
 
-  return removed;
+  return true;
 }
 
 bool DeanOffice::enrollStudent(const std::string &groupCode,
                                const Student &student) {
-  if (students_.find(student.studentId()) != students_.end()) {
+  auto group = std::find_if(
+      groups_.begin(), groups_.end(),
+      [&groupCode](const std::shared_ptr<Group> &item) { return item->code() == groupCode; });
+
+  if (group == groups_.end()) {
     return false;
   }
 
-  for (auto &group : groups_) {
-    if (group.code() == groupCode) {
-      if (group[student.studentId()]) {
-        return false;
-      }
-
-      auto studentPtr = std::make_shared<Student>(student);
-
-      group += studentPtr;
-      students_.emplace(student.studentId(), studentPtr);
-
-      return true;
-    }
+  // Студент не может одновременно состоять в нескольких группах.
+  if (!groupOfStudent(student.studentId()).empty()) {
+    return false;
   }
 
-  return false;
+  // Если студент уже зарегистрирован, используем существующий объект.
+  auto studentIt = students_.find(student.studentId());
+
+  std::shared_ptr<Student> studentPtr;
+
+  if (studentIt != students_.end()) {
+    studentPtr = studentIt->second;
+  } else {
+    studentPtr = std::make_shared<Student>(student);
+  }
+
+  // Сначала добавляем студента в группу.
+  // Если группа заполнена, исключение не изменит реестр.
+  **group += studentPtr;
+
+  // Регистрируем только нового студента.
+  if (studentIt == students_.end()) {
+    students_.emplace(student.studentId(), studentPtr);
+  }
+
+  return true;
 }
+
 bool DeanOffice::removeFromGroup(const std::string &groupCode,
                                  const std::string &studentId) {
   for (auto &group : groups_) {
-    if (group.code() == groupCode) {
-      if (!(group -= studentId)) {
+    if (group->code() == groupCode) {
+      if (!(*group -= studentId)) {
         return false;
       }
 
@@ -147,46 +165,32 @@ const std::string &DeanOffice::name() const { return name_; }
 bool DeanOffice::transferStudent(const std::string &fromGroup,
                                  const std::string &toGroup,
                                  const std::string &studentId) {
+  auto sourceIt = std::find_if(groups_.begin(), groups_.end(),
+      [&fromGroup](const auto &group) { return group->code() == fromGroup; });
+  auto targetIt = std::find_if(groups_.begin(), groups_.end(),
+      [&toGroup](const auto &group) { return group->code() == toGroup; });
 
-  Group *source = nullptr;
-  Group *target = nullptr;
-
-  source = findIn(groups_, [&fromGroup](const Group &group) {
-    return group.code() == fromGroup;
-  });
-
-  target = findIn(groups_, [&toGroup](const Group &group) {
-    return group.code() == toGroup;
-  });
-
-  if (source == nullptr || target == nullptr || source == target) {
+  if (sourceIt == groups_.end() || targetIt == groups_.end() ||
+      sourceIt == targetIt) {
     return false;
   }
 
-  if (!(*source)[studentId] || (*target)[studentId] ||
-      target->availableSeats() == 0) {
+  Group &source = **sourceIt;
+  Group &target = **targetIt;
+  const auto student = source.findStudent(studentId);
+  if (!student || target[studentId] || !target.hasCapacity()) {
     return false;
   }
 
-  auto it =
-      findIn(source->students(), [&](const std::shared_ptr<Student> &student) {
-        return student->studentId() == studentId;
-      });
-
-  if (it == nullptr) {
-    return false;
-  }
-
-  (*target) += (*it);
-  (*source) -= studentId;
-
+  target += student;
+  source -= studentId;
   return true;
 }
 
 const Group *DeanOffice::findGroup(const std::string &groupName) const {
-  return findIn(groups_, [groupName](const Group &group) {
-    return group.code() == groupName;
-  });
+  const auto it = std::find_if(groups_.begin(), groups_.end(),
+      [&groupName](const auto &group) { return group->code() == groupName; });
+  return it == groups_.end() ? nullptr : it->get();
 }
 
 Student *DeanOffice::findStudent(const std::string &studentId) {
@@ -213,12 +217,22 @@ bool DeanOffice::groupHasCapacity(const std::string &groupCode) const {
 bool DeanOffice::assignCuratorToGroup(const std::string &employeeId,
                                       const std::string &groupCode) {
   Worker *worker = findWorker(employeeId);
-  const Group *group = findGroup(groupCode);
+  auto groupIt = std::find_if(groups_.begin(), groups_.end(),
+      [&groupCode](const auto &group) { return group->code() == groupCode; });
   auto *curator = dynamic_cast<Curator *>(worker);
-  if (!curator || !group) {
+  if (!curator || groupIt == groups_.end()) {
     return false;
   }
-  curator->assignGroup(*group);
+
+  // Убираем отметку о назначении с предыдущей группы этого куратора.
+  for (const auto &group : groups_) {
+    if (group->curatorEmployeeId() == employeeId) {
+      group->setCuratorEmployeeId({});
+    }
+  }
+
+  curator->assignGroup(*groupIt);
+  (*groupIt)->setCuratorEmployeeId(employeeId);
   return true;
 }
 
@@ -228,46 +242,51 @@ bool DeanOffice::mergeGroups(const std::string &sourceCode,
     return false;
   }
 
-  auto source = std::find_if(groups_.begin(), groups_.end(),
-      [&sourceCode](const Group &group) { return group.code() == sourceCode; });
-  auto target = std::find_if(groups_.begin(), groups_.end(),
-      [&targetCode](const Group &group) { return group.code() == targetCode; });
+  auto sourceIt = std::find_if(groups_.begin(), groups_.end(),
+      [&sourceCode](const auto &group) { return group->code() == sourceCode; });
+  auto targetIt = std::find_if(groups_.begin(), groups_.end(),
+      [&targetCode](const auto &group) { return group->code() == targetCode; });
 
-  if (source == groups_.end() || target == groups_.end() ||
-      source->specialtyCode() != target->specialtyCode() ||
-      target->availableSeats() < source->size()) {
+  if (sourceIt == groups_.end() || targetIt == groups_.end()) {
     return false;
   }
 
-  const auto studentsToMove = source->students();
+  Group &source = **sourceIt;
+  Group &target = **targetIt;
+  if (source.specialtyCode() != target.specialtyCode() ||
+      target.availableSeats() < source.size()) {
+    return false;
+  }
+
+  const auto studentsToMove = source.students();
   for (const auto &student : studentsToMove) {
-    if ((*target)[student->studentId()]) {
+    if (target[student->studentId()]) {
       return false;
     }
   }
-
   for (const auto &student : studentsToMove) {
-    *target += student;
+    target += student;
   }
   for (const auto &student : studentsToMove) {
-    *source -= student->studentId();
+    source -= student->studentId();
   }
   return true;
 }
 
-std::size_t DeanOffice::promoteEligibleStudents(
-    const std::string &groupCode, double minimumAverage) {
+std::size_t DeanOffice::promoteEligibleStudents(const std::string &groupCode,
+                                                double minimumAverage) {
   if (minimumAverage < 0.0 || minimumAverage > 10.0) {
     throw std::invalid_argument("Minimum average must be between 0 and 10");
   }
-  auto group = std::find_if(groups_.begin(), groups_.end(),
-      [&groupCode](const Group &item) { return item.code() == groupCode; });
+  auto group = std::find_if(
+      groups_.begin(), groups_.end(),
+      [&groupCode](const std::shared_ptr<Group> &item) { return item->code() == groupCode; });
   if (group == groups_.end()) {
     return 0;
   }
 
   std::size_t promoted = 0;
-  for (const auto &student : group->students()) {
+  for (const auto &student : (*group)->students()) {
     if (student->academicDebtCount() == 0 &&
         student->averageMarkCheck() >= minimumAverage) {
       student->promoteToNextYear();
@@ -278,32 +297,38 @@ std::size_t DeanOffice::promoteEligibleStudents(
 }
 
 bool DeanOffice::removeEmptyGroup(const std::string &groupCode) {
-  const auto it = std::find_if(groups_.begin(), groups_.end(),
-      [&groupCode](const Group &group) { return group.code() == groupCode; });
-  if (it == groups_.end() || it->size() != 0) return false;
+  const auto it = std::find_if(
+      groups_.begin(), groups_.end(),
+      [&groupCode](const auto &group) { return group->code() == groupCode; });
+  if (it == groups_.end() || (*it)->size() != 0)
+    return false;
   groups_.erase(it);
   return true;
 }
 
 std::string DeanOffice::groupOfStudent(const std::string &studentId) const {
   for (const auto &group : groups_)
-    if (group[studentId]) return group.code();
+    if ((*group)[studentId])
+      return group->code();
   return {};
 }
 
-std::size_t DeanOffice::studentsWithAcademicDebts(const std::string &groupCode) const {
+std::size_t
+DeanOffice::studentsWithAcademicDebts(const std::string &groupCode) const {
   const Group *group = findGroup(groupCode);
-  if (!group) return 0;
+  if (!group)
+    return 0;
   std::size_t count = 0;
   for (const auto &student : group->students())
-    if (student->academicDebtCount() > 0) ++count;
+    if (student->academicDebtCount() > 0)
+      ++count;
   return count;
 }
 
 std::size_t DeanOffice::totalStudents() const {
   std::size_t total = 0;
   for (const auto &group : groups_) {
-    total += group.size();
+    total += group->size();
   }
   return total;
 }
@@ -327,8 +352,8 @@ bool DeanOffice::removeSpecialty(const std::string &specialtyCode) {
   return true;
 }
 
-const Specialty *DeanOffice::findSpecialty(
-    const std::string &specialtyCode) const {
+const Specialty *
+DeanOffice::findSpecialty(const std::string &specialtyCode) const {
   auto it = std::find_if(specialties_.begin(), specialties_.end(),
                          [&specialtyCode](const Specialty &specialty) {
                            return specialty.code() == specialtyCode;

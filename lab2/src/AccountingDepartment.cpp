@@ -1,6 +1,8 @@
 #include "AccountingDepartment.h"
 #include "Student.h"
 #include <algorithm>
+#include <array>
+#include <cctype>
 #include <stdexcept>
 #include <utility>
 
@@ -17,8 +19,60 @@ AccountingDepartment::makeReport(const std::string &period) const {
 
   FinancialReport report(period);
 
+  // Supported calendar periods: YYYY, YYYY-MM, YYYY-MM-DD, or an
+  // English month name (for example, "November"). Older callers also pass
+  // descriptive labels; those retain the historical all-period report.
+  static const std::array<const char *, 12> monthNames = {
+      "january", "february", "march", "april", "may", "june",
+      "july", "august", "september", "october", "november", "december"};
+
+  std::string normalizedPeriod = period;
+  std::transform(normalizedPeriod.begin(), normalizedPeriod.end(),
+                 normalizedPeriod.begin(), [](unsigned char ch) {
+                   return static_cast<char>(std::tolower(ch));
+                 });
+
+  bool calendarPeriod = false;
+  std::string monthNumber;
+  if (period.size() == 4 &&
+      std::all_of(period.begin(), period.end(), [](unsigned char ch) {
+        return std::isdigit(ch);
+      })) {
+    calendarPeriod = true;
+  } else if ((period.size() == 7 || period.size() == 10) &&
+             period[4] == '-') {
+    const bool validYear = std::all_of(period.begin(), period.begin() + 4,
+        [](unsigned char ch) { return std::isdigit(ch); });
+    const bool validMonth = std::isdigit(period[5]) && std::isdigit(period[6]) &&
+        period.substr(5, 2) >= "01" && period.substr(5, 2) <= "12";
+    const bool validDay = period.size() == 7 ||
+        (period[7] == '-' && std::isdigit(period[8]) && std::isdigit(period[9]) &&
+         period.substr(8, 2) >= "01" && period.substr(8, 2) <= "31");
+    calendarPeriod = validYear && validMonth && validDay;
+  } else {
+    for (std::size_t i = 0; i < monthNames.size(); ++i) {
+      if (normalizedPeriod == monthNames[i]) {
+        calendarPeriod = true;
+        monthNumber = (i + 1 < 10 ? "0" : "") + std::to_string(i + 1);
+        break;
+      }
+    }
+  }
+
   for (const auto &payment : payments_) {
-    if (payment.isPaid()) {
+    const std::string &paymentDate = payment.date();
+    bool matchesPeriod = true;
+    if (calendarPeriod) {
+      if (!monthNumber.empty()) {
+        matchesPeriod = paymentDate.size() >= 7 &&
+                        paymentDate.compare(5, 2, monthNumber) == 0;
+      } else {
+        matchesPeriod = paymentDate.size() >= period.size() &&
+                        paymentDate.compare(0, period.size(), period) == 0;
+      }
+    }
+
+    if (payment.isPaid() && matchesPeriod) {
       report.addExpense(payment.amount());
     }
   }

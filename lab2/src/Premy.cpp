@@ -2,6 +2,7 @@
 
 #include "Premy.h"
 
+#include <cmath>
 #include <stdexcept>
 #include <utility>
 
@@ -12,14 +13,14 @@ Premy::Premy(std::string name, double amount)
     throw std::invalid_argument("Premy name cannot be empty");
   }
 
-  if (amount_ < 0) {
-    throw std::invalid_argument("Premy amount cannot be negative");
+  if (!std::isfinite(amount_) || amount_ < 0) {
+    throw std::invalid_argument("Premy amount must be finite and non-negative");
   }
 }
 
 void Premy::changeAmount(double amount) {
-  if (amount < 0) {
-    throw std::invalid_argument("Premy amount cannot be negative");
+  if (!std::isfinite(amount) || amount < 0) {
+    throw std::invalid_argument("Premy amount must be finite and non-negative");
   }
 
   amount_ = amount;

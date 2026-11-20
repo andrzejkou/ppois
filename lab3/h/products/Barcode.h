@@ -1,0 +1,31 @@
+#pragma once
+
+#include <string>
+#include <vector>
+
+class Barcode {
+public:
+    Barcode(std::string barcodeValue, std::string format, int quantity = 0, double amount = 0.0);
+
+    bool validateBarcode() const;
+    bool matches(int delta);
+
+    const std::string& barcodeValue() const noexcept;
+    const std::string& format() const noexcept;
+    int quantity() const noexcept;
+    double amount() const noexcept;
+    bool active() const noexcept;
+    void addRelatedId(const std::string& relatedId);
+    bool hasRelatedId(const std::string& relatedId) const;
+    std::size_t relatedCount() const noexcept;
+
+    bool isNumeric() const noexcept;
+private:
+    std::string barcodeValue_{};
+    std::string format_{};
+    int quantity_{0};
+    double amount_{0.0};
+    bool active_{true};
+    std::vector<std::string> relatedIds_{};
+
+};

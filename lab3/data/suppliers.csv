@@ -1,0 +1,3 @@
+supplier_id,company_name,contact_email,lead_time_days,reliability,active
+SUP-001,Industrial Supplies Ltd,orders@industrial.example,7,4.700000,1
+SUP-002,Hydro Parts GmbH,sales@hydroparts.example,12,4.400000,1

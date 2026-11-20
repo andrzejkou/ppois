@@ -1,0 +1,4 @@
+sku,name,unit_price,reorder_level,category_code,brand_code,warehouse_code,bin_code,on_hand,reserved,active,barcodes
+SKU-100,Industrial filter,18.50,10,FILTERS,NORTH,WH-01,A-01-01,120,0,1,4601234567890
+SKU-200,Hydraulic pump,245.00,3,PUMPS,HYDRO,WH-01,A-01-02,12,0,1,4601234567891
+SKU-300,Protective gloves,4.75,20,SAFETY,SAFECO,WH-01,B-02-01,80,0,1,4601234567892

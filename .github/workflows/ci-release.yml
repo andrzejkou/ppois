@@ -10,6 +10,7 @@ on:
     tags:
       - "lab1-v*"
       - "lab2-v*"
+      - "lab3-v*"
 
 permissions:
   contents: read
@@ -96,6 +97,9 @@ jobs:
             cppcheck \
             gcovr
 
+      - name: Clean CMake build directory
+        run: rm -rf lab2/build
+
       - name: Configure CMake
         run: |
           cmake -S lab2 -B lab2/build \
@@ -131,6 +135,60 @@ jobs:
           path: |
             lab2/build/coverage.html
             lab2/build/coverage.xml
+          if-no-files-found: ignore
+
+  # Лабораторная работа №3
+  lab3-checks:
+    if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/tags/lab3-v')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            cppcheck \
+            python3
+
+      - name: Clean CMake build directory
+        run: |
+          rm -rf lab3/build
+          rm -rf lab3/build-coverage
+
+      - name: Configure CMake
+        run: |
+          cmake -S lab3 -B lab3/build \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DBUILD_TESTING=ON \
+            -DENABLE_COVERAGE=ON \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+      - name: Build application and tests
+        run: cmake --build lab3/build --parallel 2
+
+      - name: Run tests and check coverage
+        run: cmake --build lab3/build --target coverage --parallel 2
+
+      - name: Static analysis
+        run: |
+          cppcheck \
+            --enable=warning,performance,portability \
+            --language=c++ \
+            --std=c++17 \
+            --suppress=missingIncludeSystem \
+            --project=lab3/build/compile_commands.json
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab3-coverage-report
+          path: lab3/build/coverage-summary.txt
           if-no-files-found: ignore
 
   # Релиз лабораторной работы №1
@@ -177,6 +235,9 @@ jobs:
             cmake \
             libgtest-dev
 
+      - name: Clean CMake build directory
+        run: rm -rf lab2/build
+
       - name: Configure CMake
         run: |
           cmake -S lab2 -B lab2/build \
@@ -219,6 +280,78 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           name: "Лабораторная 2 — ${{ github.ref_name }}"
+          generate_release_notes: true
+          files: dist/*.tar.gz
+
+  # Релиз лабораторной работы №3
+  release-lab3:
+    name: Release Lab3
+    if: startsWith(github.ref, 'refs/tags/lab3-v')
+    needs: lab3-checks
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake
+
+      - name: Clean CMake build directory
+        run: |
+          rm -rf lab3/build
+          rm -rf lab3/build-coverage
+
+      - name: Configure CMake
+        run: |
+          cmake -S lab3 -B lab3/build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_TESTING=ON
+
+      - name: Build application and tests
+        run: cmake --build lab3/build --parallel 2
+
+      - name: Run tests
+        run: ctest --test-dir lab3/build --output-on-failure
+
+      - name: Prepare release package
+        run: |
+          mkdir -p dist/package
+
+          cp lab3/build/warehouse_app dist/package/ppoiss-lab3
+          chmod +x dist/package/ppoiss-lab3
+
+          cat > dist/package/README.txt << 'EOF'
+          PPOIS Laboratory 3 — Warehouse Management
+          Target platform: Linux x86_64
+
+          Run:
+            ./ppoiss-lab3
+          EOF
+
+          tar -czf "dist/PPOIS-lab3-${GITHUB_REF_NAME}-linux-x86_64.tar.gz" \
+            -C dist/package .
+
+      - name: Prepare source archive
+        run: |
+          tar \
+            --exclude='lab3/build' \
+            --exclude='lab3/build-*' \
+            --exclude='lab3/coverage*' \
+            -czf "dist/PPOIS-lab3-${GITHUB_REF_NAME}-source.tar.gz" \
+            lab3 README.md
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          name: "Лаборатория 3 — ${{ github.ref_name }}"
           generate_release_notes: true
           files: dist/*.tar.gz
 

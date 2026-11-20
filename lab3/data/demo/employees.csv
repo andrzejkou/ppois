@@ -1,0 +1,5 @@
+employee_id,full_name,position,hourly_rate,active,skills
+EMP-001,Alex Morgan,Storekeeper,18.50,1,Inventory;Barcode scanning
+EMP-002,Taylor Reed,Warehouse worker,16.00,1,Packing;Picking
+EMP-MGR-01,Jordan Smith,Warehouse manager,32.00,1,Approvals;Management
+EMP-QA-01,Casey Brown,Quality inspector,24.00,1,Quality control;Inspection

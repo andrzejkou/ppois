@@ -1,0 +1,33 @@
+#pragma once
+
+#include <string>
+#include <vector>
+
+class SalesOrder;
+class Customer {
+public:
+    Customer(std::string customerId, std::string fullName, int quantity = 0, double amount = 0.0);
+
+    bool validateContact() const;
+    bool updateLoyalty(int delta);
+
+    const std::string& customerId() const noexcept;
+    const std::string& fullName() const noexcept;
+    int quantity() const noexcept;
+    double amount() const noexcept;
+    bool active() const noexcept;
+    void addRelatedId(const std::string& relatedId);
+    bool hasRelatedId(const std::string& relatedId) const;
+    std::size_t relatedCount() const noexcept;
+
+    bool ownsOrder(const SalesOrder& order) const;
+    bool qualifiesForLoyaltyDiscount(int minimumOrders) const noexcept;
+private:
+    std::string customerId_{};
+    std::string fullName_{};
+    int quantity_{0};
+    double amount_{0.0};
+    bool active_{true};
+    std::vector<std::string> relatedIds_{};
+
+};

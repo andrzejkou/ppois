@@ -1,10 +1,7 @@
+
 # Build outputs
 main
 *.o
-
-# Unit-test executables
-test_set
-test_vocabulary
 
 # CMake build directories
 **/build/
@@ -15,6 +12,11 @@ test_vocabulary
 **/CMakeCache.txt
 **/cmake_install.cmake
 **/compile_commands.json
+Makefile
+
+# Unit-test executables
+test_set
+test_vocabulary
 
 # GCC coverage data
 *.gcda
@@ -34,3 +36,4 @@ test_vocabulary
 
 # Generated Doxygen documentation
 /docs/
+

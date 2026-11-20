@@ -1,1 +1,0 @@
-/usr/bin/c++ --coverage -g --coverage --coverage -Wl,--dependency-file=CMakeFiles/warehouse_domain_demo_tests.dir/link.d CMakeFiles/warehouse_domain_demo_tests.dir/tests/test_domain_demo.cpp.o CMakeFiles/warehouse_domain_demo_tests.dir/app/DomainModules.cpp.o -o warehouse_domain_demo_tests  libwarehouse.a -lgcov

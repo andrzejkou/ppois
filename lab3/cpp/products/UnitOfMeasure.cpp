@@ -1,4 +1,5 @@
 #include "UnitOfMeasure.h"
+#include "products/Product.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool UnitOfMeasure::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t UnitOfMeasure::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool UnitOfMeasure::canMeasure(const Product& product) const { return active_ && product.active() && !unitCode_.empty() && !symbol_.empty() && amount_ > 0.0; }
+
+double UnitOfMeasure::toBase(double value) const noexcept { return active_ && value >= 0.0 ? value * amount_ : 0.0; }

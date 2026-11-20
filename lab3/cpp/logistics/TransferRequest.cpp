@@ -1,4 +1,5 @@
 #include "TransferRequest.h"
+#include "storage/Warehouse.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,15 @@ bool TransferRequest::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t TransferRequest::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool TransferRequest::setDestination(const Warehouse& destination) {
+    if (!active_ || !destination.active() || destination.code().empty() ||
+        destination.code() == sourceWarehouse_) return false;
+    destinationWarehouse_ = destination.code();
+    return true;
+}
+bool TransferRequest::connects(const Warehouse& source, const Warehouse& destination) const {
+    return active_ && source.active() && destination.active() &&
+           source.code() == sourceWarehouse_ && destination.code() == destinationWarehouse_;
+}
+const std::string& TransferRequest::destinationWarehouse() const noexcept { return destinationWarehouse_; }

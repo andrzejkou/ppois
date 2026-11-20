@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class Shelf;
 class StorageBin {
 public:
     StorageBin(std::string binCode, std::string shelfCode, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool belongsTo(const Shelf& shelf) const;
+    bool isEmpty() const noexcept;
 private:
     std::string binCode_{};
     std::string shelfCode_{};

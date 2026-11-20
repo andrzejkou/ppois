@@ -1,4 +1,5 @@
 #include "SerialNumber.h"
+#include "products/Product.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool SerialNumber::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t SerialNumber::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool SerialNumber::belongsTo(const Product& product) const { return active_ && product.active() && product.sku() == productSku_; }
+
+bool SerialNumber::isRegistered() const noexcept { return active_ && !serialCode_.empty() && !productSku_.empty(); }

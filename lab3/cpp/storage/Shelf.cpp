@@ -1,4 +1,5 @@
 #include "Shelf.h"
+#include "storage/Rack.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool Shelf::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t Shelf::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool Shelf::belongsTo(const Rack& rack) const { return active_ && rack.active() && rack.rackCode() == rackCode_; }
+
+bool Shelf::hasCapacityFor(double volume) const noexcept { return active_ && volume >= 0.0 && volume <= amount_; }

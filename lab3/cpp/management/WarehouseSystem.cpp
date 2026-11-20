@@ -1,4 +1,5 @@
 #include "WarehouseSystem.h"
+#include "storage/Warehouse.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,11 @@ bool WarehouseSystem::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t WarehouseSystem::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool WarehouseSystem::hasWarehouse(const std::string& code) const { return hasRelatedId(code); }
+
+bool WarehouseSystem::registerWarehouse(const Warehouse& warehouse) {
+    if (!active_ || !warehouse.active() || warehouse.code().empty() || hasRelatedId(warehouse.code())) return false;
+    addRelatedId(warehouse.code());
+    return true;
+}

@@ -19,6 +19,7 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool isWithinQuantityLimit(int maximumQuantity) const noexcept;
 private:
     std::string returnId_{};
     std::string orderId_{};

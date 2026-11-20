@@ -1,4 +1,5 @@
 #include "Shipment.h"
+#include "orders/SalesOrder.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,5 @@ bool Shipment::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t Shipment::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool Shipment::belongsTo(const SalesOrder& order) const { return active_ && order.orderId() == orderId_; }

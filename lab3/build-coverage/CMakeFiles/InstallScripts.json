@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/andrey/projects/PPOIS/lab3/build-coverage/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

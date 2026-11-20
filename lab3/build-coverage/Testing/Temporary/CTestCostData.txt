@@ -1,0 +1,5 @@
+warehouse_smoke_tests 3 0.00194059
+warehouse_generated_entities 3 0.00130813
+warehouse_edge_cases 3 0.0011096
+warehouse_per_file_coverage 1 0.00376895
+---

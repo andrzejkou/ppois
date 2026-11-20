@@ -37,3 +37,5 @@ bool StorageCondition::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t StorageCondition::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool StorageCondition::isTemperatureControlled() const noexcept { return active_ && (description_.find("temperature") != std::string::npos || description_.find("cold") != std::string::npos); }

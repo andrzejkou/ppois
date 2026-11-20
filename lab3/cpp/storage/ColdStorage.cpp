@@ -1,4 +1,5 @@
 #include "ColdStorage.h"
+#include "storage/StorageCondition.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool ColdStorage::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t ColdStorage::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool ColdStorage::accepts(const StorageCondition& condition) const { return active_ && condition.isSatisfiedBy() && !temperature_.empty(); }
+
+bool ColdStorage::isBelowFreezing() const noexcept { try { return std::stod(temperature_) < 0.0; } catch (...) { return false; } }

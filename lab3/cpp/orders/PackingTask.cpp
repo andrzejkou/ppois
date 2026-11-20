@@ -1,4 +1,5 @@
 #include "PackingTask.h"
+#include "orders/SalesOrder.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool PackingTask::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t PackingTask::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool PackingTask::belongsTo(const SalesOrder& order) const { return active_ && order.orderId() == orderId_; }
+
+bool PackingTask::requiresOversizePackaging(double threshold) const noexcept { return threshold >= 0.0 && amount_ > threshold; }

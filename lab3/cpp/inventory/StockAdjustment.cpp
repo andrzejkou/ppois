@@ -1,4 +1,5 @@
 #include "StockAdjustment.h"
+#include "inventory/StockBalance.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -15,10 +16,8 @@ bool StockAdjustment::applyAdjustment() const {
     return active_ && !adjustmentId_.empty();
 }
 
-bool StockAdjustment::requiresApproval(int delta) {
-    if (!active_ || delta < 0) return false;
-    quantity_ += delta;
-    return true;
+bool StockAdjustment::requiresApproval(int approvalThreshold) const {
+    return active_ && approvalThreshold >= 0 && quantity_ >= approvalThreshold;
 }
 
 const std::string& StockAdjustment::adjustmentId() const noexcept { return adjustmentId_; }
@@ -37,3 +36,7 @@ bool StockAdjustment::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t StockAdjustment::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool StockAdjustment::applyTo(StockBalance& balance, int delta) const { return active_ && delta != 0 && balance.reconcile(delta); }
+
+bool StockAdjustment::isMaterial(int approvalThreshold) const noexcept { return approvalThreshold >= 0 && quantity_ >= approvalThreshold; }

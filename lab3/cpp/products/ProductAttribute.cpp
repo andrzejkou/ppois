@@ -37,3 +37,5 @@ bool ProductAttribute::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t ProductAttribute::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool ProductAttribute::hasValue() const noexcept { return active_ && !value_.empty(); }

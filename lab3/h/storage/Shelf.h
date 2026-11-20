@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class Rack;
 class Shelf {
 public:
     Shelf(std::string shelfCode, std::string rackCode, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool belongsTo(const Rack& rack) const;
+    bool hasCapacityFor(double volume) const noexcept;
 private:
     std::string shelfCode_{};
     std::string rackCode_{};

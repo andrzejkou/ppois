@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class Product;
 class UnitOfMeasure {
 public:
     UnitOfMeasure(std::string unitCode, std::string symbol, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool canMeasure(const Product& product) const;
+    double toBase(double value) const noexcept;
 private:
     std::string unitCode_{};
     std::string symbol_{};

@@ -1,4 +1,5 @@
 #include "Delivery.h"
+#include "orders/Shipment.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool Delivery::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t Delivery::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool Delivery::refersTo(const Shipment& shipment) const { return active_ && shipment.active() && shipment.shipmentId() == shipmentId_; }
+
+bool Delivery::isOverdue(int plannedDays, int actualDays) const noexcept { return plannedDays >= 0 && actualDays > plannedDays; }

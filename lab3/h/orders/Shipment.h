@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class SalesOrder;
 class Shipment {
 public:
     Shipment(std::string shipmentId, std::string orderId, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,7 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool belongsTo(const SalesOrder& order) const;
 private:
     std::string shipmentId_{};
     std::string orderId_{};

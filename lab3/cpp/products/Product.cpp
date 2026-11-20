@@ -1,4 +1,5 @@
 #include "products/Product.h"
+#include "products/Barcode.h"
 #include "exceptions/DuplicateProductException.h"
 #include "exceptions/WarehouseException.h"
 #include <algorithm>
@@ -11,3 +12,5 @@ void Product::deactivate()noexcept{active_=false;} void Product::activate()noexc
 void Product::addBarcode(const std::string& b){if(b.empty())throw WarehouseException("Empty barcode");if(hasBarcode(b))throw DuplicateProductException("Duplicate barcode");barcodes_.push_back(b);}
 bool Product::hasBarcode(const std::string& b)const{return std::find(barcodes_.begin(),barcodes_.end(),b)!=barcodes_.end();}
 const std::string& Product::sku()const noexcept{return sku_;} const std::string& Product::name()const noexcept{return name_;} double Product::unitPrice()const noexcept{return unitPrice_;} int Product::reorderLevel()const noexcept{return reorderLevel_;} const std::string& Product::categoryCode()const noexcept{return categoryCode_;} const std::string& Product::brandCode()const noexcept{return brandCode_;} bool Product::active()const noexcept{return active_;} const std::vector<std::string>& Product::barcodes()const noexcept{return barcodes_;}
+
+bool Product::registerBarcode(const Barcode& barcode) { if (!active_ || !barcode.validateBarcode()) return false; if (hasBarcode(barcode.barcodeValue())) return true; addBarcode(barcode.barcodeValue()); return hasBarcode(barcode.barcodeValue()); }

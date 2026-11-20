@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class StockItem;
 class StockMovement {
 public:
     StockMovement(std::string movementId, std::string productSku, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool tracks(const StockItem& item) const;
+    bool isInbound() const noexcept;
 private:
     std::string movementId_{};
     std::string productSku_{};

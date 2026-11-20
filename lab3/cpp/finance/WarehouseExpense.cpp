@@ -1,4 +1,5 @@
 #include "WarehouseExpense.h"
+#include "finance/FinancialReport.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -14,6 +15,13 @@ WarehouseExpense::WarehouseExpense(std::string expenseId, std::string category, 
 bool WarehouseExpense::approveExpense() const {
     return active_ && !expenseId_.empty();
 }
+
+bool WarehouseExpense::approveBy(const std::string& managerId) {
+    if (!active_ || managerId.empty() || !approvedBy_.empty()) return false;
+    approvedBy_ = managerId; return true;
+}
+
+const std::string& WarehouseExpense::approvedBy() const noexcept { return approvedBy_; }
 
 bool WarehouseExpense::isWithinBudget(int delta) {
     if (!active_ || delta < 0) return false;
@@ -37,3 +45,7 @@ bool WarehouseExpense::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t WarehouseExpense::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool WarehouseExpense::attachTo(FinancialReport& report) const { if (!active_ || approvedBy_.empty()) return false; report.addRelatedId(expenseId_); return report.hasRelatedId(expenseId_); }
+
+bool WarehouseExpense::exceedsLimit(double limit) const noexcept { return limit >= 0.0 && amount_ > limit; }

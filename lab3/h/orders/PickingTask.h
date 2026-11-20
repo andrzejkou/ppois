@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class SalesOrder;
 class PickingTask {
 public:
     PickingTask(std::string taskId, std::string orderId, int quantity = 0, double amount = 0.0);
@@ -19,10 +20,14 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool belongsTo(const SalesOrder& order) const;
+    int remainingQuantity() const noexcept;
+    int pickedQuantity() const noexcept;
 private:
     std::string taskId_{};
     std::string orderId_{};
     int quantity_{0};
+    int pickedQuantity_{0};
     double amount_{0.0};
     bool active_{true};
     std::vector<std::string> relatedIds_{};

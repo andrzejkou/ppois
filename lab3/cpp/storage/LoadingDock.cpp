@@ -1,4 +1,5 @@
 #include "LoadingDock.h"
+#include "logistics/Delivery.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool LoadingDock::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t LoadingDock::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool LoadingDock::scheduleDelivery(const Delivery& delivery) { if (!active_ || status_ != "open" || !delivery.active() || delivery.deliveryId().empty() || hasRelatedId(delivery.deliveryId())) return false; addRelatedId(delivery.deliveryId()); return true; }
+
+bool LoadingDock::isOccupied() const noexcept { return quantity_ > 0 || !relatedIds_.empty(); }

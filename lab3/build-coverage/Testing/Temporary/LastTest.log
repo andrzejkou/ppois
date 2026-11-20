@@ -1,0 +1,64 @@
+Start testing: Nov 20 19:23 +03
+----------------------------------------------------------
+1/4 Testing: warehouse_smoke_tests
+1/4 Test: warehouse_smoke_tests
+Command: "/home/andrey/projects/PPOIS/lab3/build-coverage/warehouse_tests"
+Directory: /home/andrey/projects/PPOIS/lab3/build-coverage
+"warehouse_smoke_tests" start time: Nov 20 19:23 +03
+Output:
+----------------------------------------------------------
+Warehouse domain tests passed
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"warehouse_smoke_tests" end time: Nov 20 19:23 +03
+"warehouse_smoke_tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/4 Testing: warehouse_generated_entities
+2/4 Test: warehouse_generated_entities
+Command: "/home/andrey/projects/PPOIS/lab3/build-coverage/warehouse_generated_tests"
+Directory: /home/andrey/projects/PPOIS/lab3/build-coverage
+"warehouse_generated_entities" start time: Nov 20 19:23 +03
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"warehouse_generated_entities" end time: Nov 20 19:23 +03
+"warehouse_generated_entities" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/4 Testing: warehouse_edge_cases
+3/4 Test: warehouse_edge_cases
+Command: "/home/andrey/projects/PPOIS/lab3/build-coverage/warehouse_edge_tests"
+Directory: /home/andrey/projects/PPOIS/lab3/build-coverage
+"warehouse_edge_cases" start time: Nov 20 19:23 +03
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"warehouse_edge_cases" end time: Nov 20 19:23 +03
+"warehouse_edge_cases" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/4 Testing: warehouse_per_file_coverage
+4/4 Test: warehouse_per_file_coverage
+Command: "/home/andrey/projects/PPOIS/lab3/build-coverage/warehouse_per_file_tests"
+Directory: /home/andrey/projects/PPOIS/lab3/build-coverage
+"warehouse_per_file_coverage" start time: Nov 20 19:23 +03
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"warehouse_per_file_coverage" end time: Nov 20 19:23 +03
+"warehouse_per_file_coverage" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 20 19:23 +03

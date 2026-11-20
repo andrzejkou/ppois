@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+class Warehouse;
 
 class TransferRequest {
 public:
@@ -19,9 +20,13 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool setDestination(const Warehouse& destination);
+    bool connects(const Warehouse& source, const Warehouse& destination) const;
+    const std::string& destinationWarehouse() const noexcept;
 private:
     std::string transferId_{};
     std::string sourceWarehouse_{};
+    std::string destinationWarehouse_{};
     int quantity_{0};
     double amount_{0.0};
     bool active_{true};

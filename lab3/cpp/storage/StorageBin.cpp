@@ -1,4 +1,5 @@
 #include "StorageBin.h"
+#include "storage/Shelf.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool StorageBin::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t StorageBin::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool StorageBin::belongsTo(const Shelf& shelf) const { return active_ && shelf.active() && shelf.shelfCode() == shelfCode_; }
+
+bool StorageBin::isEmpty() const noexcept { return quantity_ == 0; }

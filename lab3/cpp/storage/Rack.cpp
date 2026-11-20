@@ -1,4 +1,5 @@
 #include "Rack.h"
+#include "storage/StorageZone.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool Rack::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t Rack::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool Rack::belongsTo(const StorageZone& zone) const { return active_ && zone.code() == zoneCode_; }
+
+bool Rack::canSupport(double weight) const noexcept { return active_ && weight >= 0.0 && weight <= amount_; }

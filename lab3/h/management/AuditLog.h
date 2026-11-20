@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class Employee;
 class AuditLog {
 public:
     AuditLog(std::string eventId, std::string actorId, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool records(const Employee& employee) const;
+    bool belongsToActor(const std::string& employeeId) const noexcept;
 private:
     std::string eventId_{};
     std::string actorId_{};

@@ -1,4 +1,5 @@
 #include "StockMovement.h"
+#include "inventory/StockItem.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool StockMovement::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t StockMovement::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool StockMovement::tracks(const StockItem& item) const { return active_ && item.sku() == productSku_; }
+
+bool StockMovement::isInbound() const noexcept { return active_ && quantity_ > 0; }

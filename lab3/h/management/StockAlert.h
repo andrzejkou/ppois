@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class ReorderRule;
 class StockAlert {
 public:
     StockAlert(std::string alertId, std::string productSku, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool follows(const ReorderRule& rule) const;
+    bool isCritical(int criticalLevel) const noexcept;
 private:
     std::string alertId_{};
     std::string productSku_{};

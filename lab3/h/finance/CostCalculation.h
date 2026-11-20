@@ -19,6 +19,7 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool addPurchase(int units, double unitCost);
 private:
     std::string calculationId_{};
     std::string productSku_{};

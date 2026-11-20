@@ -1,4 +1,5 @@
 #include "Route.h"
+#include "logistics/Transport.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool Route::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t Route::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool Route::supports(const Transport& transport) const { return active_ && transport.isAvailable() && !destination_.empty(); }
+
+bool Route::isWithinDistanceLimit(double maximumDistance) const noexcept { return maximumDistance >= 0.0 && amount_ <= maximumDistance; }

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+class Product;
 
 class SerialNumber {
 public:
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool belongsTo(const Product& product) const;
+    bool isRegistered() const noexcept;
 private:
     std::string serialCode_{};
     std::string productSku_{};

@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class Delivery;
 class LoadingDock {
 public:
     LoadingDock(std::string dockCode, std::string status, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool scheduleDelivery(const Delivery& delivery);
+    bool isOccupied() const noexcept;
 private:
     std::string dockCode_{};
     std::string status_{};

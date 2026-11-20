@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class StorageZone;
 class Rack {
 public:
     Rack(std::string rackCode, std::string zoneCode, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool belongsTo(const StorageZone& zone) const;
+    bool canSupport(double weight) const noexcept;
 private:
     std::string rackCode_{};
     std::string zoneCode_{};

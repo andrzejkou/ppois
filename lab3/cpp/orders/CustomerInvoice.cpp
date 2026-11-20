@@ -15,9 +15,9 @@ double CustomerInvoice::calculateDue() const {
     return amount_ * static_cast<double>(quantity_);
 }
 
-bool CustomerInvoice::markPaid(int delta) {
-    if (!active_ || delta < 0) return false;
-    quantity_ += delta;
+bool CustomerInvoice::markPaid(double paymentAmount) {
+    if (!active_ || paymentAmount <= 0.0 || paymentAmount > outstandingBalance()) return false;
+    paidAmount_ += paymentAmount;
     return true;
 }
 
@@ -37,3 +37,6 @@ bool CustomerInvoice::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t CustomerInvoice::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool CustomerInvoice::hasOutstandingBalance() const noexcept { return active_ && paidAmount_ < calculateDue(); }
+double CustomerInvoice::outstandingBalance() const noexcept { const double due = calculateDue() - paidAmount_; return due > 0.0 ? due : 0.0; }

@@ -1,4 +1,5 @@
 #include "PickingTask.h"
+#include "orders/SalesOrder.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -16,8 +17,8 @@ bool PickingTask::assignPicker() const {
 }
 
 bool PickingTask::markPicked(int delta) {
-    if (!active_ || delta < 0) return false;
-    quantity_ += delta;
+    if (!active_ || delta <= 0 || delta > remainingQuantity()) return false;
+    pickedQuantity_ += delta;
     return true;
 }
 
@@ -37,3 +38,8 @@ bool PickingTask::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t PickingTask::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool PickingTask::belongsTo(const SalesOrder& order) const { return active_ && order.orderId() == orderId_; }
+
+int PickingTask::remainingQuantity() const noexcept { return quantity_ - pickedQuantity_; }
+int PickingTask::pickedQuantity() const noexcept { return pickedQuantity_; }

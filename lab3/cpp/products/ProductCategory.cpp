@@ -1,4 +1,5 @@
 #include "ProductCategory.h"
+#include "products/Product.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool ProductCategory::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t ProductCategory::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool ProductCategory::containsProduct(const Product& product) const { return active_ && product.active() && product.categoryCode() == categoryCode_; }
+
+bool ProductCategory::isPopulated() const noexcept { return active_ && quantity_ > 0; }

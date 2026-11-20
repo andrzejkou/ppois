@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class Delivery;
 class Transport {
 public:
     Transport(std::string transportId, std::string registrationNumber, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool canCarry(const Delivery& delivery) const;
+    bool needsService(int serviceInterval) const noexcept;
 private:
     std::string transportId_{};
     std::string registrationNumber_{};

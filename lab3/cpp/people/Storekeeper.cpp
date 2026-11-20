@@ -1,39 +1,30 @@
 #include "Storekeeper.h"
+#include "storage/StorageZone.h"
+#include "orders/PickingTask.h"
 #include "exceptions/WarehouseException.h"
-
 #include <algorithm>
 #include <utility>
-
-Storekeeper::Storekeeper(std::string employeeId, std::string zoneCode, int quantity, double amount)
-    : employeeId_(std::move(employeeId)), zoneCode_(std::move(zoneCode)),
-      quantity_(quantity), amount_(amount) {
-    if (employeeId_.empty() || zoneCode_.empty() || quantity_ < 0 || amount_ < 0.0)
-        throw WarehouseException("Invalid data while creating Storekeeper");
+Storekeeper::Storekeeper(std::string employeeId, std::string zoneCode, std::size_t taskLimit)
+    : employeeId_(std::move(employeeId)), zoneCode_(std::move(zoneCode)), taskLimit_(taskLimit) {
+    if (employeeId_.empty() || zoneCode_.empty() || taskLimit_ == 0)
+        throw WarehouseException("Invalid storekeeper assignment");
 }
-
-bool Storekeeper::assignZone() const {
-    return active_ && !employeeId_.empty();
-}
-
-bool Storekeeper::countAssignedTasks(int delta) {
-    if (!active_ || delta < 0) return false;
-    quantity_ += delta;
+bool Storekeeper::assignZone(const StorageZone& zone) {
+    if (zone.code() != zoneCode_ || zone.capacity() <= 0) return false;
     return true;
 }
-
+bool Storekeeper::assignPickingTask(const PickingTask& task) {
+    if (!canAcceptTask() || task.taskId().empty() ||
+        std::find(assignedTaskIds_.begin(), assignedTaskIds_.end(), task.taskId()) != assignedTaskIds_.end())
+        return false;
+    assignedTaskIds_.push_back(task.taskId()); return true;
+}
+bool Storekeeper::completeTask(const std::string& taskId) {
+    auto it = std::find(assignedTaskIds_.begin(), assignedTaskIds_.end(), taskId);
+    if (it == assignedTaskIds_.end()) return false;
+    assignedTaskIds_.erase(it); return true;
+}
+std::size_t Storekeeper::countAssignedTasks() const noexcept { return assignedTaskIds_.size(); }
+bool Storekeeper::canAcceptTask() const noexcept { return assignedTaskIds_.size() < taskLimit_; }
 const std::string& Storekeeper::employeeId() const noexcept { return employeeId_; }
 const std::string& Storekeeper::zoneCode() const noexcept { return zoneCode_; }
-int Storekeeper::quantity() const noexcept { return quantity_; }
-double Storekeeper::amount() const noexcept { return amount_; }
-bool Storekeeper::active() const noexcept { return active_; }
-
-void Storekeeper::addRelatedId(const std::string& relatedId) {
-    if (relatedId.empty() || hasRelatedId(relatedId)) return;
-    relatedIds_.push_back(relatedId);
-}
-
-bool Storekeeper::hasRelatedId(const std::string& relatedId) const {
-    return std::find(relatedIds_.begin(), relatedIds_.end(), relatedId) != relatedIds_.end();
-}
-
-std::size_t Storekeeper::relatedCount() const noexcept { return relatedIds_.size(); }

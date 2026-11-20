@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+class Delivery;
 
 class Carrier {
 public:
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool canHandle(const Delivery& delivery) const;
+    bool isCostEffective(double maximumCost) const noexcept;
 private:
     std::string carrierId_{};
     std::string companyName_{};

@@ -1,4 +1,5 @@
 #include "AuditLog.h"
+#include "people/Employee.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool AuditLog::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t AuditLog::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool AuditLog::records(const Employee& employee) const { return active_ && employee.active() && actorId_ == employee.employeeId(); }
+
+bool AuditLog::belongsToActor(const std::string& employeeId) const noexcept { return !employeeId.empty() && actorId_ == employeeId; }

@@ -19,6 +19,7 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool isNumeric() const noexcept;
 private:
     std::string barcodeValue_{};
     std::string format_{};

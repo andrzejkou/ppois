@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class Warehouse;
 class StockBalance {
 public:
     StockBalance(std::string balanceId, std::string warehouseCode, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool belongsTo(const Warehouse& warehouse) const;
+    bool hasAtLeast(int requested) const noexcept;
 private:
     std::string balanceId_{};
     std::string warehouseCode_{};

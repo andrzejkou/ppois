@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class Payment;
 class CashAccount {
 public:
     CashAccount(std::string accountId, std::string currency, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,10 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool recordPayment(const Payment& payment);
+    bool credit(int amount);
+    bool creditMoney(double amount);
+    bool withdrawMoney(double amount);
 private:
     std::string accountId_{};
     std::string currency_{};

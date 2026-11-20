@@ -1,0 +1,2 @@
+warehouse_smoke_tests 1 0.00559899
+---

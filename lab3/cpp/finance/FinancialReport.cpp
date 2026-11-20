@@ -1,4 +1,5 @@
 #include "FinancialReport.h"
+#include "finance/WarehouseExpense.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -12,7 +13,7 @@ FinancialReport::FinancialReport(std::string reportId, std::string period, int q
 }
 
 double FinancialReport::calculateNetResult() const {
-    return amount_ * static_cast<double>(quantity_);
+    return amount_;
 }
 
 bool FinancialReport::validatePeriod(int delta) {
@@ -37,3 +38,7 @@ bool FinancialReport::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t FinancialReport::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool FinancialReport::includesExpense(const WarehouseExpense& expense) const { return active_ && hasRelatedId(expense.expenseId()); }
+
+double FinancialReport::averageTransactionValue() const noexcept { return quantity_ > 0 ? amount_ / static_cast<double>(quantity_) : 0.0; }

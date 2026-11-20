@@ -1,4 +1,5 @@
 #include "AccessRole.h"
+#include "people/Employee.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool AccessRole::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t AccessRole::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool AccessRole::assignTo(const Employee& employee) { if (!active_ || !employee.active() || employee.employeeId().empty()) return false; addRelatedId(employee.employeeId()); return true; }
+
+bool AccessRole::hasPermissionCount(int required) const noexcept { return active_ && required >= 0 && quantity_ >= required; }

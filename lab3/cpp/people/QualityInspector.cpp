@@ -1,39 +1,25 @@
 #include "QualityInspector.h"
+#include "inventory/StockLot.h"
 #include "exceptions/WarehouseException.h"
-
-#include <algorithm>
 #include <utility>
-
-QualityInspector::QualityInspector(std::string employeeId, std::string certificateCode, int quantity, double amount)
+QualityInspector::QualityInspector(std::string employeeId, std::string certificateCode,
+                                   std::string certificateExpiry)
     : employeeId_(std::move(employeeId)), certificateCode_(std::move(certificateCode)),
-      quantity_(quantity), amount_(amount) {
-    if (employeeId_.empty() || certificateCode_.empty() || quantity_ < 0 || amount_ < 0.0)
-        throw WarehouseException("Invalid data while creating QualityInspector");
+      certificateExpiry_(std::move(certificateExpiry)) {
+    if (employeeId_.empty() || certificateCode_.empty() || certificateExpiry_.size() != 10)
+        throw WarehouseException("Invalid quality inspector certificate");
 }
-
-bool QualityInspector::approveQuality() const {
-    return active_ && !employeeId_.empty();
+bool QualityInspector::certificateValidOn(const std::string& date) const noexcept {
+    return date.size() == 10 && date <= certificateExpiry_;
 }
-
-bool QualityInspector::rejectBatch(int delta) {
-    if (!active_ || delta < 0 || quantity_ < delta) return false;
-    quantity_ -= delta;
+bool QualityInspector::inspectLot(StockLot& lot, bool passed) {
+    if (lot.quantity() <= 0) return false;
+    if (passed) { lot.releaseFromQuarantine(); ++approvedLots_; }
+    else { lot.markQuarantined(); ++rejectedLots_; }
     return true;
 }
-
+bool QualityInspector::approveQuality() const noexcept { return approvedLots_ > 0; }
+std::size_t QualityInspector::approvedLots() const noexcept { return approvedLots_; }
+std::size_t QualityInspector::rejectedLots() const noexcept { return rejectedLots_; }
 const std::string& QualityInspector::employeeId() const noexcept { return employeeId_; }
 const std::string& QualityInspector::certificateCode() const noexcept { return certificateCode_; }
-int QualityInspector::quantity() const noexcept { return quantity_; }
-double QualityInspector::amount() const noexcept { return amount_; }
-bool QualityInspector::active() const noexcept { return active_; }
-
-void QualityInspector::addRelatedId(const std::string& relatedId) {
-    if (relatedId.empty() || hasRelatedId(relatedId)) return;
-    relatedIds_.push_back(relatedId);
-}
-
-bool QualityInspector::hasRelatedId(const std::string& relatedId) const {
-    return std::find(relatedIds_.begin(), relatedIds_.end(), relatedId) != relatedIds_.end();
-}
-
-std::size_t QualityInspector::relatedCount() const noexcept { return relatedIds_.size(); }

@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class SalesOrder;
 class PackingTask {
 public:
     PackingTask(std::string taskId, std::string orderId, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool belongsTo(const SalesOrder& order) const;
+    bool requiresOversizePackaging(double threshold) const noexcept;
 private:
     std::string taskId_{};
     std::string orderId_{};

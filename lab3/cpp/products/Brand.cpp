@@ -1,4 +1,5 @@
 #include "Brand.h"
+#include "products/Product.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,9 @@ bool Brand::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t Brand::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool Brand::isPremium(double threshold) const noexcept { return threshold >= 0.0 && amount_ >= threshold; }
+
+bool Brand::matchesProduct(const Product& product) const {
+    return active_ && product.active() && product.brandCode() == brandCode_;
+}

@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class StorageCondition;
 class ColdStorage {
 public:
     ColdStorage(std::string storageCode, std::string temperature, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool accepts(const StorageCondition& condition) const;
+    bool isBelowFreezing() const noexcept;
 private:
     std::string storageCode_{};
     std::string temperature_{};

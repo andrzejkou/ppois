@@ -1,4 +1,5 @@
 #include "MaintenanceRequest.h"
+#include "storage/Warehouse.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,8 @@ bool MaintenanceRequest::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t MaintenanceRequest::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool MaintenanceRequest::assignWarehouse(const Warehouse& warehouse) { if (!active_ || !warehouse.active() || warehouse.code().empty()) return false; warehouseCode_ = warehouse.code(); return true; }
+const std::string& MaintenanceRequest::warehouseCode() const noexcept { return warehouseCode_; }
+
+bool MaintenanceRequest::isHighPriority(double threshold) const noexcept { return active_ && threshold >= 0.0 && amount_ >= threshold; }

@@ -1,0 +1,19 @@
+Start testing: Nov 20 18:59 +03
+----------------------------------------------------------
+1/1 Testing: warehouse_smoke_tests
+1/1 Test: warehouse_smoke_tests
+Command: "/home/andrey/projects/PPOIS/lab3/build/warehouse_tests"
+Directory: /home/andrey/projects/PPOIS/lab3/build
+"warehouse_smoke_tests" start time: Nov 20 18:59 +03
+Output:
+----------------------------------------------------------
+Warehouse domain tests passed
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"warehouse_smoke_tests" end time: Nov 20 18:59 +03
+"warehouse_smoke_tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 20 18:59 +03

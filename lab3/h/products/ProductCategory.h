@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+class Product;
 
 class ProductCategory {
 public:
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool containsProduct(const Product& product) const;
+    bool isPopulated() const noexcept;
 private:
     std::string categoryCode_{};
     std::string name_{};

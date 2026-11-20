@@ -1,30 +1,21 @@
 #pragma once
-
 #include <string>
 #include <vector>
-
+class StorageZone;
+class PickingTask;
 class Storekeeper {
 public:
-    Storekeeper(std::string employeeId, std::string zoneCode, int quantity = 0, double amount = 0.0);
-
-    bool assignZone() const;
-    bool countAssignedTasks(int delta);
-
+    Storekeeper(std::string employeeId, std::string zoneCode, std::size_t taskLimit);
+    bool assignZone(const StorageZone& zone);
+    bool assignPickingTask(const PickingTask& task);
+    bool completeTask(const std::string& taskId);
+    std::size_t countAssignedTasks() const noexcept;
+    bool canAcceptTask() const noexcept;
     const std::string& employeeId() const noexcept;
     const std::string& zoneCode() const noexcept;
-    int quantity() const noexcept;
-    double amount() const noexcept;
-    bool active() const noexcept;
-    void addRelatedId(const std::string& relatedId);
-    bool hasRelatedId(const std::string& relatedId) const;
-    std::size_t relatedCount() const noexcept;
-
 private:
-    std::string employeeId_{};
-    std::string zoneCode_{};
-    int quantity_{0};
-    double amount_{0.0};
-    bool active_{true};
-    std::vector<std::string> relatedIds_{};
-
+    std::string employeeId_;
+    std::string zoneCode_;
+    std::size_t taskLimit_{0};
+    std::vector<std::string> assignedTaskIds_;
 };

@@ -1,4 +1,5 @@
 #include "StockAlert.h"
+#include "inventory/ReorderRule.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool StockAlert::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t StockAlert::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool StockAlert::follows(const ReorderRule& rule) const { return active_ && rule.active() && rule.productSku() == productSku_; }
+
+bool StockAlert::isCritical(int criticalLevel) const noexcept { return active_ && criticalLevel >= 0 && quantity_ <= criticalLevel; }

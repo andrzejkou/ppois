@@ -1,4 +1,5 @@
 #include "Transport.h"
+#include "logistics/Delivery.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool Transport::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t Transport::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool Transport::canCarry(const Delivery& delivery) const { return active_ && delivery.active() && quantity_ >= delivery.quantity(); }
+
+bool Transport::needsService(int serviceInterval) const noexcept { return serviceInterval > 0 && quantity_ >= serviceInterval; }

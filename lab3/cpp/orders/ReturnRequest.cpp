@@ -37,3 +37,5 @@ bool ReturnRequest::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t ReturnRequest::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool ReturnRequest::isWithinQuantityLimit(int maximumQuantity) const noexcept { return active_ && maximumQuantity >= 0 && quantity_ <= maximumQuantity; }

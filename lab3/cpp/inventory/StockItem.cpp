@@ -1,4 +1,5 @@
 #include "inventory/StockItem.h"
+#include "products/Product.h"
 #include "exceptions/InsufficientStockException.h"
 #include "exceptions/WarehouseException.h"
 #include <utility>
@@ -9,3 +10,5 @@ void StockItem::release(int q){if(q<=0||q>reserved_)throw WarehouseException("In
 void StockItem::issue(int q){if(q<=0||q>available())throw InsufficientStockException("Not enough available stock to issue");onHand_-=q;}
 void StockItem::moveTo(std::string b){if(b.empty())throw WarehouseException("Destination bin is empty");binCode_=std::move(b);}
 const std::string& StockItem::id()const noexcept{return id_;} const std::string& StockItem::sku()const noexcept{return sku_;} const std::string& StockItem::warehouseCode()const noexcept{return warehouseCode_;} const std::string& StockItem::binCode()const noexcept{return binCode_;} int StockItem::onHand()const noexcept{return onHand_;} int StockItem::reserved()const noexcept{return reserved_;}
+
+bool StockItem::matchesProduct(const Product& product) const { return product.active() && product.sku() == sku_; }

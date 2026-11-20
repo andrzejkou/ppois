@@ -3,12 +3,13 @@
 #include <string>
 #include <vector>
 
+class StockBalance;
 class StockAdjustment {
 public:
     StockAdjustment(std::string adjustmentId, std::string reason, int quantity = 0, double amount = 0.0);
 
     bool applyAdjustment() const;
-    bool requiresApproval(int delta);
+    bool requiresApproval(int approvalThreshold) const;
 
     const std::string& adjustmentId() const noexcept;
     const std::string& reason() const noexcept;
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool applyTo(StockBalance& balance, int delta) const;
+    bool isMaterial(int approvalThreshold) const noexcept;
 private:
     std::string adjustmentId_{};
     std::string reason_{};

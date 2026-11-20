@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class Shipment;
 class Delivery {
 public:
     Delivery(std::string deliveryId, std::string shipmentId, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool refersTo(const Shipment& shipment) const;
+    bool isOverdue(int plannedDays, int actualDays) const noexcept;
 private:
     std::string deliveryId_{};
     std::string shipmentId_{};

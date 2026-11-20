@@ -1,39 +1,34 @@
 #include "Supplier.h"
+#include "PurchaseRequest.h"
 #include "exceptions/WarehouseException.h"
-
-#include <algorithm>
 #include <utility>
-
-Supplier::Supplier(std::string supplierId, std::string companyName, int quantity, double amount)
+Supplier::Supplier(std::string supplierId, std::string companyName, std::string contactEmail,
+                   int leadTimeDays, double reliabilityRating)
     : supplierId_(std::move(supplierId)), companyName_(std::move(companyName)),
-      quantity_(quantity), amount_(amount) {
-    if (supplierId_.empty() || companyName_.empty() || quantity_ < 0 || amount_ < 0.0)
-        throw WarehouseException("Invalid data while creating Supplier");
+      contactEmail_(std::move(contactEmail)), leadTimeDays_(leadTimeDays),
+      reliabilityRating_(reliabilityRating) {
+    if (supplierId_.empty() || companyName_.empty() || leadTimeDays_ < 0 ||
+        reliabilityRating_ < 0.0 || reliabilityRating_ > 5.0)
+        throw WarehouseException("Invalid supplier data");
 }
-
-double Supplier::rateReliability() const {
-    return amount_ * static_cast<double>(quantity_);
+bool Supplier::rateReliability(double rating) noexcept {
+    if (rating < 0.0 || rating > 5.0) return false;
+    reliabilityRating_ = rating; return true;
 }
-
-bool Supplier::canSupply(int delta) {
-    if (!active_ || delta < 0) return false;
-    quantity_ += delta;
-    return true;
+bool Supplier::canFulfil(const PurchaseRequest& request) const noexcept {
+    return active_ && request.status() == PurchaseRequestStatus::Submitted &&
+           request.estimatedCost() >= 0.0;
 }
-
+bool Supplier::deactivate() noexcept { if (!active_) return false; active_ = false; return true; }
+void Supplier::recordOnTimeDelivery() noexcept { ++onTimeDeliveries_; }
+void Supplier::recordLateDelivery() noexcept { ++lateDeliveries_; }
+double Supplier::reliabilityScore() const noexcept {
+    const auto total = onTimeDeliveries_ + lateDeliveries_;
+    return total == 0 ? reliabilityRating_ :
+        5.0 * static_cast<double>(onTimeDeliveries_) / static_cast<double>(total);
+}
 const std::string& Supplier::supplierId() const noexcept { return supplierId_; }
 const std::string& Supplier::companyName() const noexcept { return companyName_; }
-int Supplier::quantity() const noexcept { return quantity_; }
-double Supplier::amount() const noexcept { return amount_; }
+const std::string& Supplier::contactEmail() const noexcept { return contactEmail_; }
+int Supplier::leadTimeDays() const noexcept { return leadTimeDays_; }
 bool Supplier::active() const noexcept { return active_; }
-
-void Supplier::addRelatedId(const std::string& relatedId) {
-    if (relatedId.empty() || hasRelatedId(relatedId)) return;
-    relatedIds_.push_back(relatedId);
-}
-
-bool Supplier::hasRelatedId(const std::string& relatedId) const {
-    return std::find(relatedIds_.begin(), relatedIds_.end(), relatedId) != relatedIds_.end();
-}
-
-std::size_t Supplier::relatedCount() const noexcept { return relatedIds_.size(); }

@@ -1,4 +1,5 @@
 #include "Payment.h"
+#include "finance/CashAccount.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,11 @@ bool Payment::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t Payment::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool Payment::charge(CashAccount& account) {
+    if (!processPayment() || amount_ <= 0.0 || hasRelatedId(account.accountId()) || !account.withdrawMoney(amount_)) return false;
+    addRelatedId(account.accountId());
+    return true;
+}
+
+bool Payment::isRefundable() const noexcept { return active_ && quantity_ > 0 && amount_ > 0.0; }

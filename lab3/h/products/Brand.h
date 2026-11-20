@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+class Product;
 
 class Brand {
 public:
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool isPremium(double threshold) const noexcept;
+    bool matchesProduct(const Product& product) const;
 private:
     std::string brandCode_{};
     std::string name_{};

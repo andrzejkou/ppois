@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+class Product;
 
 class ProductBundle {
 public:
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool addComponent(const Product& product, int units);
+    bool isAvailable(int requested) const noexcept;
 private:
     std::string bundleCode_{};
     std::string name_{};

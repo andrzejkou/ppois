@@ -1,30 +1,23 @@
 #pragma once
-
 #include <string>
-#include <vector>
-
+class Supplier;
 class SupplierContract {
 public:
-    SupplierContract(std::string contractId, std::string supplierId, int quantity = 0, double amount = 0.0);
-
-    bool isValidOn() const;
-    bool calculatePenalty(int delta);
-
+    SupplierContract(std::string contractId, std::string supplierId,
+                     std::string validFrom, std::string validUntil,
+                     double minimumOrderValue, double latePenaltyRate);
+    bool isValidOn(const std::string& date) const noexcept;
+    double calculatePenalty(int overdueDays, double orderValue) const noexcept;
+    bool belongsTo(const Supplier& supplier) const noexcept;
+    bool renew(const std::string& newValidUntil);
     const std::string& contractId() const noexcept;
     const std::string& supplierId() const noexcept;
-    int quantity() const noexcept;
-    double amount() const noexcept;
-    bool active() const noexcept;
-    void addRelatedId(const std::string& relatedId);
-    bool hasRelatedId(const std::string& relatedId) const;
-    std::size_t relatedCount() const noexcept;
-
+    double minimumOrderValue() const noexcept;
 private:
-    std::string contractId_{};
-    std::string supplierId_{};
-    int quantity_{0};
-    double amount_{0.0};
-    bool active_{true};
-    std::vector<std::string> relatedIds_{};
-
+    std::string contractId_;
+    std::string supplierId_;
+    std::string validFrom_;
+    std::string validUntil_;
+    double minimumOrderValue_{0.0};
+    double latePenaltyRate_{0.0};
 };

@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class Transport;
 class Route {
 public:
     Route(std::string routeId, std::string destination, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool supports(const Transport& transport) const;
+    bool isWithinDistanceLimit(double maximumDistance) const noexcept;
 private:
     std::string routeId_{};
     std::string destination_{};

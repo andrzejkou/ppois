@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/warehouse_per_file_tests.dir/link.d CMakeFiles/warehouse_per_file_tests.dir/tests/test_per_file_coverage.cpp.o -o warehouse_per_file_tests  libwarehouse.a

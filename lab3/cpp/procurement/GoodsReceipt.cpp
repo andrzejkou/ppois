@@ -1,39 +1,40 @@
 #include "GoodsReceipt.h"
+#include "DeliveryNote.h"
+#include "PurchaseOrder.h"
 #include "exceptions/WarehouseException.h"
-
 #include <algorithm>
 #include <utility>
-
-GoodsReceipt::GoodsReceipt(std::string receiptId, std::string purchaseOrderId, int quantity, double amount)
+GoodsReceipt::GoodsReceipt(std::string receiptId, std::string purchaseOrderId, std::string inspectorId)
     : receiptId_(std::move(receiptId)), purchaseOrderId_(std::move(purchaseOrderId)),
-      quantity_(quantity), amount_(amount) {
-    if (receiptId_.empty() || purchaseOrderId_.empty() || quantity_ < 0 || amount_ < 0.0)
-        throw WarehouseException("Invalid data while creating GoodsReceipt");
+      inspectorId_(std::move(inspectorId)) {
+    if (receiptId_.empty() || purchaseOrderId_.empty() || inspectorId_.empty())
+        throw WarehouseException("Goods receipt identifiers are required");
 }
-
-bool GoodsReceipt::acceptDelivery() const {
-    return active_ && !receiptId_.empty();
+bool GoodsReceipt::acceptDelivery(DeliveryNote& note, PurchaseOrder& order, const std::string& receivedDate) {
+    if (completed_ || receivedDate.size() != 10 || order.id() != purchaseOrderId_ || !note.validateAgainstOrder(order)) return false;
+    for (const auto& line : note.lines()) {
+        order.registerReceipt(line.sku, line.deliveredQuantity);
+        acceptedQuantity_ += line.deliveredQuantity;
+    }
+    if (!note.markReceived(receivedDate)) return false;
+    completed_ = true; return true;
 }
-
-bool GoodsReceipt::calculateAcceptedValue(int delta) {
-    if (!active_ || delta < 0) return false;
-    quantity_ += delta;
-    return true;
+bool GoodsReceipt::rejectLine(const std::string& sku, int quantity, const std::string& reason) {
+    if (completed_ || sku.empty() || quantity <= 0 || reason.empty()) return false;
+    rejectedQuantity_ += quantity; rejectionReason_ = reason; return true;
 }
-
+double GoodsReceipt::calculateAcceptedValue(const PurchaseOrder& order) const noexcept {
+    double total = 0.0;
+    for (const auto& line : order.lines()) {
+        const int accepted = std::min(line.received(), line.ordered());
+        total += static_cast<double>(accepted) * (line.ordered() > 0 ? line.lineTotal() / static_cast<double>(line.ordered()) : 0.0);
+    }
+    return total;
+}
+int GoodsReceipt::acceptedQuantity() const noexcept { return acceptedQuantity_; }
+int GoodsReceipt::rejectedQuantity() const noexcept { return rejectedQuantity_; }
 const std::string& GoodsReceipt::receiptId() const noexcept { return receiptId_; }
 const std::string& GoodsReceipt::purchaseOrderId() const noexcept { return purchaseOrderId_; }
-int GoodsReceipt::quantity() const noexcept { return quantity_; }
-double GoodsReceipt::amount() const noexcept { return amount_; }
-bool GoodsReceipt::active() const noexcept { return active_; }
-
-void GoodsReceipt::addRelatedId(const std::string& relatedId) {
-    if (relatedId.empty() || hasRelatedId(relatedId)) return;
-    relatedIds_.push_back(relatedId);
-}
-
-bool GoodsReceipt::hasRelatedId(const std::string& relatedId) const {
-    return std::find(relatedIds_.begin(), relatedIds_.end(), relatedId) != relatedIds_.end();
-}
-
-std::size_t GoodsReceipt::relatedCount() const noexcept { return relatedIds_.size(); }
+const std::string& GoodsReceipt::inspectorId() const noexcept { return inspectorId_; }
+const std::string& GoodsReceipt::rejectionReason() const noexcept { return rejectionReason_; }
+bool GoodsReceipt::completed() const noexcept { return completed_; }

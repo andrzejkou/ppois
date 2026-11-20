@@ -1,4 +1,5 @@
 #include "Customer.h"
+#include "orders/SalesOrder.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool Customer::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t Customer::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool Customer::ownsOrder(const SalesOrder& order) const { return active_ && order.customerId() == customerId_; }
+
+bool Customer::qualifiesForLoyaltyDiscount(int minimumOrders) const noexcept { return active_ && minimumOrders >= 0 && quantity_ >= minimumOrders; }

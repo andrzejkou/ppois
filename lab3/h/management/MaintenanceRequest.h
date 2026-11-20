@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class Warehouse;
 class MaintenanceRequest {
 public:
     MaintenanceRequest(std::string requestId, std::string equipmentCode, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,9 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool assignWarehouse(const Warehouse& warehouse);
+    const std::string& warehouseCode() const noexcept;
+    bool isHighPriority(double threshold) const noexcept;
 private:
     std::string requestId_{};
     std::string equipmentCode_{};
@@ -26,5 +30,6 @@ private:
     double amount_{0.0};
     bool active_{true};
     std::vector<std::string> relatedIds_{};
+    std::string warehouseCode_{};
 
 };

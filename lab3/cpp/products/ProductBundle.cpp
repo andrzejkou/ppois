@@ -1,4 +1,5 @@
 #include "ProductBundle.h"
+#include "products/Product.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -12,7 +13,7 @@ ProductBundle::ProductBundle(std::string bundleCode, std::string name, int quant
 }
 
 double ProductBundle::calculateBundlePrice() const {
-    return amount_ * static_cast<double>(quantity_);
+    return amount_;
 }
 
 bool ProductBundle::validateComponents(int delta) {
@@ -37,3 +38,7 @@ bool ProductBundle::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t ProductBundle::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool ProductBundle::addComponent(const Product& product, int units) { if (!active_ || !product.active() || units <= 0) return false; addRelatedId(product.sku()); quantity_ += units; amount_ += product.unitPrice() * units; return true; }
+
+bool ProductBundle::isAvailable(int requested) const noexcept { return active_ && requested > 0 && quantity_ >= requested; }

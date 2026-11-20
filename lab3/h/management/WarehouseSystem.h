@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+class Warehouse;
 
 class WarehouseSystem {
 public:
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool hasWarehouse(const std::string& code) const;
+    bool registerWarehouse(const Warehouse& warehouse);
 private:
     std::string systemId_{};
     std::string systemName_{};

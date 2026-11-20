@@ -1,4 +1,5 @@
 #include "Carrier.h"
+#include "logistics/Delivery.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool Carrier::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t Carrier::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool Carrier::canHandle(const Delivery& delivery) const { return active_ && delivery.active() && delivery.quantity() >= 0; }
+
+bool Carrier::isCostEffective(double maximumCost) const noexcept { return maximumCost >= 0.0 && amount_ <= maximumCost; }

@@ -3,11 +3,13 @@
 #include <string>
 #include <vector>
 
+class StockItem;
 class ReorderRule {
 public:
     ReorderRule(std::string ruleId, std::string productSku, int quantity = 0, double amount = 0.0);
 
     bool shouldReorder() const;
+    bool shouldReorder(const StockItem& item) const;
     bool calculateOrderQuantity(int delta);
 
     const std::string& ruleId() const noexcept;
@@ -19,6 +21,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool appliesTo(const StockItem& item) const;
+    int shortageAgainst(const StockItem& item) const noexcept;
 private:
     std::string ruleId_{};
     std::string productSku_{};

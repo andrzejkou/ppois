@@ -37,3 +37,5 @@ bool Barcode::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t Barcode::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool Barcode::isNumeric() const noexcept { return !barcodeValue_.empty() && std::all_of(barcodeValue_.begin(), barcodeValue_.end(), [](unsigned char c) { return c >= '0' && c <= '9'; }); }

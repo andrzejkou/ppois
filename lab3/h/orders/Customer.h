@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class SalesOrder;
 class Customer {
 public:
     Customer(std::string customerId, std::string fullName, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool ownsOrder(const SalesOrder& order) const;
+    bool qualifiesForLoyaltyDiscount(int minimumOrders) const noexcept;
 private:
     std::string customerId_{};
     std::string fullName_{};

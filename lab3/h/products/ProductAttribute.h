@@ -19,6 +19,7 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool hasValue() const noexcept;
 private:
     std::string attributeCode_{};
     std::string value_{};

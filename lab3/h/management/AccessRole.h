@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+class Employee;
 class AccessRole {
 public:
     AccessRole(std::string roleCode, std::string roleName, int quantity = 0, double amount = 0.0);
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool assignTo(const Employee& employee);
+    bool hasPermissionCount(int required) const noexcept;
 private:
     std::string roleCode_{};
     std::string roleName_{};

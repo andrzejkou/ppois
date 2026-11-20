@@ -1,4 +1,5 @@
 #include "KPIReport.h"
+#include "inventory/Inventory.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -37,3 +38,7 @@ bool KPIReport::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t KPIReport::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool KPIReport::evaluates(const Inventory& inventory) const { return active_ && inventory.status() == InventoryStatus::Completed; }
+
+double KPIReport::averageOrdersPerPeriod() const noexcept { return amount_ > 0.0 ? static_cast<double>(quantity_) / amount_ : 0.0; }

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+class Inventory;
 
 class KPIReport {
 public:
@@ -19,6 +20,8 @@ public:
     bool hasRelatedId(const std::string& relatedId) const;
     std::size_t relatedCount() const noexcept;
 
+    bool evaluates(const Inventory& inventory) const;
+    double averageOrdersPerPeriod() const noexcept;
 private:
     std::string reportId_{};
     std::string period_{};

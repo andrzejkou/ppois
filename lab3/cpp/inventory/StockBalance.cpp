@@ -1,4 +1,5 @@
 #include "StockBalance.h"
+#include "storage/Warehouse.h"
 #include "exceptions/WarehouseException.h"
 
 #include <algorithm>
@@ -12,11 +13,11 @@ StockBalance::StockBalance(std::string balanceId, std::string warehouseCode, int
 }
 
 double StockBalance::calculateAvailable() const {
-    return amount_ * static_cast<double>(quantity_);
+    return static_cast<double>(quantity_);
 }
 
 bool StockBalance::reconcile(int delta) {
-    if (!active_ || delta < 0) return false;
+    if (!active_ || static_cast<long long>(quantity_) + delta < 0) return false;
     quantity_ += delta;
     return true;
 }
@@ -37,3 +38,7 @@ bool StockBalance::hasRelatedId(const std::string& relatedId) const {
 }
 
 std::size_t StockBalance::relatedCount() const noexcept { return relatedIds_.size(); }
+
+bool StockBalance::belongsTo(const Warehouse& warehouse) const { return warehouse.active() && warehouse.code() == warehouseCode_; }
+
+bool StockBalance::hasAtLeast(int requested) const noexcept { return active_ && requested >= 0 && quantity_ >= requested; }

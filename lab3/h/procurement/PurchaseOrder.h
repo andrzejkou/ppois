@@ -1,30 +1,6 @@
 #pragma once
-
+#include "procurement/PurchaseOrderLine.h"
 #include <string>
 #include <vector>
-
-class PurchaseOrder {
-public:
-    PurchaseOrder(std::string purchaseOrderId, std::string supplierId, int quantity = 0, double amount = 0.0);
-
-    double calculateTotal() const;
-    bool closeOrder(int delta);
-
-    const std::string& purchaseOrderId() const noexcept;
-    const std::string& supplierId() const noexcept;
-    int quantity() const noexcept;
-    double amount() const noexcept;
-    bool active() const noexcept;
-    void addRelatedId(const std::string& relatedId);
-    bool hasRelatedId(const std::string& relatedId) const;
-    std::size_t relatedCount() const noexcept;
-
-private:
-    std::string purchaseOrderId_{};
-    std::string supplierId_{};
-    int quantity_{0};
-    double amount_{0.0};
-    bool active_{true};
-    std::vector<std::string> relatedIds_{};
-
-};
+enum class PurchaseOrderStatus { Draft, Approved, PartiallyReceived, Received, Cancelled };
+class PurchaseOrder { public: PurchaseOrder(std::string id,std::string supplierId); void addLine(const PurchaseOrderLine&); void approve(); void registerReceipt(const std::string& sku,int quantity); bool fullyReceived()const noexcept; double totalCost()const noexcept; void cancel(); PurchaseOrderStatus status()const noexcept; const std::vector<PurchaseOrderLine>& lines()const noexcept; const std::string& id()const noexcept; const std::string& supplierId()const noexcept; private: std::string id_,supplierId_; std::vector<PurchaseOrderLine> lines_; PurchaseOrderStatus status_{PurchaseOrderStatus::Draft}; };

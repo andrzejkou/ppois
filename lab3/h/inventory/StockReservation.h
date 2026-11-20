@@ -1,30 +1,9 @@
 #pragma once
-
 #include <string>
-#include <vector>
-
+class StockItem;
+enum class ReservationStatus { Active, Released, Consumed };
 class StockReservation {
-public:
-    StockReservation(std::string reservationId, std::string orderId, int quantity = 0, double amount = 0.0);
-
-    bool reserve() const;
-    bool release(int delta);
-
-    const std::string& reservationId() const noexcept;
-    const std::string& orderId() const noexcept;
-    int quantity() const noexcept;
-    double amount() const noexcept;
-    bool active() const noexcept;
-    void addRelatedId(const std::string& relatedId);
-    bool hasRelatedId(const std::string& relatedId) const;
-    std::size_t relatedCount() const noexcept;
-
-private:
-    std::string reservationId_{};
-    std::string orderId_{};
-    int quantity_{0};
-    double amount_{0.0};
-    bool active_{true};
-    std::vector<std::string> relatedIds_{};
-
+public: StockReservation(std::string id,std::string orderId,std::string sku,int quantity);
+ void apply(StockItem&); void release(StockItem&); void consume(StockItem&); bool active()const noexcept; int quantity()const noexcept; ReservationStatus status()const noexcept; const std::string& id()const noexcept; const std::string& orderId()const noexcept; const std::string& sku()const noexcept;
+private: std::string id_,orderId_,sku_; int quantity_; ReservationStatus status_{ReservationStatus::Active};
 };

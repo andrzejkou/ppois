@@ -1,39 +1,9 @@
-#include "StorageZone.h"
+#include "storage/StorageZone.h"
+#include "exceptions/StorageCapacityExceededException.h"
 #include "exceptions/WarehouseException.h"
-
-#include <algorithm>
 #include <utility>
-
-StorageZone::StorageZone(std::string zoneCode, std::string temperatureMode, int quantity, double amount)
-    : zoneCode_(std::move(zoneCode)), temperatureMode_(std::move(temperatureMode)),
-      quantity_(quantity), amount_(amount) {
-    if (zoneCode_.empty() || temperatureMode_.empty() || quantity_ < 0 || amount_ < 0.0)
-        throw WarehouseException("Invalid data while creating StorageZone");
-}
-
-bool StorageZone::isSuitableFor() const {
-    return active_ && !zoneCode_ .empty() && quantity_ >= 0;
-}
-
-bool StorageZone::calculateOccupancy(int delta) {
-    if (!active_ || delta < 0) return false;
-    quantity_ += delta;
-    return true;
-}
-
-const std::string& StorageZone::zoneCode() const noexcept { return zoneCode_; }
-const std::string& StorageZone::temperatureMode() const noexcept { return temperatureMode_; }
-int StorageZone::quantity() const noexcept { return quantity_; }
-double StorageZone::amount() const noexcept { return amount_; }
-bool StorageZone::active() const noexcept { return active_; }
-
-void StorageZone::addRelatedId(const std::string& relatedId) {
-    if (relatedId.empty() || hasRelatedId(relatedId)) return;
-    relatedIds_.push_back(relatedId);
-}
-
-bool StorageZone::hasRelatedId(const std::string& relatedId) const {
-    return std::find(relatedIds_.begin(), relatedIds_.end(), relatedId) != relatedIds_.end();
-}
-
-std::size_t StorageZone::relatedCount() const noexcept { return relatedIds_.size(); }
+StorageZone::StorageZone(std::string c,std::string t,double cap,double occ):code_(std::move(c)),temperatureMode_(std::move(t)),capacity_(cap),occupied_(occ){if(code_.empty()||temperatureMode_.empty()||cap<=0||occ<0||occ>cap)throw WarehouseException("Invalid storage zone");}
+bool StorageZone::isSuitableFor(const std::string& mode)const{return mode==temperatureMode_;}
+void StorageZone::store(double v){if(v<=0)throw WarehouseException("Stored volume must be positive");if(v>freeCapacity())throw StorageCapacityExceededException("Zone capacity exceeded");occupied_+=v;}
+void StorageZone::remove(double v){if(v<=0||v>occupied_)throw WarehouseException("Invalid zone removal");occupied_-=v;}
+double StorageZone::freeCapacity()const noexcept{return capacity_-occupied_;} double StorageZone::occupancyRate()const noexcept{return occupied_/capacity_;} const std::string& StorageZone::code()const noexcept{return code_;} const std::string& StorageZone::temperatureMode()const noexcept{return temperatureMode_;} double StorageZone::capacity()const noexcept{return capacity_;} double StorageZone::occupied()const noexcept{return occupied_;}

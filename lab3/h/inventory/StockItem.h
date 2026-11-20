@@ -1,30 +1,8 @@
 #pragma once
-
 #include <string>
-#include <vector>
-
 class StockItem {
-public:
-    StockItem(std::string stockId, std::string productSku, int quantity = 0, double amount = 0.0);
-
-    bool increaseStock() const;
-    bool decreaseStock(int delta);
-
-    const std::string& stockId() const noexcept;
-    const std::string& productSku() const noexcept;
-    int quantity() const noexcept;
-    double amount() const noexcept;
-    bool active() const noexcept;
-    void addRelatedId(const std::string& relatedId);
-    bool hasRelatedId(const std::string& relatedId) const;
-    std::size_t relatedCount() const noexcept;
-
-private:
-    std::string stockId_{};
-    std::string productSku_{};
-    int quantity_{0};
-    double amount_{0.0};
-    bool active_{true};
-    std::vector<std::string> relatedIds_{};
-
+public: StockItem(std::string id,std::string sku,std::string warehouseCode,std::string binCode,int onHand=0,int reserved=0);
+ int available()const noexcept; void receive(int); void reserve(int); void release(int); void issue(int); void moveTo(std::string binCode);
+ const std::string& id()const noexcept; const std::string& sku()const noexcept; const std::string& warehouseCode()const noexcept; const std::string& binCode()const noexcept; int onHand()const noexcept; int reserved()const noexcept;
+private: std::string id_,sku_,warehouseCode_,binCode_; int onHand_,reserved_;
 };

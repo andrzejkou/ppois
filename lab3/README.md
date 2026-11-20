@@ -4,14 +4,13 @@
 
 ## Состав проекта
 
-- **62 предметных класса**;
-- **15 собственных классов исключений**;
-- **372 поля**: по 6 полей в каждом предметном классе;
-- **124 именованных предметных метода**: по 2 основных поведения в каждом предметном классе;
+- 62 предметных класса и 15 собственных классов исключений;
 - отдельный `.h` и `.cpp` для каждого класса;
-- пример запуска и smoke-тесты.
+- тематическое разделение по подсистемам;
+- CMake-сборка на C++17;
+- исполняемый пример и автоматические smoke-тесты.
 
-> Количество полей включает идентификатор, описательное поле, количество, денежное/числовое значение, признак активности и список связанных идентификаторов. Два основных метода каждого класса перечислены ниже. Вспомогательные методы доступа и работы со связями в число 124 не включены.
+**Статус реализации.** Основные сценарии предметной области уже реализованы для `Product`, `Warehouse`, `StorageZone`, `StockItem`, `StockLot`, `StockReservation`, `Inventory`, `InventoryLine`, `SalesOrder`, `SalesOrderLine`, `PurchaseOrder` и `PurchaseOrderLine`. В остальных классах пока сохранён исходный каркас из первой версии: их интерфейсы и базовая валидация есть, но часть методов требует дальнейшей предметной реализации. Поэтому количество всех объявленных методов нельзя автоматически считать количеством завершённых уникальных поведений. Этот README явно отделяет реализованное ядро от оставшихся заготовок.
 
 ## Структура каталогов
 
@@ -49,16 +48,7 @@ WarehouseManagement/
 
 ## Поля предметных классов
 
-Каждый из 62 предметных классов содержит собственный набор из шести полей. Имена первых двух полей различаются в зависимости от сущности.
-
-| Поле | Тип | Назначение |
-|---|---|---|
-| Идентификатор (`sku_`, `warehouseCode_` и т. п.) | `std::string` | Уникальный код сущности |
-| Описательное поле (`name_`, `address_` и т. п.) | `std::string` | Наименование, адрес, состояние или связанный код |
-| `quantity_` | `int` | Количество, вместимость или счётчик |
-| `amount_` | `double` | Стоимость, денежная сумма или числовой показатель |
-| `active_` | `bool` | Признак активности/действительности |
-| `relatedIds_` | `std::vector<std::string>` | Идентификаторы связанных сущностей |
+Поля определяются назначением конкретной сущности. В старых классах каркаса ещё встречаются универсальные `quantity_`, `amount_`, `active_` и `relatedIds_`; в переработанном ядре они заменены предметными атрибутами (например, `onHand_` и `reserved_` у `StockItem`, `capacity_` и `occupied_` у `Warehouse`, `status_` у заказов). Точные поля каждого класса перечислены в каталоге ниже.
 
 ## Каталог классов, полей и основных методов
 
@@ -78,7 +68,7 @@ WarehouseManagement/
 
 | Класс | Поля (типы) | Основные методы |
 |---|---|---|
-| `Product` | `sku_: string`, `name_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `changePrice()`, `isAvailableForSale(int)` |
+| `Product` | `sku_: string`, `name_: string`, `unitPrice_: double`, `reorderLevel_: int`, `categoryCode_: string`, `brandCode_: string`, `active_: bool`, `barcodes_: vector<string>` | `changePrice(double)`, `isAvailableForSale(int,int)`, `needsReorder(int)`, `addBarcode(string)`, `deactivate()`, `activate()` |
 | `ProductCategory` | `categoryCode_: string`, `name_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `addProduct()`, `removeProduct(int)` |
 | `Brand` | `brandCode_: string`, `name_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `renameBrand()`, `matchesProduct(int)` |
 | `ProductAttribute` | `attributeCode_: string`, `value_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `validateValue()`, `normalizeValue(int)` |
@@ -91,8 +81,8 @@ WarehouseManagement/
 
 | Класс | Поля (типы) | Основные методы |
 |---|---|---|
-| `Warehouse` | `warehouseCode_: string`, `address_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `calculateFreeCapacity()`, `canAccept(int)` |
-| `StorageZone` | `zoneCode_: string`, `temperatureMode_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `isSuitableFor()`, `calculateOccupancy(int)` |
+| `Warehouse` | `code_: string`, `address_: string`, `capacity_: double`, `occupied_: double`, `active_: bool`, `zoneCodes_: vector<string>` | `addZone(StorageZone)`, `receive(int)`, `dispatch(int)`, `freeCapacity()`, `occupancyRate()`, `close()`, `reopen()` |
+| `StorageZone` | `code_: string`, `temperatureMode_: string`, `capacity_: double`, `occupied_: double` | `isSuitableFor(string)`, `store(double)`, `remove(double)`, `freeCapacity()`, `occupancyRate()` |
 | `Rack` | `rackCode_: string`, `zoneCode_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `calculateLoad()`, `hasFreeLevel(int)` |
 | `Shelf` | `shelfCode_: string`, `rackCode_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `calculateFreeVolume()`, `canStore(int)` |
 | `StorageBin` | `binCode_: string`, `shelfCode_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `calculateFreeCapacity()`, `canFit(int)` |
@@ -104,12 +94,12 @@ WarehouseManagement/
 
 | Класс | Поля (типы) | Основные методы |
 |---|---|---|
-| `StockItem` | `stockId_: string`, `productSku_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `increaseStock()`, `decreaseStock(int)` |
-| `StockLot` | `lotNumber_: string`, `productSku_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `isExpired()`, `remainingShelfLife(int)` |
+| `StockItem` | `id_: string`, `sku_: string`, `warehouseCode_: string`, `binCode_: string`, `onHand_: int`, `reserved_: int` | `available()`, `receive(int)`, `reserve(int)`, `release(int)`, `issue(int)`, `moveTo(string)` |
+| `StockLot` | `lotNumber_: string`, `sku_: string`, `quantity_: int`, `expiryDate_: time_t`, `unitCost_: double`, `quarantined_: bool` | `isExpired(time_t)`, `remainingShelfLifeDays(time_t)`, `remove(int)`, `markQuarantined()`, `releaseFromQuarantine()` |
 | `StockBalance` | `balanceId_: string`, `warehouseCode_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `calculateAvailable()`, `reconcile(int)` |
-| `StockReservation` | `reservationId_: string`, `orderId_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `reserve()`, `release(int)` |
-| `Inventory` | `inventoryId_: string`, `warehouseCode_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `startCounting()`, `finishCounting(int)` |
-| `InventoryLine` | `lineId_: string`, `productSku_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `recordCount()`, `calculateVariance(int)` |
+| `StockReservation` | `id_: string`, `orderId_: string`, `sku_: string`, `quantity_: int`, `status_: ReservationStatus` | `apply(StockItem&)`, `release(StockItem&)`, `consume(StockItem&)`, `active()` |
+| `Inventory` | `id_: string`, `warehouseCode_: string`, `lines_: vector<InventoryLine>`, `status_: InventoryStatus` | `addLine(InventoryLine)`, `start()`, `recordCount(string,int)`, `allLinesCounted()`, `discrepancyCount()`, `totalDifference()`, `complete()`, `cancel()` |
+| `InventoryLine` | `sku_: string`, `expected_: int`, `counted_: int`, `countedFlag_: bool` | `recordCount(int)`, `difference()`, `matches()` |
 | `StockMovement` | `movementId_: string`, `productSku_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `calculateSignedQuantity()`, `isTransfer(int)` |
 | `StockAdjustment` | `adjustmentId_: string`, `reason_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `applyAdjustment()`, `requiresApproval(int)` |
 | `ReorderRule` | `ruleId_: string`, `productSku_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `shouldReorder()`, `calculateOrderQuantity(int)` |
@@ -120,8 +110,8 @@ WarehouseManagement/
 |---|---|---|
 | `Supplier` | `supplierId_: string`, `companyName_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `rateReliability()`, `canSupply(int)` |
 | `PurchaseRequest` | `requestId_: string`, `departmentCode_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `submit()`, `cancel(int)` |
-| `PurchaseOrder` | `purchaseOrderId_: string`, `supplierId_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `calculateTotal()`, `closeOrder(int)` |
-| `PurchaseOrderLine` | `lineId_: string`, `productSku_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `calculateLineTotal()`, `changeQuantity(int)` |
+| `PurchaseOrder` | `id_: string`, `supplierId_: string`, `lines_: vector<PurchaseOrderLine>`, `status_: PurchaseOrderStatus` | `addLine(PurchaseOrderLine)`, `approve()`, `registerReceipt(string,int)`, `fullyReceived()`, `totalCost()`, `cancel()` |
+| `PurchaseOrderLine` | `sku_: string`, `ordered_: int`, `received_: int`, `unitCost_: double` | `receive(int)`, `outstanding()`, `lineTotal()` |
 | `GoodsReceipt` | `receiptId_: string`, `purchaseOrderId_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `acceptDelivery()`, `calculateAcceptedValue(int)` |
 | `DeliveryNote` | `noteNumber_: string`, `supplierId_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `validateAgainstOrder()`, `markReceived(int)` |
 | `SupplierContract` | `contractId_: string`, `supplierId_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `isValidOn()`, `calculatePenalty(int)` |
@@ -131,8 +121,8 @@ WarehouseManagement/
 | Класс | Поля (типы) | Основные методы |
 |---|---|---|
 | `Customer` | `customerId_: string`, `fullName_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `validateContact()`, `updateLoyalty(int)` |
-| `SalesOrder` | `orderId_: string`, `customerId_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `calculateTotal()`, `cancelOrder(int)` |
-| `SalesOrderLine` | `lineId_: string`, `productSku_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `calculateLineTotal()`, `changeOrderedQuantity(int)` |
+| `SalesOrder` | `orderId_: string`, `customerId_: string`, `lines_: vector<SalesOrderLine>`, `status_: SalesOrderStatus` | `addLine(SalesOrderLine)`, `removeLine(string)`, `calculateTotal()`, `confirm()`, `beginPicking()`, `markShipped()`, `cancel()` |
+| `SalesOrderLine` | `sku_: string`, `quantity_: int`, `unitPrice_: double`, `discount_: double` | `lineTotal()`, `changeQuantity(int)`, `applyDiscount(double)` |
 | `PickingTask` | `taskId_: string`, `orderId_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `assignPicker()`, `markPicked(int)` |
 | `PackingTask` | `taskId_: string`, `orderId_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `calculatePackageCount()`, `completePacking(int)` |
 | `Shipment` | `shipmentId_: string`, `orderId_: string`, `quantity_: int`, `amount_: double`, `active_: bool`, `relatedIds_: vector<string>` | `dispatch()`, `markDelivered(int)` |
@@ -172,7 +162,7 @@ WarehouseManagement/
 
 ## Ассоциации между классами
 
-Ассоциации предметной области задаются идентификаторами связанных объектов. В каждом классе список `relatedIds_` позволяет хранить ссылки на связанные сущности без жёсткой зависимости заголовков друг от друга. Поля-идентификаторы также отражают связи в соответствующих подсистемах.
+В исходном каркасе многие ассоциации представлены идентификаторами связанных объектов. В переработанном ядре добавлены предметные связи через коллекции конкретных классов, ссылки на объекты и поля внешних ключей. Перечень ниже описывает модель предметной области; не все перечисленные связи уже реализованы типизированными полями — подробности приведены в разделе «Реализованные связи и ограничения».
 
 Основные логические ассоциации:
 
@@ -274,3 +264,32 @@ ctest --test-dir build --output-on-failure
 ## Границы текущей версии
 
 Это стартовая архитектурная версия большого проекта. Все классы имеют отдельные файлы, конструкторы с проверкой входных данных, поля и два предметно названных метода. Часть поведения пока реализована как общий каркас управления активностью и количеством; методы, требующие полноценной бизнес-модели (например, расчёт маршрута, проведение платежа, сверка накладной и инвентаризация), необходимо развить отдельной логикой и типизированными связями. Поэтому формальные количества классов/полей/методов достигнуты, но проект ещё не следует считать завершённой складской системой.
+
+
+## Реализованные связи и ограничения
+
+В ядре применены связи с предметными типами, а не универсальный список идентификаторов:
+
+- `Warehouse` принимает `StorageZone` через `addZone(const StorageZone&)` и хранит коды зон; это ассоциация склада с зонами.
+- `Inventory` владеет коллекцией `InventoryLine` по значению; это композиция строк инвентаризации.
+- `SalesOrder` владеет коллекцией `SalesOrderLine` по значению; это композиция позиций клиентского заказа.
+- `PurchaseOrder` владеет коллекцией `PurchaseOrderLine` по значению; это композиция позиций закупки.
+- `StockReservation` работает с конкретным `StockItem&` при резервировании, освобождении и списании.
+- `Product` хранит коды категории и бренда, а также собственные штрихкоды.
+
+Идентификаторы складов, товаров, ячеек и заказов используются там, где объект является внешним участником операции и его временем жизни управляет другая подсистема. Для учебной модели это намеренная ссылка по ключу, а не владение объектом.
+
+## Проверка
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON
+cmake --build build -j$(nproc)
+ctest --test-dir build --output-on-failure
+./build/warehouse_app
+```
+
+В smoke-тестах проверяются изменение цены товара, порог пополнения, добавление зоны, контроль вместимости склада, резервирование и списание остатков, переходы состояний клиентского заказа, инвентаризационные расхождения и частичная/полная приёмка закупочного заказа.
+
+## Что ещё необходимо завершить
+
+Оставшиеся классы подсистем персонала, логистики, финансов, администрирования, части каталога и складского оборудования нуждаются в таком же углублении: предметные поля вместо универсальных `quantity_`/`amount_`, чёткие состояния, проверки переходов и ассоциации по типам. Они оставлены в проекте, чтобы сохранить ширину исходной модели (62 предметных класса), но не выдаются за полностью реализованные бизнес-сценарии.

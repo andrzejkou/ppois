@@ -1,30 +1,6 @@
 #pragma once
-
+#include "orders/SalesOrderLine.h"
 #include <string>
 #include <vector>
-
-class SalesOrder {
-public:
-    SalesOrder(std::string orderId, std::string customerId, int quantity = 0, double amount = 0.0);
-
-    double calculateTotal() const;
-    bool cancelOrder(int delta);
-
-    const std::string& orderId() const noexcept;
-    const std::string& customerId() const noexcept;
-    int quantity() const noexcept;
-    double amount() const noexcept;
-    bool active() const noexcept;
-    void addRelatedId(const std::string& relatedId);
-    bool hasRelatedId(const std::string& relatedId) const;
-    std::size_t relatedCount() const noexcept;
-
-private:
-    std::string orderId_{};
-    std::string customerId_{};
-    int quantity_{0};
-    double amount_{0.0};
-    bool active_{true};
-    std::vector<std::string> relatedIds_{};
-
-};
+enum class SalesOrderStatus { Draft, Confirmed, Picking, Shipped, Cancelled };
+class SalesOrder { public: SalesOrder(std::string id,std::string customerId); void addLine(const SalesOrderLine&); void removeLine(const std::string& sku); double calculateTotal()const noexcept; void confirm(); void beginPicking(); void markShipped(); void cancel(); SalesOrderStatus status()const noexcept; const std::string& orderId()const noexcept; const std::string& customerId()const noexcept; const std::vector<SalesOrderLine>& lines()const noexcept; private: std::string orderId_,customerId_; std::vector<SalesOrderLine> lines_; SalesOrderStatus status_{SalesOrderStatus::Draft}; };

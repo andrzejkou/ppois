@@ -1,39 +1,9 @@
-#include "StockLot.h"
+#include "inventory/StockLot.h"
+#include "exceptions/ExpiredProductException.h"
+#include "exceptions/InsufficientStockException.h"
 #include "exceptions/WarehouseException.h"
-
-#include <algorithm>
 #include <utility>
-
-StockLot::StockLot(std::string lotNumber, std::string productSku, int quantity, double amount)
-    : lotNumber_(std::move(lotNumber)), productSku_(std::move(productSku)),
-      quantity_(quantity), amount_(amount) {
-    if (lotNumber_.empty() || productSku_.empty() || quantity_ < 0 || amount_ < 0.0)
-        throw WarehouseException("Invalid data while creating StockLot");
-}
-
-bool StockLot::isExpired() const {
-    return active_ && !lotNumber_ .empty() && quantity_ >= 0;
-}
-
-bool StockLot::remainingShelfLife(int delta) {
-    if (!active_ || delta < 0) return false;
-    quantity_ += delta;
-    return true;
-}
-
-const std::string& StockLot::lotNumber() const noexcept { return lotNumber_; }
-const std::string& StockLot::productSku() const noexcept { return productSku_; }
-int StockLot::quantity() const noexcept { return quantity_; }
-double StockLot::amount() const noexcept { return amount_; }
-bool StockLot::active() const noexcept { return active_; }
-
-void StockLot::addRelatedId(const std::string& relatedId) {
-    if (relatedId.empty() || hasRelatedId(relatedId)) return;
-    relatedIds_.push_back(relatedId);
-}
-
-bool StockLot::hasRelatedId(const std::string& relatedId) const {
-    return std::find(relatedIds_.begin(), relatedIds_.end(), relatedId) != relatedIds_.end();
-}
-
-std::size_t StockLot::relatedCount() const noexcept { return relatedIds_.size(); }
+StockLot::StockLot(std::string l,std::string s,int q,std::time_t e,double c):lotNumber_(std::move(l)),sku_(std::move(s)),quantity_(q),expiryDate_(e),unitCost_(c){if(lotNumber_.empty()||sku_.empty()||q<0||e<=0||c<0)throw WarehouseException("Invalid stock lot");}
+bool StockLot::isExpired(std::time_t at)const noexcept{return at>=expiryDate_;} int StockLot::remainingShelfLifeDays(std::time_t at)const noexcept{return static_cast<int>((expiryDate_-at)/86400);}
+void StockLot::remove(int q){if(isExpired())throw ExpiredProductException("Cannot issue expired lot");if(quarantined_)throw WarehouseException("Lot is quarantined");if(q<=0||q>quantity_)throw InsufficientStockException("Insufficient lot quantity");quantity_-=q;}
+void StockLot::markQuarantined()noexcept{quarantined_=true;} void StockLot::releaseFromQuarantine()noexcept{quarantined_=false;} bool StockLot::quarantined()const noexcept{return quarantined_;} int StockLot::quantity()const noexcept{return quantity_;} double StockLot::totalCost()const noexcept{return quantity_*unitCost_;} const std::string& StockLot::lotNumber()const noexcept{return lotNumber_;} const std::string& StockLot::sku()const noexcept{return sku_;}
